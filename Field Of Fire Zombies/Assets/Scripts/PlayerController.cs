@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Settings")]
     [SerializeField] private float walkSpeed;
-    
+    [SerializeField] private int points = 500;
+    private float playerHealth = 100; // moet nog getweaked worden
+
+
     private Vector3 moveDirection;
     private Vector2 inputMovement;
     
