@@ -7,25 +7,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
     
-    
     CharacterController characterController;
- 
 
     [Header("Player Settings")]
+    [SerializeField] private float jumpPower = 10f;
     [SerializeField] private float walkSpeed;
     [SerializeField] private int points = 500;
+    [SerializeField] private float gravityMultiplier = 3.0f;
     private float playerHealth = 100; // moet nog getweaked worden
 
-
-    private Vector3 moveDirection;
-    private Vector2 inputMovement;
-
-
-    
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
 
+    [Header("Drag")]
+    private float gravity = -9.81f;
+    private float verticalVelocity;
+
+    private Vector3 moveDirection;
+    private Vector2 inputMovement;
     private float yRotation;
     private float xRotation;
 
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -42,8 +41,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-
-
+        HandleGravity();
 
         float mouseX = Input.GetAxisRaw("Mouse X") * 0.1f;
         float mouseY = Input.GetAxisRaw("Mouse Y") * 0.1f;
@@ -63,9 +61,31 @@ public class PlayerController : MonoBehaviour
         characterController.Move(move * walkSpeed * Time.deltaTime + moveDirection * Time.deltaTime);
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void HandleGravity()
     {
-      inputMovement = context.ReadValue<Vector2>();
+        if (IsGrounded() && verticalVelocity < 0)
+        {
+            verticalVelocity = -1f;
+        }
+        else
+        {
+            verticalVelocity += gravity * gravityMultiplier * Time.deltaTime;
+        }
+        moveDirection.y = verticalVelocity;
     }
 
+    public void Move(InputAction.CallbackContext context)
+    {
+        inputMovement = context.ReadValue<Vector2>();
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        if (context.started && IsGrounded())
+        {
+            verticalVelocity = jumpPower;
+        }
+    }
+
+    private bool IsGrounded() => characterController.isGrounded;
 }
