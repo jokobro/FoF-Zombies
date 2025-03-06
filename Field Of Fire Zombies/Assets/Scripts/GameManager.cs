@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public float Points;
 
-
     [SerializeField] private float scoreMultiplier = 1f; // wanneer alles goed werkt serialzefield weghalen.
 
     private void Awake()
@@ -17,5 +16,4 @@ public class GameManager : MonoBehaviour
     {
         Points += Mathf.RoundToInt(pointsAmount * scoreMultiplier);
     }
-
 }

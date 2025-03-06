@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reloading",
+                    "name": "Reload",
                     "type": "Button",
                     "id": "b3a44fae-fd15-44d6-ac53-c6b7d8d556d1",
                     "expectedControlType": "",
@@ -361,7 +361,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Reloading",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

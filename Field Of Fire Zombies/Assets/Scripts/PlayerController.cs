@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,8 +7,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
-    
-    CharacterController characterController;
+    [SerializeField] private Weapon weapon;
+    private CharacterController characterController;
 
     [Header("Player Settings")]
     [SerializeField] private float jumpPower = 10f;
@@ -29,11 +30,9 @@ public class PlayerController : MonoBehaviour
     private float yRotation;
     private float xRotation;
 
-
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -42,7 +41,11 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleGravity();
+        HandleLooking();
+    }
 
+    private void HandleLooking()
+    {
         float mouseX = Input.GetAxisRaw("Mouse X") * 0.1f;
         float mouseY = Input.GetAxisRaw("Mouse Y") * 0.1f;
 
@@ -73,7 +76,7 @@ public class PlayerController : MonoBehaviour
         }
         moveDirection.y = verticalVelocity;
     }
-
+   
     public void Move(InputAction.CallbackContext context)
     {
         inputMovement = context.ReadValue<Vector2>();
