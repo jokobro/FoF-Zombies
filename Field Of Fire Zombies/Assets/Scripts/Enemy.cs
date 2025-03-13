@@ -6,17 +6,23 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private Transform target;
     [SerializeField] List<GameObject> Pickups;
-    GameManager gameManager;
+    private NavMeshAgent agent;
+    private GameManager gameManager;
     public int pointsAmount;
     public float health;
 
-
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         gameManager = FindObjectOfType<GameManager>();
     }
 
-    public void TakeDamager(float damageAmount)
+    private void Update()
+    {
+        MoveToTarget();
+    }
+
+    public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;
         if(health <= 0)
@@ -26,8 +32,8 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(float damageAmount)
+    private void MoveToTarget()
     {
-        throw new System.NotImplementedException();
+       agent.SetDestination(target.position);       
     }
 }
