@@ -7,13 +7,12 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
-    private Weapon weapon;
     private CharacterController characterController;
+    private Weapon weapon;
 
     [Header("Player Settings")]
     [SerializeField] private float jumpPower = 10f;
     [SerializeField] private float walkSpeed;
-    /*[SerializeField] private int points = 500;*/
     [SerializeField] private float gravityMultiplier = 3.0f;
     private float playerHealth = 100; // moet nog getweaked worden
     GameManager gameManager;
@@ -31,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private float yRotation;
     private float xRotation;
     private bool isDoublePointsActive;
+    private bool isInstantKillActive;
 
     private void Start()
     {
@@ -129,10 +129,33 @@ public class PlayerController : MonoBehaviour
         }
         else if (id == 2)
         {
-            weapon.Addammo();
+            weapon.PickupMaxAmmo();
             Destroy(powerup);
             Debug.Log("maxammo opgepakt");
         }
+        else if (id == 3)
+        {
+            if (!isInstantKillActive)
+            {
+                ActivateInstantKill(duration);
+                Destroy(powerup);
+            }
+        }
+    }
+
+    private void ActivateInstantKill(float duration)
+    {
+        Debug.Log("Instant kill active");
+        isInstantKillActive = true;
+        weapon.damage += 1000;
+        StartCoroutine(InstantKillCooldown(duration));
+    }
+
+    IEnumerator InstantKillCooldown(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isInstantKillActive = false;
+        weapon.damage -= 1000;
     }
 
     private void ActivateDoublePoints(float duration)

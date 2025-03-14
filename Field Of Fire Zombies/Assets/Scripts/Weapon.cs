@@ -1,27 +1,25 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private new Transform camera;
+    [SerializeField] private TextMeshProUGUI ammoText;
 
     [Header("Weapon settings")]
     public float damage;
-    public int currentMagAmmo;
-    public int maxclipSize;
-
-    public int Maxammo;
+    public int currentMagAmmo; // Ammo in magazijn
+    public int maxClipSize; // Max ammo in magazijn
+    public int currentAmmo; // Huidige ammo in reserve
+    public int maxAmmo; // Maximaal aantal kogels dat je kunt dragen
     public float maxDistance;
     public float reloadTime;
-
-
-    private int reloadAmount;
 
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public float fireRate = 0.245f;
     private bool reloading;
-
 
     private void Update()
     {
@@ -31,6 +29,7 @@ public class Weapon : MonoBehaviour
         {
             fireTimer += Time.deltaTime;
         }
+        AmmoText();
     }
 
     public void Shoot()
@@ -54,10 +53,6 @@ public class Weapon : MonoBehaviour
         // toevoegen van particles en andere dingen 
     }
 
-    public void Addammo()
-    {
-        currentMagAmmo = maxclipSize;
-    }
     public void StartReload()
     {
         if (!reloading && this.gameObject.activeSelf)
@@ -70,9 +65,26 @@ public class Weapon : MonoBehaviour
     {
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
-        currentMagAmmo = maxclipSize;
+
+        int neededAmmo = maxClipSize - currentMagAmmo; // Hoeveel kogels nodig
+        int ammoToLoad = Mathf.Min(neededAmmo, currentAmmo); // Laad alleen wat beschikbaar is
+
+        currentMagAmmo += ammoToLoad; // Voeg de kogels toe aan het magazijn
+        currentAmmo -= ammoToLoad; // Trek de gebruikte kogels af van de reserve
+
         reloading = false;
     }
 
     private void OnDisable() => reloading = false;
+
+    public void PickupMaxAmmo()
+    {
+        currentAmmo = maxAmmo; // Vul reserveammo maximaal aan
+        currentMagAmmo = maxClipSize; // Vul het magazijn volledig
+    }
+
+    private void AmmoText()
+    {
+        ammoText.text = $"{currentMagAmmo}/{currentAmmo}";
+    }
 }
