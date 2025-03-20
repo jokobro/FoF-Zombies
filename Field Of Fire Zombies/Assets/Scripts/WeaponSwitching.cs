@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSwitching : MonoBehaviour {
-
+public class WeaponSwitching : MonoBehaviour
+{
     [Header("References")]
     [SerializeField] private Transform[] weapons;
 
@@ -14,17 +11,20 @@ public class WeaponSwitching : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private float switchTime;
 
+    private Weapon activeWeapon;
     private int selectedWeapon;
     private float timeSinceLastSwitch;
 
-    private void Start() {
+    private void Start()
+    {
         SetWeapons();
         Select(selectedWeapon);
 
         timeSinceLastSwitch = 0f;
     }
 
-    private void SetWeapons() {
+    private void SetWeapons()
+    {
         weapons = new Transform[transform.childCount];
 
         for (int i = 0; i < transform.childCount; i++)
@@ -33,7 +33,8 @@ public class WeaponSwitching : MonoBehaviour {
         if (keys == null) keys = new KeyCode[weapons.Length];
     }
 
-    private void Update() {
+    private void Update()
+    {
         int previousSelectedWeapon = selectedWeapon;
 
         for (int i = 0; i < keys.Length; i++)
@@ -45,14 +46,33 @@ public class WeaponSwitching : MonoBehaviour {
         timeSinceLastSwitch += Time.deltaTime;
     }
 
-    private void Select(int weaponIndex) {
+    private void Select(int weaponIndex)
+    {
         for (int i = 0; i < weapons.Length; i++)
             weapons[i].gameObject.SetActive(i == weaponIndex);
 
+        activeWeapon = weapons[weaponIndex].GetComponent<Weapon>();
+
+        if (activeWeapon != null)
+        {
+            activeWeapon.AmmoText();
+        }
+
         timeSinceLastSwitch = 0f;
-
-        OnWeaponSelected();
     }
+    public Weapon[] GetAllWeapons()
+    {
+        Weapon[] allWeapons = new Weapon[weapons.Length];
 
-    private void OnWeaponSelected() {  }
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            allWeapons[i] = weapons[i].GetComponent<Weapon>();
+        }
+
+        return allWeapons;
+    }
+    public Weapon GetActiveWeapon()
+    {
+        return activeWeapon;
+    }
 }

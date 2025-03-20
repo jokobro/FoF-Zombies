@@ -12,7 +12,7 @@ public class Crosshair : MonoBehaviour
 
     private void Start()
     {
-        characterController = FindObjectOfType<CharacterController>();
+        characterController = FindAnyObjectByType<CharacterController>();
         reticle = GetComponent<RectTransform>();
     }
 

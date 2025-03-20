@@ -4,18 +4,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
     private CharacterController characterController;
+    private WeaponSwitching weaponSwitching;
+    private GameManager gameManager;
     private Weapon weapon;
-
+    
     [Header("Player Settings")]
     [SerializeField] private float jumpPower = 10f;
-    [SerializeField] private float walkSpeed;
     [SerializeField] private float gravityMultiplier = 3.0f;
-    private float playerHealth = 100; // moet nog getweaked worden
-    GameManager gameManager;
+    public float playerHealth = 100; // moet nog getweaked worden
+    public float walkSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -36,9 +39,12 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindAnyObjectByType<GameManager>();
         characterController = GetComponent<CharacterController>();
+        weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
+        weapon = FindAnyObjectByType<Weapon>();
+     
+        Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        weapon = FindObjectOfType<Weapon>();
     }
 
     private void Update()
@@ -46,6 +52,14 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleGravity();
         HandleLooking();
+
+
+        PlayerHealth();
+    }
+
+    private void PlayerHealth()
+    {
+
     }
 
     private void HandleLooking()
@@ -83,16 +97,24 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
-        if (weapon.fireTimer > weapon.fireRate)
+        Weapon currentWeapon = weaponSwitching.GetActiveWeapon(); // Gebruik het actieve wapen
+
+        if (currentWeapon != null && currentWeapon.fireTimer > currentWeapon.fireRate)
         {
-            weapon.Shoot();
-            weapon.fireTimer = 0.0f;
+            currentWeapon.Shoot();
+            currentWeapon.fireTimer = 0.0f;
         }
     }
 
     public void Reload(InputAction.CallbackContext context)
     {
-        weapon.StartReload();
+        Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+
+        if (currentWeapon != null)
+        {
+            currentWeapon.StartReload();
+        }
+
         Debug.Log("Start reload");
     }
 
@@ -129,9 +151,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (id == 2)
         {
-            weapon.PickupMaxAmmo();
+            Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+            foreach (Weapon w in allWeapons)
+            {
+                w.PickupMaxAmmo();
+            }
             Destroy(powerup);
-            Debug.Log("maxammo opgepakt");
+            /*Debug.Log("maxammo opgepakt");*/
         }
         else if (id == 3)
         {

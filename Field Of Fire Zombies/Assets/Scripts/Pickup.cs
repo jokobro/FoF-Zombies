@@ -3,11 +3,9 @@ using UnityEngine;
 public class Pickup : MonoBehaviour
 {
     [SerializeField] private int id;
-    [SerializeField] private float speed;
     [SerializeField] private float duration;
-    [SerializeField] private float bonus;
-    private PlayerController playerController;
-
+    /*  [SerializeField] private float bonus;
+        [SerializeField] private float speed;*/
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) // Controleer of het object de speler is

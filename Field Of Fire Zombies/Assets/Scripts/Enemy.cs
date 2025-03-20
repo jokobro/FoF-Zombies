@@ -4,9 +4,6 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float playerInReach = 3f;
-
-
     [SerializeField] private Transform target;
     [SerializeField] List<GameObject> Pickups;
     private NavMeshAgent agent;
@@ -14,12 +11,11 @@ public class Enemy : MonoBehaviour, IDamageable
     public int pointsAmount;
     public float health;
 
-    
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void Update()
@@ -30,20 +26,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void HandleAttacking()
     {
-        RaycastHit hit;
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
-        if (Physics.Raycast(ray, out hit, playerInReach))
-        {
-
-        }
     }
-
 
     public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;
-        if(health <= 0)
+        if (health <= 0)
         {
             GameManager.Instance.AddScore(pointsAmount);
             Destroy(this.gameObject);
@@ -52,6 +41,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void MoveToTarget()
     {
-       agent.SetDestination(target.position);       
+        agent.SetDestination(target.position);
     }
 }
