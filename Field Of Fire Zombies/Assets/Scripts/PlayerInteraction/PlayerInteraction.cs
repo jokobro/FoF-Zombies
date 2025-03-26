@@ -32,12 +32,12 @@ public class PlayerInteraction : MonoBehaviour
                     WeaponUpgrade weaponUpgrade = newInteractable.GetComponent<WeaponUpgrade>();
 
                     // Controleer of de perk al is gekocht
-                    if (perkUpgrades != null && !PerkAlreadyBought(perkUpgrades,weaponUpgrade))
+                    if (perkUpgrades != null && !PerkAlreadyBought(perkUpgrades))
                     {
                         SetNewCurrentInteractable(newInteractable);
                         return;
                     }
-                    if(weaponUpgrade != null && !PerkAlreadyBought(perkUpgrades,weaponUpgrade))
+                    if(weaponUpgrade != null && !PerkAlreadyBought(perkUpgrades))
                     {
                         SetNewCurrentInteractable(newInteractable);
                         return;
@@ -51,14 +51,12 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private bool PerkAlreadyBought(PerkUpgrades perkUpgrades, WeaponUpgrade weaponUpgrade)
+    private bool PerkAlreadyBought(PerkUpgrades perkUpgrades)
     {
         if (perkUpgrades.IsSpeedColaBought ||
              perkUpgrades.IsQuickReviveBought ||
              perkUpgrades.IsJunngernautPerkBought ||
-             perkUpgrades.IsDoubleTapBought||
-
-             weaponUpgrade.IsWeaponUpgradeBought)
+             perkUpgrades.IsDoubleTapBought)
         {
             HUDcontroller.instance.DisableInteractionText(); // Verberg tekst als een perk is gekocht
             return true;
