@@ -94,7 +94,7 @@ public class PerkUpgrades : MonoBehaviour
             {
                 weapon.fireRate = 0.1f; // tweaken met procenten
             }
-            
+
             isDoubleTapBought = true;
 
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
@@ -106,7 +106,6 @@ public class PerkUpgrades : MonoBehaviour
             HUDcontroller.instance.EnableInteractionText("Niet genoeg punten!");
         }
     }
-
 
 
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt

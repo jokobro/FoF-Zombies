@@ -13,27 +13,41 @@ public class PlayerController : MonoBehaviour
     private WeaponSwitching weaponSwitching;
     private GameManager gameManager;
     private Weapon weapon;
-    
+    private Camera playerCamera;
+
+    [SerializeField] private Transform weaponAimingPosition;
+    [SerializeField] private Transform weaponDefaultPosition;
+
+
     [Header("Player Settings")]
     [SerializeField] private float jumpPower = 10f;
     [SerializeField] private float gravityMultiplier = 3.0f;
     public float playerHealth = 100; // moet nog getweaked worden
     public float walkSpeed;
+    [SerializeField] private float aimSpeed = 0.25f;
+
+
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
+    private float defaultFOV = 90f;
+    private float zoomAmount = 0.5f;
 
     [Header("Drag")]
     private float gravity = -9.81f;
     private float verticalVelocity;
 
     private Vector3 moveDirection;
+    private Vector3 weaponPostion;
     private Vector2 inputMovement;
     private float yRotation;
     private float xRotation;
     private bool isDoublePointsActive;
     private bool isInstantKillActive;
+
+
+    [SerializeField] private Transform activeWeapon;
 
     private void Start()
     {
@@ -41,7 +55,9 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
         weapon = FindAnyObjectByType<Weapon>();
-     
+        playerCamera = FindAnyObjectByType<Camera>();
+
+
         Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -53,6 +69,7 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleLooking();
 
+        /*HanleAiming();*/
 
         PlayerHealth();
     }
@@ -93,6 +110,27 @@ public class PlayerController : MonoBehaviour
             verticalVelocity += gravity * gravityMultiplier * Time.deltaTime;
         }
         moveDirection.y = verticalVelocity;
+    }
+
+    /*private void HanleAiming()
+    {
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            weaponPostion = Vector3.Lerp(weaponPostion, weaponAimingPosition.localPosition, aimSpeed * Time.deltaTime);
+            activeWeapon.localPosition = weaponPostion;
+            SetFieldOFView(Mathf.Lerp(playerCamera.fieldOfView, zoomAmount * defaultFOV, aimSpeed * Time.deltaTime));
+        }
+        else
+        {
+            weaponPostion = Vector3.Lerp(weaponPostion, weaponDefaultPosition.localPosition, aimSpeed * Time.deltaTime);
+            activeWeapon.localPosition = weaponPostion;
+            SetFieldOFView(Mathf.Lerp(playerCamera.fieldOfView, defaultFOV, aimSpeed * Time.deltaTime));
+        }
+    }*/
+
+    private void SetFieldOFView(float FieldOfView)
+    {
+        playerCamera.fieldOfView = FieldOfView;
     }
 
     public void Shoot(InputAction.CallbackContext context)
