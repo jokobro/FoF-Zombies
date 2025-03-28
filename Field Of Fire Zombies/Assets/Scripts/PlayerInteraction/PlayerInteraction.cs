@@ -6,7 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private string doorOpenAnimName;
     [SerializeField] private AudioClip doorOpenSound;
     private Interactable currentInteractable;
-    
+
 
     private void Update()
     {
@@ -32,7 +32,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (newInteractable != null && newInteractable.enabled)
                 {
                     BuyingUpgrades Upgrades = newInteractable.GetComponent<BuyingUpgrades>();
-                    
 
                     // Controleer of de perk al is gekocht
                     if (Upgrades != null && !PerkAlreadyBought(Upgrades))
@@ -46,14 +45,13 @@ public class PlayerInteraction : MonoBehaviour
             {
                 DisableCurrentInteractable();
             }
-            
-            
-            
+
             if (hit.collider.gameObject.tag == "Door")
             {
                 GameObject doorParent = hit.collider.transform.root.gameObject;
                 Animator doorAnim = doorParent.GetComponent<Animator>();
                 AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
+
 
                 if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
                 {
@@ -64,6 +62,7 @@ public class PlayerInteraction : MonoBehaviour
                     doorSound.Play();*/
                 }
             }
+
         }
     }
 

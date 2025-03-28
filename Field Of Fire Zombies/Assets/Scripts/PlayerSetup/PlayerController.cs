@@ -9,24 +9,22 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
+    [SerializeField] private Transform weaponAimingPosition;
+    [SerializeField] private Transform weaponDefaultPosition;
+    [SerializeField] private GameObject HighscoreScreenPanel;
     private CharacterController characterController;
     private WeaponSwitching weaponSwitching;
     private GameManager gameManager;
     private Weapon weapon;
     private Camera playerCamera;
 
-    [SerializeField] private Transform weaponAimingPosition;
-    [SerializeField] private Transform weaponDefaultPosition;
-
-
     [Header("Player Settings")]
     [SerializeField] private float jumpPower = 10f;
     [SerializeField] private float gravityMultiplier = 3.0f;
-    public float playerHealth = 100; // moet nog getweaked worden
-    public float walkSpeed;
     [SerializeField] private float aimSpeed = 0.25f;
-
-
+    [HideInInspector] public float playerHealth = 100; // moet nog getweaked worden
+    [HideInInspector] public float walkSpeed;
+    
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -92,6 +90,15 @@ public class PlayerController : MonoBehaviour
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
         cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
+
+    public void HandleOpeningHighScore(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+           HighscoreScreenPanel.SetActive(true);
+        }
+    }
+
 
     private void HandleMovement()
     {
@@ -204,6 +211,11 @@ public class PlayerController : MonoBehaviour
                 ActivateInstantKill(duration);
                 Destroy(powerup);
             }
+        }
+        else if(id == 4)
+        {
+            waveManager.Instance.KillCurrentWave();
+            Destroy(powerup);
         }
     }
 

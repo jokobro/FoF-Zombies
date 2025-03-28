@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 { }
-    /*public float interactionDistance;
+   /* public float interactionDistance;
     public GameObject intText;
     public string doorOpenAnimName;
-    public AudioClip doorOpen;
+    public AudioClip doorOpenSound;
    
 
     void Update()
@@ -28,6 +28,8 @@ public class Door : MonoBehaviour
                     GameManager.Instance.Points -= 2000;
                     GameManager.Instance.UpdatePointsUI();
                     doorAnim.SetBool("OpenDoor", true);
+                    *//*doorSound.clip = doorOpenSound;
+                    doorSound.Play();*//*
                 }
             }
             else

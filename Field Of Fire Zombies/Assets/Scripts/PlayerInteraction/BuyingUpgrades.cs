@@ -4,6 +4,8 @@ public class BuyingUpgrades : MonoBehaviour
     private Weapon weapon;
     private WeaponSwitching weaponSwitching;
 
+   
+
     private bool isSpeedColaBought = false;
     private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
@@ -29,7 +31,6 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.UpdatePointsUI();
             PlayerController.Instance.walkSpeed = 12.6f; // Past de loopsnelheid aan.
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.speedColaSprite); // Voeg toe aan UI
-            HUDcontroller.instance.DisableInteractionText();
             isSpeedColaBought = true;
         }
     }
@@ -41,7 +42,6 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.Points -= 1000;
             GameManager.Instance.UpdatePointsUI();
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.quickReviveSprite);
-            HUDcontroller.instance.DisableInteractionText();
             isQuickReviveBought = true;
             hasUsedQuickRevive = false;
         }
@@ -55,7 +55,6 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.UpdatePointsUI();
             PlayerController.Instance.playerHealth = 170f;
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.juggernautSprite);
-            HUDcontroller.instance.DisableInteractionText();
             isJugernautPerkBought = true;
         }
     }
@@ -67,7 +66,6 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
-            HUDcontroller.instance.DisableInteractionText();
             isDoubleTapBought = true;
 
             Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
@@ -91,24 +89,32 @@ public class BuyingUpgrades : MonoBehaviour
             currentWeapon.fireRate = 0.150f;
             currentWeapon.damage = 500;
             currentWeapon.isWeaponUpgraded = true;
-
-
-            if(currentWeapon.isWeaponUpgraded == true) 
-            {
-             HUDcontroller.instance.DisableInteractionText();
-            }
+            /*HUDcontroller.instance.DisableInteractionText();*/
+            
 
             // nog toevoegen van het alleen kunnen kopen voor 1 wapen en dat allebij de wapens in invontory geupgrade kunnen worden
         }
     }
 
-    public void HandleOpeningDoor()
-    {
-        if (GameManager.Instance.Points >= 2000)
-        {
 
+   
+
+    /*public void HandleOpeningDoor()
+    {
+        GameObject doorParent = hit.collider.transform.root.gameObject;
+        Animator doorAnim = doorParent.GetComponent<Animator>();
+        AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
+
+        if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
+        {
+            GameManager.Instance.Points -= 2000;
+            GameManager.Instance.UpdatePointsUI();
+            doorAnim.SetBool("OpenDoor", true);
+            *//*doorSound.clip = doorOpenSound;
+            doorSound.Play();*//*
         }
-    }
+
+    }*/
 
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt
     public void UseQuickRevive()

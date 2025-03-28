@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject uiPanel;
     [SerializeField] private GameObject pauseMenuUi;
     [SerializeField] private InputActionAsset inputActions;
     private InputActionMap gameActionMap;
@@ -21,6 +23,7 @@ public class PauseManager : MonoBehaviour
         if (context.performed) 
         {
             Time.timeScale = 0f;
+            uiPanel.SetActive(false);
             pauseMenuUi.SetActive(true);
             gameActionMap.Disable();
             uiActionMap.Enable();
@@ -29,6 +32,7 @@ public class PauseManager : MonoBehaviour
 
     private void Resume()
     {
+        uiPanel.SetActive(true);
         pauseMenuUi.SetActive(false);
         gameActionMap.Enable();
         uiActionMap.Disable();
@@ -38,5 +42,11 @@ public class PauseManager : MonoBehaviour
     public void OnResumeButtonPressed()
     {
         Resume();
+    }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene("MainMenu");
+        //impelenemteren wanneer je doodgaat dat de player score bord te zien krijgt en daarna naar main menu gaat
     }
 }
