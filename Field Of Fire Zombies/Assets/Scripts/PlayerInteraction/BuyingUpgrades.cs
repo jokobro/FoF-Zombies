@@ -1,23 +1,23 @@
 using UnityEngine;
-public class PerkUpgrades : MonoBehaviour
+public class BuyingUpgrades : MonoBehaviour
 {
     private Weapon weapon;
     private WeaponSwitching weaponSwitching;
 
     private bool isSpeedColaBought = false;
-    private bool isJunngernautPerkBought = false;
+    private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
     private bool isQuickReviveBought = false;
     private bool hasUsedQuickRevive = false;
 
     public bool IsSpeedColaBought => isSpeedColaBought;
     public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
-    public bool IsJunngernautPerkBought => isSpeedColaBought;
+    public bool IsJunngernautPerkBought => isJugernautPerkBought;
     public bool IsDoubleTapBought => isDoubleTapBought;
 
     private void Start()
     {
-        weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
+        weaponSwitching = FindAnyObjectByType<WeaponSwitching>();
         weapon = FindAnyObjectByType<Weapon>();
     }
 
@@ -27,14 +27,10 @@ public class PerkUpgrades : MonoBehaviour
         {
             GameManager.Instance.Points -= 1500;
             GameManager.Instance.UpdatePointsUI();
-            PlayerController.Instance.walkSpeed = 12.6f; // Pas de snelheid aan
+            PlayerController.Instance.walkSpeed = 12.6f; // Past de loopsnelheid aan.
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.speedColaSprite); // Voeg toe aan UI
             HUDcontroller.instance.DisableInteractionText();
             isSpeedColaBought = true;
-        }
-        else
-        {
-            HUDcontroller.instance.EnableInteractionText("Niet genoeg punten!");
         }
     }
 
@@ -49,11 +45,6 @@ public class PerkUpgrades : MonoBehaviour
             isQuickReviveBought = true;
             hasUsedQuickRevive = false;
         }
-        else
-        {
-            Debug.Log("Niet genoeg punten voor Quick Revive!");
-            HUDcontroller.instance.EnableInteractionText("Niet genoeg punten!"); // Toon foutmelding
-        }
     }
 
     public void HandleBuyingJuggernaut()
@@ -65,28 +56,19 @@ public class PerkUpgrades : MonoBehaviour
             PlayerController.Instance.playerHealth = 170f;
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.juggernautSprite);
             HUDcontroller.instance.DisableInteractionText();
-            isJunngernautPerkBought = true;
-        }
-        else
-        {
-            HUDcontroller.instance.EnableInteractionText("Niet genoeg punten!");
+            isJugernautPerkBought = true;
         }
     }
 
     public void HandleBuyingDoubleTap()
     {
-        if (isJunngernautPerkBought)
-        {
-            Debug.Log("double tap gekocht!");
-            return;
-        }
-
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
-
-            //logica toevoegen voor het upgraden firerate
+            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
+            HUDcontroller.instance.DisableInteractionText();
+            isDoubleTapBought = true;
 
             Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
 
@@ -94,19 +76,39 @@ public class PerkUpgrades : MonoBehaviour
             {
                 weapon.fireRate = 0.1f; // tweaken met procenten
             }
-
-            isDoubleTapBought = true;
-
-            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
-            HUDcontroller.instance.DisableInteractionText();
-        }
-        else
-        {
-            Debug.Log("Niet genoeg punten voor doubletap!");
-            HUDcontroller.instance.EnableInteractionText("Niet genoeg punten!");
         }
     }
 
+    public void HandleBuyingWeaponUpgrade()
+    {
+        if (GameManager.Instance.Points >= 5000)
+        {
+            GameManager.Instance.Points -= 5000;
+            GameManager.Instance.UpdatePointsUI();
+          
+            
+            Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+            currentWeapon.fireRate = 0.150f;
+            currentWeapon.damage = 500;
+            currentWeapon.isWeaponUpgraded = true;
+
+
+            if(currentWeapon.isWeaponUpgraded == true) 
+            {
+             HUDcontroller.instance.DisableInteractionText();
+            }
+
+            // nog toevoegen van het alleen kunnen kopen voor 1 wapen en dat allebij de wapens in invontory geupgrade kunnen worden
+        }
+    }
+
+    public void HandleOpeningDoor()
+    {
+        if (GameManager.Instance.Points >= 2000)
+        {
+
+        }
+    }
 
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt
     public void UseQuickRevive()

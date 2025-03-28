@@ -3,7 +3,10 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private float playerInReach = 3f;
+    [SerializeField] private string doorOpenAnimName;
+    [SerializeField] private AudioClip doorOpenSound;
     private Interactable currentInteractable;
+    
 
     private void Update()
     {
@@ -28,30 +31,43 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (newInteractable != null && newInteractable.enabled)
                 {
-                    PerkUpgrades perkUpgrades = newInteractable.GetComponent<PerkUpgrades>();
-                    WeaponUpgrade weaponUpgrade = newInteractable.GetComponent<WeaponUpgrade>();
+                    BuyingUpgrades Upgrades = newInteractable.GetComponent<BuyingUpgrades>();
+                    
 
                     // Controleer of de perk al is gekocht
-                    if (perkUpgrades != null && !PerkAlreadyBought(perkUpgrades))
-                    {
-                        SetNewCurrentInteractable(newInteractable);
-                        return;
-                    }
-                    if(weaponUpgrade != null && !PerkAlreadyBought(perkUpgrades))
+                    if (Upgrades != null && !PerkAlreadyBought(Upgrades))
                     {
                         SetNewCurrentInteractable(newInteractable);
                         return;
                     }
                 }
             }
-        }
-        else
-        {
-            DisableCurrentInteractable();
+            else
+            {
+                DisableCurrentInteractable();
+            }
+            
+            
+            
+            if (hit.collider.gameObject.tag == "Door")
+            {
+                GameObject doorParent = hit.collider.transform.root.gameObject;
+                Animator doorAnim = doorParent.GetComponent<Animator>();
+                AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
+
+                if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
+                {
+                    GameManager.Instance.Points -= 2000;
+                    GameManager.Instance.UpdatePointsUI();
+                    doorAnim.SetBool("OpenDoor", true);
+                    /*doorSound.clip = doorOpenSound;
+                    doorSound.Play();*/
+                }
+            }
         }
     }
 
-    private bool PerkAlreadyBought(PerkUpgrades perkUpgrades)
+    private bool PerkAlreadyBought(BuyingUpgrades perkUpgrades)
     {
         if (perkUpgrades.IsSpeedColaBought ||
              perkUpgrades.IsQuickReviveBought ||

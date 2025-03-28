@@ -21,6 +21,11 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float nextFire;
     private bool reloading;
 
+    
+
+    public bool isWeaponUpgraded = false;
+
+
     private void Update()
     {
         Debug.DrawRay(camera.position, camera.forward * maxDistance);

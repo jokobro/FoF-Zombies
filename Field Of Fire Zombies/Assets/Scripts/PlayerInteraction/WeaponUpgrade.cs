@@ -1,21 +1,16 @@
 using UnityEngine;
 
-public class WeaponUpgrade : MonoBehaviour
+/*public class WeaponUpgrade : MonoBehaviour
 {
     private Weapon weapon;
     private WeaponSwitching weaponSwitching;
 
-    private bool isWeaponUpgradeBought = false;
-    public bool IsWeaponUpgradeBought => isWeaponUpgradeBought;
-
-
+    
     private void Start()
     {
         weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
         weapon = FindAnyObjectByType<Weapon>();
     }
-
-    
 
     public void HandleBuyingWeaponUpgrade()
     {
@@ -26,8 +21,11 @@ public class WeaponUpgrade : MonoBehaviour
             weapon.fireRate = 0.150f;
             weapon.damage = 500;
             HUDcontroller.instance.DisableInteractionText();
-            isWeaponUpgradeBought = true;
+            Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+
+            currentWeapon.isWeaponUpgraded = true;
             // nog toevoegen van het alleen kunnen kopen voor 1 wapen en dat allebij de wapens in invontory geupgrade kunnen worden
         }
     }
 }
+*/

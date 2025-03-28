@@ -242,4 +242,16 @@ public class PlayerController : MonoBehaviour
     {
         gameManager.AddScore(500);
     }
+
+
+
+
+
+
+
+
+
+
+
+    
 }
