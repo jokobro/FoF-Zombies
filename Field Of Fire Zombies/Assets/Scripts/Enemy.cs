@@ -4,32 +4,41 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-  /*  [SerializeField] private Transform target;*/
-    [SerializeField] List<GameObject> pickups;
     [SerializeField] private GameObject ExplosionEffect;
-    private NavMeshAgent agent;
+    [SerializeField] private Transform PlayerPosition;
+    [SerializeField] List<GameObject> pickups;
     private GameManager gameManager;
+    private NavMeshAgent agent;
+    public float attackDistance;
     public int pointsAmount;
     public float health;
-    
-
+    public float damage;
 
     private void Awake()
     {
-        
-        agent = GetComponent<NavMeshAgent>();
+        PlayerPosition = GameObject.Find("Player").transform;
         gameManager = FindAnyObjectByType<GameManager>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
-        /*MoveToTarget();*/
         HandleAttacking();
+        MoveToTarget();
     }
 
     private void HandleAttacking()
     {
+        /*if ()
+        {
+            IDamageable damageable = GetComponent<IDamageable>();
+            damageable?.TakeDamage(damage);
+        }*/
+    }
 
+    private void MoveToTarget()
+    {
+        agent.SetDestination(PlayerPosition.position);
     }
 
     public void TakeDamage(float damageAmount)
@@ -40,7 +49,9 @@ public class Enemy : MonoBehaviour, IDamageable
             HandleEnemyDying();
             GameManager.Instance.AddScore(pointsAmount);
             GameObject ExplosionEffectClone = Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
-            Destroy(this.gameObject,4);
+            gameObject.SetActive(false);
+            Destroy(this.gameObject,3);
+            Destroy(ExplosionEffectClone,2);  
         }
     }
 
@@ -53,9 +64,4 @@ public class Enemy : MonoBehaviour, IDamageable
             Instantiate(pickups[randomIndex], transform.position, Quaternion.identity);
         }
     }
-
-    /*private void MoveToTarget()
-    {
-        agent.SetDestination(target.position);
-    }*/
 }

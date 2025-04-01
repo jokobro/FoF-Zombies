@@ -43,7 +43,7 @@
                 },
                 {
                     "name": "Shoot",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "8683ba81-45f3-4f92-a55c-fbe956202da7",
                     "expectedControlType": "",
                     "processors": "",
@@ -79,12 +79,12 @@
                 },
                 {
                     "name": "Open scoreBoard",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "a8c717d9-fd68-42ff-b917-59098030609f",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "interactions": "Hold",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [

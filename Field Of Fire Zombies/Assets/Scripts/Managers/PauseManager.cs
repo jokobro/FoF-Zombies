@@ -4,9 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private GameObject uiPanel;
-    [SerializeField] private GameObject pauseMenuUi;
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private GameObject pauseMenuUi;
+    [SerializeField] private GameObject uiPanel;
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;
 
@@ -20,7 +20,7 @@ public class PauseManager : MonoBehaviour
 
     public void HandlePausing(InputAction.CallbackContext context)
     {
-        if (context.performed) 
+        if (context.performed)
         {
             Time.timeScale = 0f;
             uiPanel.SetActive(false);

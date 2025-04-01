@@ -4,9 +4,9 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private new Transform camera;
     [SerializeField] private TextMeshProUGUI ammoText;
-
+    [SerializeField] private new Transform camera;
+    
     [Header("Weapon settings")]
     public float damage;
     public int currentMagAmmo; // Ammo in magazijn
@@ -14,15 +14,12 @@ public class Weapon : MonoBehaviour
     public int currentAmmo; // Huidige ammo in reserve
     public int maxAmmo; // Maximaal aantal kogels dat je kunt dragen
     public float maxDistance;
-    public float reloadTime;
+    public float reloadTime = 3;
     public float fireRate = 0.245f;
    
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     private bool reloading;
-
-    
-
     public bool isWeaponUpgraded = false;
 
 

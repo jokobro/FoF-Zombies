@@ -12,19 +12,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform weaponAimingPosition;
     [SerializeField] private Transform weaponDefaultPosition;
     [SerializeField] private GameObject HighscoreScreenPanel;
+    [SerializeField] private GameObject UiPanel;
     private CharacterController characterController;
     private WeaponSwitching weaponSwitching;
+    private BuyingUpgrades BuyingUpgrades;
+    private PauseManager pauseManager;
     private GameManager gameManager;
-    private Weapon weapon;
     private Camera playerCamera;
+    private Weapon weapon;
 
     [Header("Player Settings")]
-    [SerializeField] private float jumpPower = 10f;
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float aimSpeed = 0.25f;
+    [SerializeField] private float jumpPower = 10f;
     [HideInInspector] public float playerHealth = 100; // moet nog getweaked worden
     [HideInInspector] public float walkSpeed;
-    
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -49,12 +51,11 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        gameManager = FindAnyObjectByType<GameManager>();
         characterController = GetComponent<CharacterController>();
         weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
-        weapon = FindAnyObjectByType<Weapon>();
+        gameManager = FindAnyObjectByType<GameManager>();
         playerCamera = FindAnyObjectByType<Camera>();
-
+        weapon = FindAnyObjectByType<Weapon>();
 
         Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
@@ -68,13 +69,26 @@ public class PlayerController : MonoBehaviour
         HandleLooking();
 
         /*HanleAiming();*/
-
-        PlayerHealth();
     }
 
-    private void PlayerHealth()
+    public void TakeDamage(float damageAmount)
     {
+        playerHealth -= damageAmount;
 
+        if (playerHealth <= 0)
+        {
+            if (BuyingUpgrades.IsQuickReviveBought == true)
+            {
+                if (BuyingUpgrades.hasUsedQuickRevive == false)
+                {
+                    BuyingUpgrades.UseQuickRevive();
+                }
+            }
+            else
+            {
+                pauseManager.EndGame();
+            }
+        }
     }
 
     private void HandleLooking()
@@ -95,10 +109,15 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-           HighscoreScreenPanel.SetActive(true);
+            UiPanel.SetActive(false);
+            HighscoreScreenPanel.SetActive(true);
+        }
+        else
+        {
+            HighscoreScreenPanel.SetActive(false);
+            UiPanel.SetActive(true);
         }
     }
-
 
     private void HandleMovement()
     {
@@ -146,8 +165,15 @@ public class PlayerController : MonoBehaviour
 
         if (currentWeapon != null && currentWeapon.fireTimer > currentWeapon.fireRate)
         {
-            currentWeapon.Shoot();
-            currentWeapon.fireTimer = 0.0f;
+            if (context.performed)
+            {
+                currentWeapon.Shoot();
+                currentWeapon.fireTimer = 0.0f;
+            }
+            else
+            {
+                Debug.Log("speler schiet niet");
+            }
         }
     }
 
@@ -212,9 +238,10 @@ public class PlayerController : MonoBehaviour
                 Destroy(powerup);
             }
         }
-        else if(id == 4)
+        else if (id == 4)
         {
             waveManager.Instance.KillCurrentWave();
+            GameManager.Instance.AddScore(400);
             Destroy(powerup);
         }
     }
@@ -254,16 +281,4 @@ public class PlayerController : MonoBehaviour
     {
         gameManager.AddScore(500);
     }
-
-
-
-
-
-
-
-
-
-
-
-    
 }

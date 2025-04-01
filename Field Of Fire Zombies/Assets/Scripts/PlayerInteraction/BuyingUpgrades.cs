@@ -1,16 +1,14 @@
 using UnityEngine;
 public class BuyingUpgrades : MonoBehaviour
 {
-    private Weapon weapon;
     private WeaponSwitching weaponSwitching;
-
-   
+    private Weapon weapon;
 
     private bool isSpeedColaBought = false;
     private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
     private bool isQuickReviveBought = false;
-    private bool hasUsedQuickRevive = false;
+    public bool hasUsedQuickRevive = false;
 
     public bool IsSpeedColaBought => isSpeedColaBought;
     public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
@@ -87,7 +85,7 @@ public class BuyingUpgrades : MonoBehaviour
             
             Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
             currentWeapon.fireRate = 0.150f;
-            currentWeapon.damage = 500;
+            currentWeapon.damage += 0.5f;//toeveogen van de procenten
             currentWeapon.isWeaponUpgraded = true;
             /*HUDcontroller.instance.DisableInteractionText();*/
             

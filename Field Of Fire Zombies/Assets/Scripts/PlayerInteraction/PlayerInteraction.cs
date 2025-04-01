@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [SerializeField] private float playerInReach = 3f;
-    [SerializeField] private string doorOpenAnimName;
     [SerializeField] private AudioClip doorOpenSound;
+    [SerializeField] private string doorOpenAnimName;
+    [SerializeField] private float playerInReach = 3f;
     private Interactable currentInteractable;
-
 
     private void Update()
     {
@@ -52,7 +51,6 @@ public class PlayerInteraction : MonoBehaviour
                 Animator doorAnim = doorParent.GetComponent<Animator>();
                 AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
 
-
                 if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
                 {
                     GameManager.Instance.Points -= 2000;
@@ -62,7 +60,10 @@ public class PlayerInteraction : MonoBehaviour
                     doorSound.Play();*/
                 }
             }
-
+            else
+            {
+                Debug.Log("raakte maar niks gebuered");
+            }
         }
     }
 

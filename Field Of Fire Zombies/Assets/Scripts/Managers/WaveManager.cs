@@ -1,32 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class waveManager : MonoBehaviour
 {
-    public int CurrentWaveIndex { get; private set; } = 0; 
+    public int CurrentWaveIndex { get; private set; } = 0;
+    public static waveManager Instance;
     public List<Wave> waves;  // Lijst van waves
-    public static waveManager Instance; // Singleton zodat je het makkelijk kan refereren vanuit andere scripts
     private int currentGroupIndex = 0;
-    public float spawnInterval = 30f; // Tussen de groepen in seconden
     private bool waveActive = false;
     public float groupCompletionTime = 1f;
 
-    private void Awake()
-    {
-        // Controleer of er al een instance bestaat
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject); // Verwijder het object als er al een andere instance is
-        }
-    }
+    [SerializeField] private TextMeshProUGUI roundNumberText;
+    private int roundNumber = 1;
+    /* public float spawnInterval = 30f; // Tussen de groepen in seconden*/
 
+    
     private void Start()
-    {
+    {   Instance = this;
         StartCoroutine(StartNextWave());
     }
 
@@ -35,7 +27,7 @@ public class waveManager : MonoBehaviour
         // Verwijder alle vijanden in de huidige wave
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            Destroy(enemy,2);
+            Destroy(enemy, 2);
         }
 
         // Update om naar de volgende wave te gaan
@@ -87,10 +79,10 @@ public class waveManager : MonoBehaviour
             Group currentGroup = wave.groups[currentGroupIndex];
             foreach (GameObject enemyPrefab in currentGroup.enemies)
             {
-                Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.Euler(0f,0f,180f));
+                Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.Euler(0f, 0f, 180f));
             }
 
-            float spawnTime = 0f; // Tijd voor het volgen van de spawn interval
+            /* float spawnTime = 0f; // Tijd voor het volgen van de spawn interval*/
             bool groupDefeated = false;
 
             // Wacht tot de groep is verslagen of de spawn interval is verstreken
@@ -102,13 +94,13 @@ public class waveManager : MonoBehaviour
                     groupDefeated = true; // Groep is verslagen
                 }
 
-                // Check of de tijd voor spawn interval is verstreken
-                spawnTime += Time.deltaTime;
-                if (spawnTime >= spawnInterval)
-                {
-                    Debug.Log("De groep is niet verslagen binnen de tijd; de volgende groep wordt gestart.");
-                    groupDefeated = true; // Forceer het starten van de volgende groep
-                }
+                /* // Check of de tijd voor spawn interval is verstreken
+                 spawnTime += Time.deltaTime;
+                 if (spawnTime >= spawnInterval)
+                 {
+                     Debug.Log("De groep is niet verslagen binnen de tijd; de volgende groep wordt gestart.");
+                     groupDefeated = true; // Forceer het starten van de volgende groep
+                 }*/
 
                 yield return null; // Wacht voor de volgende frame
             }
