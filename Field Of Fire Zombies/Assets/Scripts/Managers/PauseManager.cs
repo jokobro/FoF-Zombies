@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
+    public static PauseManager Instance;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private GameObject pauseMenuUi;
     [SerializeField] private GameObject uiPanel;
@@ -12,6 +13,7 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
         gameActionMap = inputActions.FindActionMap("Player");
         uiActionMap = inputActions.FindActionMap("UI");
         gameActionMap.Enable();

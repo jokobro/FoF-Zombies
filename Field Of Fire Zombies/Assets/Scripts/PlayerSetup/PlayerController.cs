@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private WeaponSwitching weaponSwitching;
     private BuyingUpgrades buyingUpgrades;
-    private PauseManager pauseManager;
+    /*private PauseManager pauseManager;*/
     private GameManager gameManager;
     private Camera playerCamera;
     private Weapon weapon;
@@ -25,7 +25,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
-    [HideInInspector] public float playerHealth = 100; // moet nog getweaked worden
+
+
+    public float playerHealth = 100; // moet nog getweaked worden
     [HideInInspector] public float walkSpeed;
 
     [Header("Look Settings")]
@@ -45,18 +47,18 @@ public class PlayerController : MonoBehaviour
     private float xRotation;
     private bool isDoublePointsActive;
     private bool isInstantKillActive;
-
+    private bool isShooting = false;
 
     [SerializeField] private Transform activeWeapon;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
-        buyingUpgrades = FindAnyObjectByType<BuyingUpgrades>();
-        weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
-        gameManager = FindAnyObjectByType<GameManager>();
-        playerCamera = FindAnyObjectByType<Camera>();
-        weapon = FindAnyObjectByType<Weapon>();
+        buyingUpgrades = FindObjectOfType<BuyingUpgrades>();
+        weaponSwitching = FindObjectOfType<WeaponSwitching>();
+        gameManager = FindObjectOfType<GameManager>();
+        playerCamera = FindObjectOfType<Camera>();
+        weapon = FindObjectOfType<Weapon>();
 
         Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
@@ -70,6 +72,12 @@ public class PlayerController : MonoBehaviour
         HandleLooking();
 
         /*HanleAiming();*/
+
+
+        if (isShooting)
+        {
+            HandleShooting();
+        }
     }
 
     public void TakeDamage(float damageAmount)
@@ -78,16 +86,16 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            if (buyingUpgrades.IsQuickReviveBought == true)
+            if (buyingUpgrades.IsQuickReviveBought == false)
+            {
+                PauseManager.Instance.EndGame();
+            }
+            else
             {
                 if (buyingUpgrades.hasUsedQuickRevive == false)
                 {
                     buyingUpgrades.UseQuickRevive();
                 }
-            }
-            else
-            {
-                pauseManager.EndGame();
             }
         }
     }
@@ -162,14 +170,28 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
-        Weapon currentWeapon = weaponSwitching.GetActiveWeapon(); // Gebruik het actieve wapen
-
-        if (currentWeapon != null && currentWeapon.fireTimer > currentWeapon.fireRate)
+        if (context.performed)
         {
-            if (context.performed)
+            isShooting = true;
+        }
+        else if (context.canceled)
+        {
+            isShooting = false;
+        }
+    }
+
+    private void HandleShooting()
+    {
+        Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+
+        if (currentWeapon != null)
+        {
+            currentWeapon.fireTimer += Time.deltaTime; // Update de fireTimer
+
+            if (currentWeapon.fireTimer >= currentWeapon.fireRate) // Controleer of het wapen weer kan schieten
             {
                 currentWeapon.Shoot();
-                currentWeapon.fireTimer = 0.0f;
+                currentWeapon.fireTimer = 0.0f; // Reset de fireTimer
             }
         }
     }

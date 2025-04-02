@@ -9,11 +9,13 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] List<GameObject> pickups;
     private GameManager gameManager;
     private NavMeshAgent agent;
+    private float attackCooldown = 1.5f;
+    private float lastAttackTime;
     public float attackDistance;
     public int pointsAmount;
     public float health;
     public float damage;
-
+    
     private void Awake()
     {
         PlayerPosition = GameObject.Find("Player").transform;
@@ -29,11 +31,16 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void HandleAttacking()
     {
-        /*if ()
+        float distanceToPlayer = Vector3.Distance(transform.position, PlayerPosition.position);
+        if (distanceToPlayer <= attackDistance && Time.time > lastAttackTime + attackCooldown)
         {
-            IDamageable damageable = GetComponent<IDamageable>();
-            damageable?.TakeDamage(damage);
-        }*/
+            PlayerController player = PlayerPosition.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+                lastAttackTime = Time.time;
+            }
+        }
     }
 
     private void MoveToTarget()

@@ -67,13 +67,18 @@ public class BuyingUpgrades : MonoBehaviour
             
             isDoubleTapBought = true;
 
-            /*Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
-            
-            if (currentWeapon != null)
+            // Haal alle wapens op uit de weaponSwitching
+            Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+
+            // Loop door alle wapens en pas de vuursnelheid aan
+            foreach (Weapon currentWeapon in allWeapons)
             {
-                weapon.fireRate = 0.6f; // tweaken met procenten
-            }*/
-         }
+                if (currentWeapon != null)
+                {
+                    currentWeapon.fireRate *= 0.4f; // Verminder de vuursnelheid met 60%
+                }
+            }
+        }
     }
 
     public void HandleBuyingWeaponUpgrade()

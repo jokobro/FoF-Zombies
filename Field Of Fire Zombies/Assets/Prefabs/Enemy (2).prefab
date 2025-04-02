@@ -127,6 +127,7 @@ MonoBehaviour:
   ExplosionEffect: {fileID: 560014183069458990, guid: 621e45f610d611746802ad828f66b094, type: 3}
   PlayerPosition: {fileID: 0}
   pickups: []
+  attackDistance: 2
   pointsAmount: 125
   health: 100
   damage: 40
