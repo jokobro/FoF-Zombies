@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject UiPanel;
     private CharacterController characterController;
     private WeaponSwitching weaponSwitching;
-    private BuyingUpgrades BuyingUpgrades;
+    private BuyingUpgrades buyingUpgrades;
     private PauseManager pauseManager;
     private GameManager gameManager;
     private Camera playerCamera;
@@ -51,7 +51,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
+        buyingUpgrades = FindAnyObjectByType<BuyingUpgrades>();
         weaponSwitching = FindAnyObjectByType<WeaponSwitching>(); // Zoek WeaponSwitching
         gameManager = FindAnyObjectByType<GameManager>();
         playerCamera = FindAnyObjectByType<Camera>();
@@ -77,11 +78,11 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            if (BuyingUpgrades.IsQuickReviveBought == true)
+            if (buyingUpgrades.IsQuickReviveBought == true)
             {
-                if (BuyingUpgrades.hasUsedQuickRevive == false)
+                if (buyingUpgrades.hasUsedQuickRevive == false)
                 {
-                    BuyingUpgrades.UseQuickRevive();
+                    buyingUpgrades.UseQuickRevive();
                 }
             }
             else
@@ -170,10 +171,6 @@ public class PlayerController : MonoBehaviour
                 currentWeapon.Shoot();
                 currentWeapon.fireTimer = 0.0f;
             }
-            else
-            {
-                Debug.Log("speler schiet niet");
-            }
         }
     }
 
@@ -185,7 +182,6 @@ public class PlayerController : MonoBehaviour
         {
             currentWeapon.StartReload();
         }
-
         Debug.Log("Start reload");
     }
 

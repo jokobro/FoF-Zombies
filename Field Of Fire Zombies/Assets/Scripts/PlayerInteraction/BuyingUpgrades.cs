@@ -6,9 +6,9 @@ public class BuyingUpgrades : MonoBehaviour
 
     private bool isSpeedColaBought = false;
     private bool isJugernautPerkBought = false;
-    private bool isDoubleTapBought = false;
     private bool isQuickReviveBought = false;
     public bool hasUsedQuickRevive = false;
+    public bool isDoubleTapBought = false;
 
     public bool IsSpeedColaBought => isSpeedColaBought;
     public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
@@ -57,22 +57,23 @@ public class BuyingUpgrades : MonoBehaviour
         }
     }
 
-    public void HandleBuyingDoubleTap()
+    public void HandleBuyingDoubleTap()// nog toevegen van reduction in firerate werkt nog niet helemaal
     {
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
+            
             isDoubleTapBought = true;
 
-            Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
-
+            /*Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+            
             if (currentWeapon != null)
             {
-                weapon.fireRate = 0.1f; // tweaken met procenten
-            }
-        }
+                weapon.fireRate = 0.6f; // tweaken met procenten
+            }*/
+         }
     }
 
     public void HandleBuyingWeaponUpgrade()
@@ -81,12 +82,13 @@ public class BuyingUpgrades : MonoBehaviour
         {
             GameManager.Instance.Points -= 5000;
             GameManager.Instance.UpdatePointsUI();
-          
-            
             Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
             currentWeapon.fireRate = 0.150f;
-            currentWeapon.damage += 0.5f;//toeveogen van de procenten
+            currentWeapon.damage *= 1.8f;
+            currentWeapon.reloadTime *= 0.4f; 
+            
             currentWeapon.isWeaponUpgraded = true;
+            
             /*HUDcontroller.instance.DisableInteractionText();*/
             
 

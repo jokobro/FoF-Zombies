@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private new Transform camera;
-    
+
     [Header("Weapon settings")]
     public float damage;
     public int currentMagAmmo; // Ammo in magazijn
@@ -15,13 +15,12 @@ public class Weapon : MonoBehaviour
     public int maxAmmo; // Maximaal aantal kogels dat je kunt dragen
     public float maxDistance;
     public float reloadTime = 3;
-    public float fireRate = 0.245f;
+    public float fireRate;
    
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     private bool reloading;
     public bool isWeaponUpgraded = false;
-
 
     private void Update()
     {
@@ -45,6 +44,10 @@ public class Weapon : MonoBehaviour
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(damage);
             }
+            else if (reloading== true)
+            {
+               nextFire = Time.time + reloadTime;
+            }
             OnGunShot();
             currentMagAmmo--;
         }
@@ -59,6 +62,7 @@ public class Weapon : MonoBehaviour
     {
         if (!reloading && this.gameObject.activeSelf)
         {
+            nextFire = Time.time + reloadTime;
             StartCoroutine(Reload());
         }
     }
@@ -67,7 +71,7 @@ public class Weapon : MonoBehaviour
     {
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
-
+        
         int neededAmmo = maxClipSize - currentMagAmmo; // Hoeveel kogels nodig
         int ammoToLoad = Mathf.Min(neededAmmo, currentAmmo); // Laad alleen wat beschikbaar is
 

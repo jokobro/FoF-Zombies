@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
-                    "type": "Value",
-                    "id": "8683ba81-45f3-4f92-a55c-fbe956202da7",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Aiming",
                     "type": "Button",
                     "id": "c4f9991a-f96d-4cfe-9b59-25bc2109da0c",
@@ -67,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Value",
+                    "id": "10c168d2-4338-4214-8b67-47b1f8656c8e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Pause",
@@ -310,17 +310,6 @@
                 },
                 {
                     "name": "",
-                    "id": "e9f6ba0b-694e-44e8-b68a-41787cdc7b64",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "03c59c9b-16d4-4503-aaa1-a408d864e476",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -338,6 +327,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70cfccd3-2c7e-49a2-b723-a8cfcec26d6c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

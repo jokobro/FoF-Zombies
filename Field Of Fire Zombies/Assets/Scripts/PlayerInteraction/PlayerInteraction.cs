@@ -60,10 +60,6 @@ public class PlayerInteraction : MonoBehaviour
                     doorSound.Play();*/
                 }
             }
-            else
-            {
-                Debug.Log("raakte maar niks gebuered");
-            }
         }
     }
 

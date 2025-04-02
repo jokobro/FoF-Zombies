@@ -12,6 +12,7 @@ public class waveManager : MonoBehaviour
     private bool waveActive = false;
     public float groupCompletionTime = 1f;
 
+
     [SerializeField] private TextMeshProUGUI roundNumberText;
     private int roundNumber = 1;
     /* public float spawnInterval = 30f; // Tussen de groepen in seconden*/
@@ -116,8 +117,7 @@ public class waveManager : MonoBehaviour
     }
 
     bool AllEnemiesDefeated()
-    {
-        // Controleer of er nog vijanden in het spel zijn
+    {   // Controleer of er nog vijanden in het spel zijn
         return GameObject.FindGameObjectsWithTag("Enemy").Length == 0;
     }
 }
