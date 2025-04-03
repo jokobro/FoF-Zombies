@@ -5,9 +5,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private GameObject ExplosionEffect;
-    [SerializeField] private Transform PlayerPosition;
     [SerializeField] List<GameObject> pickups;
-    private GameManager gameManager;
+    private Transform PlayerPosition;
     private NavMeshAgent agent;
     private float attackCooldown = 1.5f;
     private float lastAttackTime;
@@ -15,11 +14,10 @@ public class Enemy : MonoBehaviour, IDamageable
     public int pointsAmount;
     public float health;
     public float damage;
-    
+
     private void Awake()
     {
         PlayerPosition = GameObject.Find("Player").transform;
-        gameManager = FindAnyObjectByType<GameManager>();
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -57,8 +55,8 @@ public class Enemy : MonoBehaviour, IDamageable
             GameManager.Instance.AddScore(pointsAmount);
             GameObject ExplosionEffectClone = Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
-            Destroy(this.gameObject,3);
-            Destroy(ExplosionEffectClone,2);  
+            Destroy(this.gameObject, 3);
+            Destroy(ExplosionEffectClone, 2);
         }
     }
 

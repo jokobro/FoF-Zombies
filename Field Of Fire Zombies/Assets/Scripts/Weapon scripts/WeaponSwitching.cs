@@ -4,17 +4,22 @@ public class WeaponSwitching : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform[] weapons;
-
+    private Weapon activeWeapon;
+    
     [Header("Keys")]
     [SerializeField] private KeyCode[] keys;
 
     [Header("Settings")]
     [SerializeField] private float switchTime;
 
-    private Weapon activeWeapon;
-    private int selectedWeapon;
+    public static WeaponSwitching instance;
     private float timeSinceLastSwitch;
-
+    private int selectedWeapon;
+    
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         SetWeapons();

@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
-
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
@@ -14,10 +13,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject HighscoreScreenPanel;
     [SerializeField] private GameObject UiPanel;
     private CharacterController characterController;
-    private WeaponSwitching weaponSwitching;
-    private BuyingUpgrades buyingUpgrades;
-    /*private PauseManager pauseManager;*/
-    private GameManager gameManager;
     private Camera playerCamera;
     private Weapon weapon;
 
@@ -25,10 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
-
-
-    public float playerHealth = 100; // moet nog getweaked worden
-    [HideInInspector] public float walkSpeed;
+    public float playerHealth = 100; // moet nog getweaked worden // en prive van de inspector gezet worden
+    
+   /* [HideInInspector]*/ public float walkSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -51,16 +45,17 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform activeWeapon;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
-        buyingUpgrades = FindObjectOfType<BuyingUpgrades>();
-        weaponSwitching = FindObjectOfType<WeaponSwitching>();
-        gameManager = FindObjectOfType<GameManager>();
         playerCamera = FindObjectOfType<Camera>();
         weapon = FindObjectOfType<Weapon>();
 
-        Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -86,15 +81,15 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            if (buyingUpgrades.IsQuickReviveBought == false)
+            if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
             {
                 PauseManager.Instance.EndGame();
             }
             else
             {
-                if (buyingUpgrades.hasUsedQuickRevive == false)
+                if (BuyingUpgrades.Instance.hasUsedQuickRevive == false)
                 {
-                    buyingUpgrades.UseQuickRevive();
+                    BuyingUpgrades.Instance.UseQuickRevive();
                 }
             }
         }
@@ -167,7 +162,6 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera.fieldOfView = FieldOfView;
     }
-
     public void Shoot(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -182,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShooting()
     {
-        Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
 
         if (currentWeapon != null)
         {
@@ -198,13 +192,12 @@ public class PlayerController : MonoBehaviour
 
     public void Reload(InputAction.CallbackContext context)
     {
-        Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
 
         if (currentWeapon != null)
         {
             currentWeapon.StartReload();
         }
-        Debug.Log("Start reload");
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -236,17 +229,16 @@ public class PlayerController : MonoBehaviour
         {
             BonusPoints();
             Destroy(powerup);
-            Debug.Log("bonus points opgepakt");
+           /* Debug.Log("bonus points opgepakt");*/
         }
         else if (id == 2)
         {
-            Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+            Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
             foreach (Weapon w in allWeapons)
             {
                 w.PickupMaxAmmo();
             }
             Destroy(powerup);
-            /*Debug.Log("maxammo opgepakt");*/
         }
         else if (id == 3)
         {
@@ -266,7 +258,7 @@ public class PlayerController : MonoBehaviour
 
     private void ActivateInstantKill(float duration)
     {
-        Debug.Log("Instant kill active");
+      /*  Debug.Log("Instant kill active");*/
         isInstantKillActive = true;
         weapon.damage += 1000;
         StartCoroutine(InstantKillCooldown(duration));
@@ -281,9 +273,9 @@ public class PlayerController : MonoBehaviour
 
     private void ActivateDoublePoints(float duration)
     {
-        Debug.Log("double points active");
+       /* Debug.Log("double points active");*/
         isDoublePointsActive = true;
-        gameManager.scoreMultiplier = 2f;
+        GameManager.Instance.scoreMultiplier = 2f;
         StartCoroutine(DoublePointsCooldown(duration));
     }
 
@@ -291,12 +283,12 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isDoublePointsActive = false;
-        gameManager.scoreMultiplier = 1f;
-        Debug.Log("double points uitgezet");
+        GameManager.Instance.scoreMultiplier = 1f;
+        /*Debug.Log("double points uitgezet");*/
     }
 
     private void BonusPoints()
     {
-        gameManager.AddScore(500);
+        GameManager.Instance.AddScore(500);
     }
 }

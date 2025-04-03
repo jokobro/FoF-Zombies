@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ThrowGrenade",
+                    "type": "Button",
+                    "id": "97988418-6db4-40aa-9ec1-e4cb6392be31",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -360,6 +369,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Open scoreBoard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a817779-0c40-454a-8854-fba8aa6c95a2",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowGrenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

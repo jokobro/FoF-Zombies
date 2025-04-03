@@ -19,8 +19,8 @@ public class Weapon : MonoBehaviour
    
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
+    [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
-    public bool isWeaponUpgraded = false;
 
     private void Update()
     {

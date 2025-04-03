@@ -11,9 +11,13 @@ public class PauseManager : MonoBehaviour
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;
 
+    private void Awake()
+    {
+         Instance = this;
+    }
+
     private void Start()
     {
-        Instance = this;
         gameActionMap = inputActions.FindActionMap("Player");
         uiActionMap = inputActions.FindActionMap("UI");
         gameActionMap.Enable();

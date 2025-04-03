@@ -1,24 +1,25 @@
 using UnityEngine;
 public class BuyingUpgrades : MonoBehaviour
 {
-    private WeaponSwitching weaponSwitching;
+    public static BuyingUpgrades Instance;
     private Weapon weapon;
 
-    private bool isSpeedColaBought = false;
-    private bool isJugernautPerkBought = false;
+    [HideInInspector] public bool hasUsedQuickRevive = false;
     private bool isQuickReviveBought = false;
-    public bool hasUsedQuickRevive = false;
-    public bool isDoubleTapBought = false;
-
+    private bool isJugernautPerkBought = false;
+    private bool isDoubleTapBought = false;
+    private bool isSpeedColaBought = false;
+    
     public bool IsSpeedColaBought => isSpeedColaBought;
     public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
     public bool IsJunngernautPerkBought => isJugernautPerkBought;
     public bool IsDoubleTapBought => isDoubleTapBought;
 
+    private void Awake() => Instance = this;
+
     private void Start()
     {
-        weaponSwitching = FindAnyObjectByType<WeaponSwitching>();
-        weapon = FindAnyObjectByType<Weapon>();
+        weapon = FindObjectOfType<Weapon>();
     }
 
     public void HandleBuyingSpeedCola()
@@ -64,11 +65,11 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
-            
+
             isDoubleTapBought = true;
 
             // Haal alle wapens op uit de weaponSwitching
-            Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+            Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
 
             // Loop door alle wapens en pas de vuursnelheid aan
             foreach (Weapon currentWeapon in allWeapons)
@@ -83,43 +84,21 @@ public class BuyingUpgrades : MonoBehaviour
 
     public void HandleBuyingWeaponUpgrade()
     {
+        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
+        if (currentWeapon.isWeaponUpgraded) return; // Voorkom herhaalde interactie
+
         if (GameManager.Instance.Points >= 5000)
         {
             GameManager.Instance.Points -= 5000;
             GameManager.Instance.UpdatePointsUI();
-            Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
             currentWeapon.fireRate = 0.150f;
             currentWeapon.damage *= 1.8f;
-            currentWeapon.reloadTime *= 0.4f; 
-            
+            currentWeapon.reloadTime *= 0.4f;
             currentWeapon.isWeaponUpgraded = true;
-            
-            /*HUDcontroller.instance.DisableInteractionText();*/
-            
-
-            // nog toevoegen van het alleen kunnen kopen voor 1 wapen en dat allebij de wapens in invontory geupgrade kunnen worden
+            HUDcontroller.instance.DisableInteractionText(); // Verberg tekst na aankoop
+            PlayerInteraction.Instance.ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
         }
     }
-
-
-   
-
-    /*public void HandleOpeningDoor()
-    {
-        GameObject doorParent = hit.collider.transform.root.gameObject;
-        Animator doorAnim = doorParent.GetComponent<Animator>();
-        AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
-
-        if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
-        {
-            GameManager.Instance.Points -= 2000;
-            GameManager.Instance.UpdatePointsUI();
-            doorAnim.SetBool("OpenDoor", true);
-            *//*doorSound.clip = doorOpenSound;
-            doorSound.Play();*//*
-        }
-
-    }*/
 
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt
     public void UseQuickRevive()

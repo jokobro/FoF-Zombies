@@ -1,12 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    public static PlayerInteraction Instance;
     [SerializeField] private AudioClip doorOpenSound;
     [SerializeField] private string doorOpenAnimName;
     [SerializeField] private float playerInReach = 3f;
     private Interactable currentInteractable;
+    private HashSet<GameObject> openedDoors = new HashSet<GameObject>();
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Update()
     {
         CheckInteraction();
@@ -19,50 +26,28 @@ public class PlayerInteraction : MonoBehaviour
     private void CheckInteraction()
     {
         RaycastHit hit;
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-
-        //checkt of de collider in reach of de player
-        if (Physics.Raycast(ray, out hit, playerInReach))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, playerInReach))
         {
-            if (hit.collider.tag == "Interactable")
+            if (hit.collider.CompareTag("Interactable"))
             {
                 Interactable newInteractable = hit.collider.GetComponent<Interactable>();
-
-                if (newInteractable != null && newInteractable.enabled)
+                BuyingUpgrades upgrades = newInteractable?.GetComponent<BuyingUpgrades>();
+                if (upgrades != null && !PerkAlreadyBought(upgrades))
                 {
-                    BuyingUpgrades Upgrades = newInteractable.GetComponent<BuyingUpgrades>();
-
-                    // Controleer of de perk al is gekocht
-                    if (Upgrades != null && !PerkAlreadyBought(Upgrades))
-                    {
-                        SetNewCurrentInteractable(newInteractable);
-                        return;
-                    }
+                    Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
+                    if (currentWeapon != null && currentWeapon.isWeaponUpgraded) return; // Verberg tekst als het wapen al geüpgraded is
+                    SetNewCurrentInteractable(newInteractable);
+                    return;
                 }
             }
-            else
+            else if (hit.collider.CompareTag("Door"))
             {
-                DisableCurrentInteractable();
-            }
-
-            if (hit.collider.gameObject.tag == "Door")
-            {
-                GameObject doorParent = hit.collider.transform.root.gameObject;
-                Animator doorAnim = doorParent.GetComponent<Animator>();
-                AudioSource doorSound = hit.collider.gameObject.GetComponent<AudioSource>();
-
-                if (GameManager.Instance.Points >= 2000 && Input.GetKeyDown(KeyCode.E))
-                {
-                    GameManager.Instance.Points -= 2000;
-                    GameManager.Instance.UpdatePointsUI();
-                    doorAnim.SetBool("OpenDoor", true);
-                    /*doorSound.clip = doorOpenSound;
-                    doorSound.Play();*/
-                }
+                ShowDoorInteraction(hit.collider);
+                return;
             }
         }
+        DisableCurrentInteractable();
     }
-
     private bool PerkAlreadyBought(BuyingUpgrades perkUpgrades)
     {
         if (perkUpgrades.IsSpeedColaBought ||
@@ -76,6 +61,27 @@ public class PlayerInteraction : MonoBehaviour
         return false;
     }
 
+    private void ShowDoorInteraction(Collider doorCollider)
+    {
+        GameObject doorParent = doorCollider.transform.parent?.parent?.gameObject; // Ga 2 niveaus omhoog naar DoorParent
+        if (doorParent == null || openedDoors.Contains(doorParent)) return;
+
+        HUDcontroller.instance.EnableInteractionText("Press E to open door (2000 points)");
+        if (Input.GetKeyDown(KeyCode.E) && GameManager.Instance.Points >= 2000)
+        {
+            GameManager.Instance.Points -= 2000;
+            GameManager.Instance.UpdatePointsUI();
+            Animator doorAnim = doorParent.GetComponent<Animator>();
+            if (doorAnim != null)
+            {
+                doorAnim.SetBool("OpenDoor", true);
+            }
+            openedDoors.Add(doorParent); // Voeg de geopende deur toe aan de lijst
+            HUDcontroller.instance.DisableInteractionText(); // Verberg tekst na aankoop
+            ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
+        }
+    }
+
     private void SetNewCurrentInteractable(Interactable newInteractable)
     {
         currentInteractable = newInteractable;
@@ -86,5 +92,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         HUDcontroller.instance.DisableInteractionText();
         currentInteractable = null;
+    }
+
+    public void ClearInteraction()
+    {
+        DisableCurrentInteractable();
     }
 }

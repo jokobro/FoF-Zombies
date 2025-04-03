@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PerkUIManager : MonoBehaviour
 {
-    public static PerkUIManager Instance;
-
     [Header("Perk UI Slots")]
     public Image[] perkSlots; // UI-slots voor perks (vier slots in je Canvas)
 
@@ -16,18 +12,12 @@ public class PerkUIManager : MonoBehaviour
     public Sprite doubleTapSprite;
     public Sprite quickReviveSprite;
 
+    public static PerkUIManager Instance;
     private int currentSlotIndex = 0; // Houd bij welke slot gevuld wordt
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     public void AddPerkToUI(Sprite perkSprite)

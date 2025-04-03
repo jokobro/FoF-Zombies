@@ -22,6 +22,15 @@ public class waveManager : MonoBehaviour
     {   Instance = this;
         StartCoroutine(StartNextWave());
     }
+    private void Update()
+    {
+        UpdateRoundNumberTextUi();
+    }
+
+    private void UpdateRoundNumberTextUi()
+    {
+        roundNumberText.SetText($"{roundNumber}");
+    }
 
     public void KillCurrentWave()
     {
@@ -65,6 +74,7 @@ public class waveManager : MonoBehaviour
                 {
                     Debug.Log("all enemy's defeated from this group");
                     CurrentWaveIndex++;
+                    roundNumber++;
                     waveActive = false;
                     if (CurrentWaveIndex < waves.Count)
                         yield return new WaitForSeconds(5f);  // Wacht even voordat de volgende wave start
