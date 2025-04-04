@@ -2074,6 +2074,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 330585546}
+  - {fileID: 2033404557}
   - {fileID: 2072497479}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2398,6 +2399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1ec5637af5573499060268ca71c5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupCompletionTime: 1
   waves:
   - groups:
     - enemies:
@@ -2420,7 +2422,6 @@ MonoBehaviour:
       - {fileID: 4368284110057595729, guid: e15f8d84db1f6f143a338107f76f630b, type: 3}
   - groups: []
   - groups: []
-  groupCompletionTime: 1
   roundNumberText: {fileID: 1460497666}
 --- !u!1 &971708267
 GameObject:
@@ -4920,7 +4921,6 @@ Transform:
   - {fileID: 1649353976}
   - {fileID: 681792620}
   - {fileID: 971708268}
-  - {fileID: 2033404557}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1919544976
@@ -5584,13 +5584,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033404556}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17813516, y: -0, z: -0, w: 0.9840061}
-  m_LocalPosition: {x: 0, y: 0.517, z: 0.531}
+  m_LocalRotation: {x: -0.31768185, y: -0, z: -0, w: 0.94819736}
+  m_LocalPosition: {x: 0.03400001, y: 0.13899994, z: 0.67700005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1919544975}
-  m_LocalEulerAnglesHint: {x: -20.522, y: 0, z: 0}
+  m_Father: {fileID: 672550113}
+  m_LocalEulerAnglesHint: {x: -37.046, y: 0, z: 0}
 --- !u!114 &2033404558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5709,9 +5709,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db839a0f3ae82347a3aa13589c75bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Points: 5000
-  pointsUiText: {fileID: 2097420147}
   scoreMultiplier: 1
+  pointsUiText: {fileID: 2097420147}
+  Points: 5000
 --- !u!4 &2044767216
 Transform:
   m_ObjectHideFlags: 0
