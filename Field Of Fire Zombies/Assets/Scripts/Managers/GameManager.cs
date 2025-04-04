@@ -4,10 +4,10 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public int Points;
-    [SerializeField] private TMP_Text pointsUiText;
     [SerializeField] public float scoreMultiplier = 1f; // wanneer alles goed werkt serialzefield weghalen.
-
+    [SerializeField] private TMP_Text pointsUiText;
+    public int Points;
+    
     private void Awake()
     {
         Instance = this;

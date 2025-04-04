@@ -6,20 +6,18 @@ using UnityEngine;
 public class waveManager : MonoBehaviour
 {
     public int CurrentWaveIndex { get; private set; } = 0;
+    public float groupCompletionTime = 1f;
     public static waveManager Instance;
     public List<Wave> waves;  // Lijst van waves
+    [SerializeField] private TextMeshProUGUI roundNumberText;
     private int currentGroupIndex = 0;
     private bool waveActive = false;
-    public float groupCompletionTime = 1f;
-
-
-    [SerializeField] private TextMeshProUGUI roundNumberText;
     private int roundNumber = 1;
     /* public float spawnInterval = 30f; // Tussen de groepen in seconden*/
 
-    
     private void Start()
-    {   Instance = this;
+    {
+        Instance = this;
         StartCoroutine(StartNextWave());
     }
     private void Update()
@@ -48,10 +46,10 @@ public class waveManager : MonoBehaviour
         {
             StartCoroutine(StartNextWave()); // Start volgende wave
         }
-        else
+        /*else
         {
             Debug.Log("Geen waves meer over.");
-        }
+        }*/
     }
 
     // Start nieuwe wave
@@ -120,8 +118,7 @@ public class waveManager : MonoBehaviour
     }
 
     Vector3 GetRandomSpawnPosition()
-    {
-        // Spawn bovenaan buiten het scherm
+    {   // Spawn bovenaan buiten het scherm
         float randomX = Random.Range(-8f, 8f); // Stel je breedte scherm voor
         return new Vector3(randomX, 6f, 0f); // Stel je schermhoogte voor
     }
