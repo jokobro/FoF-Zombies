@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
     public float playerHealth = 100; // moet nog getweaked worden // en prive van de inspector gezet worden
-    
    /* [HideInInspector]*/ public float walkSpeed;
 
     [Header("Look Settings")]

@@ -9,7 +9,6 @@ public class Crosshair : MonoBehaviour
     private RectTransform reticle;
     private float currentSize;
 
-
     private void Start()
     {
         characterController = FindAnyObjectByType<CharacterController>();
@@ -31,7 +30,6 @@ public class Crosshair : MonoBehaviour
 
     bool isMoving
     {
-
         get
         {
             if (characterController != null)

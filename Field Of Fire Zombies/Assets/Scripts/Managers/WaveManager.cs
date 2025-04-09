@@ -6,20 +6,22 @@ using UnityEngine;
 public class waveManager : MonoBehaviour
 {
     public int CurrentWaveIndex { get; private set; } = 0;
-    public float groupCompletionTime = 1f;
+    [SerializeField] private TextMeshProUGUI roundNumberText;
     public static waveManager Instance;
     public List<Wave> waves;  // Lijst van waves
-    [SerializeField] private TextMeshProUGUI roundNumberText;
-    private int currentGroupIndex = 0;
+    public float groupCompletionTime = 1f;
     private bool waveActive = false;
     private int roundNumber = 1;
+
     /* public float spawnInterval = 30f; // Tussen de groepen in seconden*/
+    /*private int currentGroupIndex = 0;*/
 
     private void Start()
     {
         Instance = this;
         StartCoroutine(StartNextWave());
     }
+
     private void Update()
     {
         UpdateRoundNumberTextUi();
@@ -35,10 +37,10 @@ public class waveManager : MonoBehaviour
         // Verwijder alle vijanden in de huidige wave
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            Destroy(enemy, 2);
+            Enemy.Instance.enemyDead();
         }
 
-        // Update om naar de volgende wave te gaan
+        //Update om naar de volgende wave te gaan
         waveActive = false;
         CurrentWaveIndex++;
 
@@ -46,10 +48,6 @@ public class waveManager : MonoBehaviour
         {
             StartCoroutine(StartNextWave()); // Start volgende wave
         }
-        /*else
-        {
-            Debug.Log("Geen waves meer over.");
-        }*/
     }
 
     // Start nieuwe wave
@@ -58,11 +56,11 @@ public class waveManager : MonoBehaviour
         while (CurrentWaveIndex < waves.Count)
         {
             Wave currentWave = waves[CurrentWaveIndex];
-            currentGroupIndex = 0;
+            /*currentGroupIndex = 0;*/
             waveActive = true;
 
             // Spawn de eerste groep
-            StartCoroutine(SpawnNextGroup(currentWave));
+            /* StartCoroutine(SpawnNextGroup(currentWave));*/
 
             // Wacht tot alle groepen in de wave zijn verslagen
             while (waveActive)
@@ -70,52 +68,54 @@ public class waveManager : MonoBehaviour
                 yield return null;
                 if (AllEnemiesDefeated())
                 {
-                    Debug.Log("all enemy's defeated from this group");
+                    /*Debug.Log("all enemy's defeated from this group");*/
                     CurrentWaveIndex++;
                     roundNumber++;
                     waveActive = false;
                     if (CurrentWaveIndex < waves.Count)
+                    {
                         yield return new WaitForSeconds(5f);  // Wacht even voordat de volgende wave start
+                    }
                 }
             }
         }
     }
 
-    IEnumerator SpawnNextGroup(Wave wave)
-    {
-        while (currentGroupIndex < wave.groups.Count)
-        {
-            Group currentGroup = wave.groups[currentGroupIndex];
-            foreach (GameObject enemyPrefab in currentGroup.enemies)
-            {
-                Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.Euler(0f, 0f, 180f));
-            }
+    /* IEnumerator SpawnNextGroup(Wave wave)
+     {
+         while (currentGroupIndex < wave.groups.Count)
+         {
+             Group currentGroup = wave.groups[currentGroupIndex];
+             foreach (GameObject enemyPrefab in currentGroup.enemies)
+             {
+                 Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.Euler(0f, 0f, 180f));
+             }
 
-            /* float spawnTime = 0f; // Tijd voor het volgen van de spawn interval*/
-            bool groupDefeated = false;
+             *//* float spawnTime = 0f; // Tijd voor het volgen van de spawn interval*//*
+             bool groupDefeated = false;
 
-            // Wacht tot de groep is verslagen of de spawn interval is verstreken
-            while (!groupDefeated)
-            {
-                if (AllEnemiesDefeated())
-                {
-                    Debug.Log("Alle vijanden van deze groep zijn verslagen.");
-                    groupDefeated = true; // Groep is verslagen
-                }
-
-                /* // Check of de tijd voor spawn interval is verstreken
-                 spawnTime += Time.deltaTime;
-                 if (spawnTime >= spawnInterval)
+             // Wacht tot de groep is verslagen of de spawn interval is verstreken
+             while (!groupDefeated)
+             {
+                 if (AllEnemiesDefeated())
                  {
-                     Debug.Log("De groep is niet verslagen binnen de tijd; de volgende groep wordt gestart.");
-                     groupDefeated = true; // Forceer het starten van de volgende groep
-                 }*/
+                     Debug.Log("Alle vijanden van deze groep zijn verslagen.");
+                     groupDefeated = true; // Groep is verslagen
+                 }
 
-                yield return null; // Wacht voor de volgende frame
-            }
-            currentGroupIndex++;
-        }
-    }
+                 *//* // Check of de tijd voor spawn interval is verstreken
+                  spawnTime += Time.deltaTime;
+                  if (spawnTime >= spawnInterval)
+                  {
+                      Debug.Log("De groep is niet verslagen binnen de tijd; de volgende groep wordt gestart.");
+                      groupDefeated = true; // Forceer het starten van de volgende groep
+                  }*//*
+
+                 yield return null; // Wacht voor de volgende frame
+             }
+             currentGroupIndex++;
+         }
+     }*/
 
     Vector3 GetRandomSpawnPosition()
     {   // Spawn bovenaan buiten het scherm

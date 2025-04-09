@@ -2,24 +2,20 @@ using UnityEngine;
 public class BuyingUpgrades : MonoBehaviour
 {
     public static BuyingUpgrades Instance;
-    private Weapon weapon;
-
     [HideInInspector] public bool hasUsedQuickRevive = false;
     private bool isQuickReviveBought = false;
     private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
     private bool isSpeedColaBought = false;
-    
+
     public bool IsSpeedColaBought => isSpeedColaBought;
     public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
     public bool IsJunngernautPerkBought => isJugernautPerkBought;
     public bool IsDoubleTapBought => isDoubleTapBought;
 
-    private void Awake() => Instance = this;
-
-    private void Start()
+    private void Awake()
     {
-        weapon = FindObjectOfType<Weapon>();
+        Instance = this;
     }
 
     public void HandleBuyingSpeedCola()
@@ -58,21 +54,19 @@ public class BuyingUpgrades : MonoBehaviour
         }
     }
 
-    public void HandleBuyingDoubleTap()// nog toevegen van reduction in firerate werkt nog niet helemaal
+    public void HandleBuyingDoubleTap()
     {
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
-
             isDoubleTapBought = true;
 
             // Haal alle wapens op uit de weaponSwitching
             Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
 
-            // Loop door alle wapens en pas de vuursnelheid aan
-            foreach (Weapon currentWeapon in allWeapons)
+            foreach (Weapon currentWeapon in allWeapons)// Loop door alle wapens en pas de vuursnelheid aan
             {
                 if (currentWeapon != null)
                 {
