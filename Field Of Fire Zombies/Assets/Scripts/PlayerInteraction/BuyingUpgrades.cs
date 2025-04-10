@@ -100,8 +100,8 @@ public class BuyingUpgrades : MonoBehaviour
         if (isQuickReviveBought)
         {
             Debug.Log("Quick Revive gebruikt!");
-            hasUsedQuickRevive = true;
-            isQuickReviveBought = false;
+            hasUsedQuickRevive = false;
+            isQuickReviveBought = true;
 
             // extra logica voor reviven toevoegen
         }

@@ -67,7 +67,6 @@ public class PlayerController : MonoBehaviour
 
         /*HanleAiming();*/
 
-
         if (isShooting)
         {
             HandleShooting();

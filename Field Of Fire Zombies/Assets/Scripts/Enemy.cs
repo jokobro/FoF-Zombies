@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    public static Enemy Instance;
     [SerializeField] private GameObject ExplosionEffect;
     [SerializeField] List<GameObject> pickups;
     private Transform PlayerPosition;
@@ -18,7 +17,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        Instance = this;
         PlayerPosition = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
@@ -45,9 +43,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void MoveToTarget()
     {
-        agent.SetDestination(PlayerPosition.position);
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(PlayerPosition.position);
+        }
     }
-
     public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;

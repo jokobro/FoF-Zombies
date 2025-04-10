@@ -2,141 +2,109 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class waveManager : MonoBehaviour
 {
-    public int CurrentWaveIndex { get; private set; } = 0;
-    [SerializeField] private TextMeshProUGUI roundNumberText;
     public static waveManager Instance;
-    public List<Wave> waves;  // Lijst van waves
-    public float groupCompletionTime = 1f;
-    private bool waveActive = false;
-    private int roundNumber = 1;
+    public List<Wave> waves;
+    public List<Transform> spawnPoints; // Sleep hier spawn posities in
+    [SerializeField] private TextMeshProUGUI roundNumberText;
 
-    /* public float spawnInterval = 30f; // Tussen de groepen in seconden*/
-    /*private int currentGroupIndex = 0;*/
+    [SerializeField] private float baseSpawnDelay = 1f;
+    [SerializeField] private float minSpawnDelay = 0.2f;
+    private bool forceKillWave = false;
+    private int roundNumber = 1;
 
     private void Start()
     {
         Instance = this;
-        StartCoroutine(StartNextWave());
+        StartCoroutine(RunWaves());
     }
 
     private void Update()
-    {
-        UpdateRoundNumberTextUi();
-    }
-
-    private void UpdateRoundNumberTextUi()
     {
         roundNumberText.SetText($"{roundNumber}");
     }
 
     public void KillCurrentWave()
     {
-        // Verwijder alle vijanden in de huidige wave
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            Enemy.Instance.enemyDead();
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.enemyDead();
+            }
         }
-
-        //Update om naar de volgende wave te gaan
-        waveActive = false;
-        CurrentWaveIndex++;
-
-        if (CurrentWaveIndex < waves.Count)
-        {
-            StartCoroutine(StartNextWave()); // Start volgende wave
-        }
+        forceKillWave = true;
     }
 
     // Start nieuwe wave
-    IEnumerator StartNextWave()
+    IEnumerator RunWaves()
     {
-        while (CurrentWaveIndex < waves.Count)
+        for (int i = 0; i < waves.Count; i++)
         {
-            Wave currentWave = waves[CurrentWaveIndex];
-            /*currentGroupIndex = 0;*/
-            waveActive = true;
+            forceKillWave = false;
+            Wave currentWave = waves[i];
+            float spawnDelay = Mathf.Max(baseSpawnDelay - (roundNumber * 0.05f), minSpawnDelay);
 
-            // Spawn de eerste groep
-            /* StartCoroutine(SpawnNextGroup(currentWave));*/
-
-            // Wacht tot alle groepen in de wave zijn verslagen
-            while (waveActive)
+            // Voor elk type enemy in deze wave
+            foreach (EnemySpawnData enemyData in currentWave.enemiesToSpawn)
             {
-                yield return null;
-                if (AllEnemiesDefeated())
+                for (int j = 0; j < enemyData.amount; j++)
                 {
-                    /*Debug.Log("all enemy's defeated from this group");*/
-                    CurrentWaveIndex++;
-                    roundNumber++;
-                    waveActive = false;
-                    if (CurrentWaveIndex < waves.Count)
+                    if (forceKillWave) yield break;
+
+                    Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+                    GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
+
+                    // Stats scaling
+                    Enemy enemyScript = enemy.GetComponent<Enemy>();
+                    if (enemyScript != null)
                     {
-                        yield return new WaitForSeconds(5f);  // Wacht even voordat de volgende wave start
+                        float damageMultiplier = 1f + (roundNumber * 0.1f);
+                        float speedMultiplier = 1f + (roundNumber * 0.05f);
+
+                        enemyScript.damage *= damageMultiplier;
+                        enemyScript.health *= damageMultiplier;
+
+                        NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                        if (agent != null)
+                        {
+                            agent.speed *= speedMultiplier;
+                        }
                     }
+                    yield return new WaitForSeconds(spawnDelay);
                 }
             }
+
+            // Wacht tot wave is verslagen
+            while (!AllEnemiesDefeated() && !forceKillWave)
+            {
+                yield return null;
+            }
+
+            roundNumber++;
+            yield return new WaitForSeconds(5f); // korte pauze
         }
     }
 
-    /* IEnumerator SpawnNextGroup(Wave wave)
-     {
-         while (currentGroupIndex < wave.groups.Count)
-         {
-             Group currentGroup = wave.groups[currentGroupIndex];
-             foreach (GameObject enemyPrefab in currentGroup.enemies)
-             {
-                 Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.Euler(0f, 0f, 180f));
-             }
-
-             *//* float spawnTime = 0f; // Tijd voor het volgen van de spawn interval*//*
-             bool groupDefeated = false;
-
-             // Wacht tot de groep is verslagen of de spawn interval is verstreken
-             while (!groupDefeated)
-             {
-                 if (AllEnemiesDefeated())
-                 {
-                     Debug.Log("Alle vijanden van deze groep zijn verslagen.");
-                     groupDefeated = true; // Groep is verslagen
-                 }
-
-                 *//* // Check of de tijd voor spawn interval is verstreken
-                  spawnTime += Time.deltaTime;
-                  if (spawnTime >= spawnInterval)
-                  {
-                      Debug.Log("De groep is niet verslagen binnen de tijd; de volgende groep wordt gestart.");
-                      groupDefeated = true; // Forceer het starten van de volgende groep
-                  }*//*
-
-                 yield return null; // Wacht voor de volgende frame
-             }
-             currentGroupIndex++;
-         }
-     }*/
-
-    Vector3 GetRandomSpawnPosition()
-    {   // Spawn bovenaan buiten het scherm
-        float randomX = Random.Range(-8f, 8f); // Stel je breedte scherm voor
-        return new Vector3(randomX, 6f, 0f); // Stel je schermhoogte voor
-    }
-
     bool AllEnemiesDefeated()
-    {   // Controleer of er nog vijanden in het spel zijn
+    {
         return GameObject.FindGameObjectsWithTag("Enemy").Length == 0;
     }
+
 }
 
+[System.Serializable]
+public class EnemySpawnData
+{
+    public GameObject enemyPrefab;
+    public int amount;
+}
 [System.Serializable]
 public class Wave
 {
-    public List<Group> groups;
-}
-
-[System.Serializable]
-public class Group
-{
-    public List<GameObject> enemies;
+    public List<EnemySpawnData> enemiesToSpawn;
 }
