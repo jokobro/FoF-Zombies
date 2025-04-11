@@ -1,11 +1,9 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-
 public class SceneSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject creditsPanel;
-
+    [SerializeField] private GameObject HighscoreScreenPanel;
     public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
@@ -13,22 +11,33 @@ public class SceneSwitcher : MonoBehaviour
 
     public void ReturnMainmenu()
     {
-        creditsPanel.SetActive(false);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ShowCreditsPanel()
     {
-        creditsPanel.SetActive(true);
+        SceneManager.LoadScene("CreditsScene");
+    }
+
+    public void ShowControlSPanel()
+    {
+        SceneManager.LoadScene("ControlsScreen");
     }
 
     public void Quit()
     {
-        
         Application.Quit();
     }
 
     public void EndGame()
     {
-        // nog inplementeren wanneer je game beidnigt
+        
+       /* StartCoroutine(EndTheGame);
+        // nog inplementeren wanneer je game beidnigt*/
     }
+
+   /* IEnumerator EndTheGame()
+    {
+        yield return WaitForSeconds(5);
+    }*/
 }

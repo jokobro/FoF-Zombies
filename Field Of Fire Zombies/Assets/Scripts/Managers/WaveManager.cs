@@ -10,7 +10,6 @@ public class waveManager : MonoBehaviour
     public List<Wave> waves;
     public List<Transform> spawnPoints; // Sleep hier spawn posities in
     [SerializeField] private TextMeshProUGUI roundNumberText;
-
     [SerializeField] private float baseSpawnDelay = 1f;
     [SerializeField] private float minSpawnDelay = 0.2f;
     private bool forceKillWave = false;
@@ -78,7 +77,6 @@ public class waveManager : MonoBehaviour
                     yield return new WaitForSeconds(spawnDelay);
                 }
             }
-
             // Wacht tot wave is verslagen
             while (!AllEnemiesDefeated() && !forceKillWave)
             {
@@ -94,7 +92,6 @@ public class waveManager : MonoBehaviour
     {
         return GameObject.FindGameObjectsWithTag("Enemy").Length == 0;
     }
-
 }
 
 [System.Serializable]
