@@ -31,6 +31,7 @@ public class PlayerInteraction : MonoBehaviour
             if (hit.collider.CompareTag("Interactable"))
             {
                 Interactable newInteractable = hit.collider.GetComponent<Interactable>();
+                SetNewCurrentInteractable(newInteractable);
                 BuyingUpgrades upgrades = newInteractable?.GetComponent<BuyingUpgrades>();
                 if (upgrades != null && !PerkAlreadyBought(upgrades))
                 {

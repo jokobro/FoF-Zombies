@@ -6,7 +6,7 @@ public class Interactable : MonoBehaviour
     public string message;
     public UnityEvent onInteraction;
 
-    public void HandleInteraction()
+    public virtual void HandleInteraction()
     {
         onInteraction.Invoke();
     }

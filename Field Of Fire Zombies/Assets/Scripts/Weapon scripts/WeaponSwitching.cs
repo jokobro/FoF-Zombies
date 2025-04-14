@@ -80,4 +80,19 @@ public class WeaponSwitching : MonoBehaviour
     {
         return activeWeapon;
     }
+
+    public void UpdateWeapons()
+    {
+        weapons = new Transform[transform.childCount];
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            weapons[i] = transform.GetChild(i);
+        }
+    }
+
+    public void SelectLastWeapon()
+    {
+        selectedWeapon = weapons.Length - 1;
+        Select(selectedWeapon);
+    }
 }

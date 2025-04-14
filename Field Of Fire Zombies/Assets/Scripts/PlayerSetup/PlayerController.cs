@@ -52,8 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
-        playerCamera = FindObjectOfType<Camera>();
-        weapon = FindObjectOfType<Weapon>();
+        
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -80,7 +79,8 @@ public class PlayerController : MonoBehaviour
         if (playerHealth <= 0)
         {
             if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
-            {
+            {   
+                gameObject.SetActive(false);
                 PauseManager.Instance.EndGame();
             }
             else
@@ -107,19 +107,7 @@ public class PlayerController : MonoBehaviour
         cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 
-    public void HandleOpeningHighScore(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            UiPanel.SetActive(false);
-            HighscoreScreenPanel.SetActive(true);
-        }
-        else
-        {
-            HighscoreScreenPanel.SetActive(false);
-            UiPanel.SetActive(true);
-        }
-    }
+    
 
     private void HandleMovement()
     {
@@ -140,26 +128,7 @@ public class PlayerController : MonoBehaviour
         moveDirection.y = verticalVelocity;
     }
 
-    /*private void HanleAiming()
-    {
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            weaponPostion = Vector3.Lerp(weaponPostion, weaponAimingPosition.localPosition, aimSpeed * Time.deltaTime);
-            activeWeapon.localPosition = weaponPostion;
-            SetFieldOFView(Mathf.Lerp(playerCamera.fieldOfView, zoomAmount * defaultFOV, aimSpeed * Time.deltaTime));
-        }
-        else
-        {
-            weaponPostion = Vector3.Lerp(weaponPostion, weaponDefaultPosition.localPosition, aimSpeed * Time.deltaTime);
-            activeWeapon.localPosition = weaponPostion;
-            SetFieldOFView(Mathf.Lerp(playerCamera.fieldOfView, defaultFOV, aimSpeed * Time.deltaTime));
-        }
-    }*/
-
-    private void SetFieldOFView(float FieldOfView)
-    {
-        playerCamera.fieldOfView = FieldOfView;
-    }
+    
     public void Shoot(InputAction.CallbackContext context)
     {
         if (context.performed)

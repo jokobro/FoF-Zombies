@@ -6,6 +6,11 @@ public class GrenadeThrower : MonoBehaviour
     private float throwForce = 10f;
     private int grenadeAmount = 3;
 
+    public void AddGrenades(int amount)
+    {
+        grenadeAmount += amount;
+    }
+
     public void HandleThrowingGrenade(InputAction.CallbackContext context)
     {
         if (grenadeAmount > 0 && context.performed)

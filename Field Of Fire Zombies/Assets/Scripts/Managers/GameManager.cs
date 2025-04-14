@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,5 +28,16 @@ public class GameManager : MonoBehaviour
     public void UpdatePointsUI() 
     {
         pointsUiText.SetText($"{Points}");
+    }
+
+
+    void ShowScoreboard()
+    {
+        var stats = new List<ScoreboardUI.PlayerStats>
+    {
+        new ScoreboardUI.PlayerStats { playerName = "jochem2005", kills = 1, points = 670, headshots = 1 }
+    };
+
+        FindObjectOfType<ScoreboardUI>().UpdateScoreboard(stats);
     }
 }

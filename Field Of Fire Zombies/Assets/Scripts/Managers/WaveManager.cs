@@ -13,7 +13,7 @@ public class waveManager : MonoBehaviour
     [SerializeField] private float baseSpawnDelay = 1f;
     [SerializeField] private float minSpawnDelay = 0.2f;
     private bool forceKillWave = false;
-    private int roundNumber = 1;
+    public int roundNumber = 1;
 
     private void Start()
     {

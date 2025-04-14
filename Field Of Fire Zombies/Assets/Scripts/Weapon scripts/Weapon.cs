@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private new Transform camera;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Weapon settings")]
     public float damage;
@@ -16,7 +17,7 @@ public class Weapon : MonoBehaviour
     public float maxDistance;
     public float reloadTime = 3;
     public float fireRate;
-   
+
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
@@ -44,9 +45,9 @@ public class Weapon : MonoBehaviour
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(damage);
             }
-            else if (reloading== true)
+            else if (reloading == true)
             {
-               nextFire = Time.time + reloadTime;
+                nextFire = Time.time + reloadTime;
             }
             OnGunShot();
             currentMagAmmo--;
@@ -55,7 +56,15 @@ public class Weapon : MonoBehaviour
 
     private void OnGunShot()
     {
-        // toevoegen van particles en andere dingen 
+        Debug.Log("Muzzle flash attempted!");
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Muzzle flash is NULL on " + gameObject.name);
+        }
     }
 
     public void StartReload()
@@ -71,7 +80,7 @@ public class Weapon : MonoBehaviour
     {
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
-        
+
         int neededAmmo = maxClipSize - currentMagAmmo; // Hoeveel kogels nodig
         int ammoToLoad = Mathf.Min(neededAmmo, currentAmmo); // Laad alleen wat beschikbaar is
 

@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -6,14 +8,19 @@ public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance;
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private GameObject HighscoreScreenPanel;
+    [SerializeField] private TextMeshProUGUI roundReachedText;
+    [SerializeField] private GameObject GameOverPanel;
     [SerializeField] private GameObject pauseMenuUi;
     [SerializeField] private GameObject uiPanel;
+    [SerializeField] private GameObject showStatsPanel;
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;
-
+    private bool isEnding = false;
+    
     private void Awake()
     {
-         Instance = this;
+        Instance = this;
     }
 
     private void Start()
@@ -29,6 +36,7 @@ public class PauseManager : MonoBehaviour
         if (context.performed)
         {
             Time.timeScale = 0f;
+            Cursor.visible = true;
             uiPanel.SetActive(false);
             pauseMenuUi.SetActive(true);
             gameActionMap.Disable();
@@ -50,9 +58,44 @@ public class PauseManager : MonoBehaviour
         Resume();
     }
 
+    public void HandleOpeningHighScore(InputAction.CallbackContext context)
+    {
+        if (isEnding) return;
+
+        if (context.performed)
+        {
+            HighscoreScreenPanel.SetActive(true);
+            uiPanel.SetActive(false);
+        }
+
+        if (context.canceled)
+        {
+            HighscoreScreenPanel.SetActive(false);
+            uiPanel.SetActive(true);
+        }
+    }
+
+   
     public void EndGame()
     {
+        isEnding = true; // Zet dit ALVORENS iets zichtbaar wordt
+        
+        Time.timeScale = 1f;
+        StartCoroutine(HandleEndGameSequence());
+    }
+
+    private IEnumerator HandleEndGameSequence()
+    {
+        uiPanel.SetActive(false);
+        
+        
+
+        int round = waveManager.Instance != null ? waveManager.Instance.roundNumber : 0;
+        roundReachedText.text = $"You reached Round {round}.";
+        GameOverPanel.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        showStatsPanel.SetActive(true);
+        yield return new WaitForSeconds(6f);
         SceneManager.LoadScene("MainMenu");
-        //impelenemteren wanneer je doodgaat dat de player score bord te zien krijgt en daarna naar main menu gaat
     }
 }
