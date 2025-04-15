@@ -3,7 +3,12 @@ guid: 9a363846698218b49a0c302277127f65
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DoublePoints_Mat
+    second: {fileID: 2100000, guid: d45d656190b6125459be53e3a4dcf475, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

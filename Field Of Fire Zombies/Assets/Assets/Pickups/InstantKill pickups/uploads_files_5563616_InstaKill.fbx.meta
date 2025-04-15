@@ -3,7 +3,12 @@ guid: 96b317a8faa784b4c84b68e32e517482
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: InstaKill_Mat
+    second: {fileID: 2100000, guid: 3611b1669a057f34e82c912558146853, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

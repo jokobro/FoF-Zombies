@@ -126,10 +126,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExplosionEffect: {fileID: 560014183069458990, guid: 621e45f610d611746802ad828f66b094, type: 3}
   pickups:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2105439794217492395, guid: b1ab281d693e44741b8330e4998d7ff8, type: 3}
+  - {fileID: 7764520083916486580, guid: 48da8b9170188bd4ea0f2bcabeda9ed8, type: 3}
+  - {fileID: 1759183779080137799, guid: b3e17dbe184786747b67b33baf383bcd, type: 3}
+  - {fileID: 3797838252968089112, guid: 42a4d01f1cf2c5c40a828f95831c66d9, type: 3}
+  - {fileID: 1874538771514858113, guid: a0a3ae05b33ffe245963ab0dfdc8eed8, type: 3}
   attackDistance: 2
   pointsAmount: 125
   health: 100

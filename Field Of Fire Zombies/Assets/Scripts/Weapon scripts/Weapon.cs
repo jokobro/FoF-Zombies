@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private new Transform camera;
+    /*[SerializeField] private Camera playerCamera;*/
     [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Weapon settings")]
@@ -23,9 +24,30 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
 
+
+    private void Awake()
+    {
+        if (camera == null)
+        {
+            Camera mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                camera = mainCam.transform;
+            }
+            else
+            {
+                Debug.LogWarning("Weapon kon geen MainCamera vinden!");
+            }
+        }
+    }
+
+
     private void Update()
     {
-        Debug.DrawRay(camera.position, camera.forward * maxDistance);
+        if (camera != null)
+        {
+            Debug.DrawRay(camera.position, camera.forward * maxDistance);
+        }
 
         if (fireTimer < fireRate /*+ 1.0f*/)
         {

@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
-        
+        weapon = FindObjectOfType<Weapon>();   
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

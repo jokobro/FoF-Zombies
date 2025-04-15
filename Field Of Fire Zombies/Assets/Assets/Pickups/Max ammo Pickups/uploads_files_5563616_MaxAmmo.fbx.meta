@@ -3,7 +3,12 @@ guid: a0fa5d587e2627c46bdf028fdff1cb2c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MaxAmmo_Mat
+    second: {fileID: 2100000, guid: 30046ee4f74c90c419cce236b1c14bc5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

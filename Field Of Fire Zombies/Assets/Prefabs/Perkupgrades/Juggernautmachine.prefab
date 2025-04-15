@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6686295913543935022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0316293
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0316293
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0316293
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.261042
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.6777297
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.795328
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -6250076149019478384, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -5795845215311118915, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -4507900262165122138, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2815194613554758484, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2422315340263230684, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2254504247542753893, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2234811440987334085, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -1554193974251969968, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_Name
+      value: Juggernautmachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988881256312858879, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159819195323411483, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8144394004440419581, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3724574689535755336}
+    - targetCorrespondingSourceObject: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8929305546188360767}
+    - targetCorrespondingSourceObject: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 161326300125389729}
+  m_SourcePrefab: {fileID: 100100000, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+--- !u!1 &5632123918040039564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7862391691550088030, guid: 27cd833bc11a2b6419c244bbd5a1335a, type: 3}
+  m_PrefabInstance: {fileID: 6686295913543935022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &3724574689535755336
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632123918040039564}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 26.683405, y: 82.3919, z: 25.714705}
+  m_Center: {x: 0.20741515, y: 41.19595, z: 0.82248086}
+--- !u!114 &8929305546188360767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632123918040039564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a871eabfdd69d4a895c439bf60f30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Press F to buy Juggernaut (Cost:2500)
+  onInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 161326300125389729}
+        m_TargetAssemblyTypeName: BuyingUpgrades, Assembly-CSharp
+        m_MethodName: HandleBuyingJuggernaut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &161326300125389729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632123918040039564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e0f9985ee85074aab5d1b0911ce779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasUsedQuickRevive: 0

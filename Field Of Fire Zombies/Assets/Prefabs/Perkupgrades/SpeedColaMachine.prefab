@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8669198733000060248
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.03285615
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.03285615
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.03285615
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.832373
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.7579271e-16
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -13.1225195
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4593130486874181694, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -1014268425052216762, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -650433988561056430, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_Name
+      value: SpeedColaMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603337159546281427, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 273628095700834696}
+    - targetCorrespondingSourceObject: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5888469014611132408}
+    - targetCorrespondingSourceObject: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3287389252297684985}
+  m_SourcePrefab: {fileID: 100100000, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+--- !u!1 &1386207490423021268 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7742780737561719692, guid: e2b91ca2241328c48acf397bdb62266c, type: 3}
+  m_PrefabInstance: {fileID: 8669198733000060248}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &273628095700834696
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386207490423021268}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 46.5007, y: 95.8336, z: 35.785797}
+  m_Center: {x: 3.51085, y: 47.9168, z: 0.9996996}
+--- !u!114 &5888469014611132408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386207490423021268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a871eabfdd69d4a895c439bf60f30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Press F to buy SpeedCola (Cost:1500)
+  onInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3287389252297684985}
+        m_TargetAssemblyTypeName: BuyingUpgrades, Assembly-CSharp
+        m_MethodName: HandleBuyingSpeedCola
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3287389252297684985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386207490423021268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e0f9985ee85074aab5d1b0911ce779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasUsedQuickRevive: 0

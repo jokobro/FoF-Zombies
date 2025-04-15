@@ -14,8 +14,13 @@ public class Mysterybox : Interactable
     private bool canTakeItem = false;
     private Weapon rolledWeapon;
 
+    public bool CanTakeItem => canTakeItem;
+    public bool IsRolling => isRolling;
+
     public override void HandleInteraction()
     {
+        base.HandleInteraction();
+        Debug.Log("Mysterybox HandleInteraction called");
         if (isRolling || GameManager.Instance.Points < cost) return;
 
         GameManager.Instance.Points -= cost;
@@ -26,9 +31,16 @@ public class Mysterybox : Interactable
     private IEnumerator RollItem()
     {
         isRolling = true;
+        canTakeItem = false;
+
+
+        HUDcontroller.instance.DisableInteractionText();
 
         if (currentItem != null)
-            Destroy(currentItem);
+        {
+          Destroy(currentItem);
+        }
+            
 
         yield return new WaitForSeconds(0.5f);
 
@@ -88,12 +100,18 @@ public class Mysterybox : Interactable
     {
         WeaponSwitching weaponSwitching = WeaponSwitching.instance;
 
-        if (rolledWeapon == null) return;
+        if (rolledWeapon == null)
+        {
+         return;
+        }
+        
 
         // Verwijder huidig actief wapen
         Weapon oldWeapon = weaponSwitching.GetActiveWeapon();
         if (oldWeapon != null)
+        {
             Destroy(oldWeapon.gameObject);
+        }
 
         // Voeg nieuwe wapen toe aan speler
         GameObject newWeaponObj = Instantiate(currentItem, weaponSwitching.transform);
@@ -105,5 +123,7 @@ public class Mysterybox : Interactable
         weaponSwitching.SelectLastWeapon();
 
         Destroy(currentItem); // Verwijder het wapen uit de box
+
+        HUDcontroller.instance.DisableInteractionText();
     }
 }
