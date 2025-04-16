@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneSwitcher : MonoBehaviour
 {
     [SerializeField] private GameObject HighscoreScreenPanel;
+    [SerializeField] private GameObject pauseMenuUi;
     public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
@@ -31,9 +32,13 @@ public class SceneSwitcher : MonoBehaviour
 
     public void EndGame()
     {
-        
-       /* StartCoroutine(EndTheGame);
-        // nog inplementeren wanneer je game beidnigt*/
+
+        Debug.Log("nggger");
+    }
+
+    public void Resume()
+    {
+        pauseMenuUi.SetActive(false);
     }
 
    /* IEnumerator EndTheGame()

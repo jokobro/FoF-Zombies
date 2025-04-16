@@ -1,53 +1,61 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Animator animator;
-    [SerializeField] private GameObject ExplosionEffect;
-    [SerializeField] List<GameObject> pickups;
-    private Transform PlayerPosition;
-    private NavMeshAgent agent;
-    private float attackCooldown = 1.5f;
-    private float lastAttackTime;
-    public float attackDistance;
-    public int pointsAmount;
-    public float health;
-    public float damage;
+    [Header("Combat Settings")]
+    public float health = 100f;
+    public float damage = 10f;
+    public float attackDistance = 2f;
+    public float attackCooldown = 1.5f;
+    public int pointsAmount = 10;
 
+    [Header("References")]
+    [SerializeField] private GameObject explosionEffect;
+    [SerializeField] private List<GameObject> pickups;
+    [SerializeField] private Transform spawnPlace;
+
+    [Header("Pickup Settings")]
+    [SerializeField] private float pickupDropChance = 0.3f;
+
+    private Animator animator;
+    private NavMeshAgent agent;
+    private Transform playerPosition;
+
+    private float lastAttackTime;
+    public event Action OnDeath;
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        PlayerPosition = GameObject.Find("Player").transform;
+        playerPosition = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        animator.applyRootMotion = true;
     }
 
     private void Update()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, PlayerPosition.position);
-        HandleAttacking(distanceToPlayer);
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);
+        animator.SetFloat("DistanceToPlayer", distanceToPlayer);
         MoveToTarget(distanceToPlayer);
+        HandleAttacking(distanceToPlayer);
     }
 
     private void HandleAttacking(float distanceToPlayer)
     {
         if (distanceToPlayer <= attackDistance && Time.time > lastAttackTime + attackCooldown)
         {
-            animator?.SetBool("Iswalking", false);
-            animator?.SetBool("Attack", true); // Start aanval animatie
+            Vector3 lookDirection = (playerPosition.position - transform.position).normalized;
+            lookDirection.y = 0f; // Zorgt dat hij niet omhoog/omlaag kijkt
+            transform.rotation = Quaternion.LookRotation(lookDirection);
 
-            PlayerController player = PlayerPosition.GetComponent<PlayerController>();
+            PlayerController player = playerPosition.GetComponent<PlayerController>();
             if (player != null)
             {
                 player.TakeDamage(damage);
                 lastAttackTime = Time.time;
             }
-        }
-        else if (distanceToPlayer > attackDistance)
-        {
-            animator?.SetBool("Attack", false); // Stop met aanvallen
         }
     }
 
@@ -55,15 +63,9 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
-            agent.SetDestination(PlayerPosition.position);
-            if (distanceToPlayer > attackDistance)
-            {
-                animator?.SetBool("Iswalking", true); // Begin met lopen
-            }
-            else
-            {
-                animator?.SetBool("Iswalking", false); // Stop met lopen als hij gaat aanvallen
-            }
+            agent.SetDestination(playerPosition.position);
+            agent.isStopped = distanceToPlayer <= attackDistance;
+            animator.applyRootMotion = false;
         }
     }
     public void TakeDamage(float damageAmount)
@@ -79,20 +81,20 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void enemyDead()
     {
-        GameObject ExplosionEffectClone = Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
-         gameObject.SetActive(false);
-        animator?.SetBool("isDead", true);
+        OnDeath?.Invoke();
+        GameObject ExplosionEffectClone = Instantiate(explosionEffect, spawnPlace.position, Quaternion.identity);
         Destroy(this.gameObject, 3);
+        gameObject.SetActive(false);
         Destroy(ExplosionEffectClone, 2);
     }
 
     private void HandleEnemyDyingPickUpDropChange()
     {
-        float dropChance = Random.Range(0f, 1f); // Geeft een float tussen 0 en 1
+        float dropChance = UnityEngine.Random.Range(0f, 1f); // Geeft een float tussen 0 en 1
         if (dropChance <= 0.3f && pickups.Count > 0) // 30% kans en controleer of er pickups zijn
         {
-            int randomIndex = Random.Range(0, pickups.Count);
-            Instantiate(pickups[randomIndex], transform.position, Quaternion.identity);
+            int randomIndex = UnityEngine.Random.Range(0, pickups.Count);
+            Instantiate(pickups[randomIndex], spawnPlace.position, Quaternion.identity);
         }
     }
 }

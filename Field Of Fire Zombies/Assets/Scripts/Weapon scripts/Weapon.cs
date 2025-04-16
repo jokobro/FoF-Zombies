@@ -24,7 +24,6 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
 
-
     private void Awake()
     {
         if (camera == null)
@@ -78,15 +77,7 @@ public class Weapon : MonoBehaviour
 
     private void OnGunShot()
     {
-        Debug.Log("Muzzle flash attempted!");
-        if (muzzleFlash != null)
-        {
-            muzzleFlash.Play();
-        }
-        else
-        {
-            Debug.LogWarning("Muzzle flash is NULL on " + gameObject.name);
-        }
+        muzzleFlash.Play();
     }
 
     public void StartReload()

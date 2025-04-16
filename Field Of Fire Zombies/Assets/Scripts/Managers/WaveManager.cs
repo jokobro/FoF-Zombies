@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,11 +8,14 @@ public class waveManager : MonoBehaviour
 {
     public static waveManager Instance;
     public List<Wave> waves;
-    public List<Transform> spawnPoints; // Sleep hier spawn posities in
+    public List<Transform> spawnPoints;
     [SerializeField] private TextMeshProUGUI roundNumberText;
     [SerializeField] private float baseSpawnDelay = 1f;
     [SerializeField] private float minSpawnDelay = 0.2f;
+
     private bool forceKillWave = false;
+    private int activeEnemies = 0;
+
     public int roundNumber = 1;
 
     private void Start()
@@ -39,7 +42,21 @@ public class waveManager : MonoBehaviour
         forceKillWave = true;
     }
 
-    // Start nieuwe wave
+    public void RegisterEnemy()
+    {
+        activeEnemies++;
+    }
+
+    public void UnregisterEnemy()
+    {
+        activeEnemies--;
+    }
+
+    bool AllEnemiesDefeated()
+    {
+        return activeEnemies <= 0;
+    }
+
     IEnumerator RunWaves()
     {
         for (int i = 0; i < waves.Count; i++)
@@ -48,17 +65,15 @@ public class waveManager : MonoBehaviour
             Wave currentWave = waves[i];
             float spawnDelay = Mathf.Max(baseSpawnDelay - (roundNumber * 0.05f), minSpawnDelay);
 
-            // Voor elk type enemy in deze wave
             foreach (EnemySpawnData enemyData in currentWave.enemiesToSpawn)
             {
                 for (int j = 0; j < enemyData.amount; j++)
                 {
                     if (forceKillWave) yield break;
 
-                    Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+                    Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
                     GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
 
-                    // Stats scaling
                     Enemy enemyScript = enemy.GetComponent<Enemy>();
                     if (enemyScript != null)
                     {
@@ -68,38 +83,36 @@ public class waveManager : MonoBehaviour
                         enemyScript.damage *= damageMultiplier;
                         enemyScript.health *= damageMultiplier;
 
-                        NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
-                        if (agent != null)
-                        {
-                            agent.speed *= speedMultiplier;
-                        }
+                        RegisterEnemy();
+                        enemyScript.OnDeath += UnregisterEnemy; 
                     }
+
+                    NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                    if (agent != null)
+                    {
+                        agent.speed *= 1f + (roundNumber * 0.05f);
+                    }
+
                     yield return new WaitForSeconds(spawnDelay);
                 }
             }
-            // Wacht tot wave is verslagen
             while (!AllEnemiesDefeated() && !forceKillWave)
             {
                 yield return null;
             }
 
             roundNumber++;
-            yield return new WaitForSeconds(5f); // korte pauze
+            yield return new WaitForSeconds(5f);
         }
     }
-
-    bool AllEnemiesDefeated()
-    {
-        return GameObject.FindGameObjectsWithTag("Enemy").Length == 0;
-    }
 }
-
 [System.Serializable]
 public class EnemySpawnData
 {
     public GameObject enemyPrefab;
     public int amount;
 }
+
 [System.Serializable]
 public class Wave
 {

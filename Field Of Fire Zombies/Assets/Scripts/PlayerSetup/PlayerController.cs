@@ -10,31 +10,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform weaponAimingPosition;
     [SerializeField] private Transform weaponDefaultPosition;
-    [SerializeField] private GameObject HighscoreScreenPanel;
-    [SerializeField] private GameObject UiPanel;
     private CharacterController characterController;
-    private Camera playerCamera;
+    /*private Camera playerCamera;*/
     private Weapon weapon;
 
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
-    public float playerHealth = 100; // moet nog getweaked worden // en prive van de inspector gezet worden
+    [HideInInspector] public float playerHealth = 100;
    /* [HideInInspector]*/ public float walkSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
-    private float defaultFOV = 90f;
-    private float zoomAmount = 0.5f;
-
+   
     [Header("Drag")]
     private float gravity = -9.81f;
     private float verticalVelocity;
 
     private Vector3 moveDirection;
-    private Vector3 weaponPostion;
     private Vector2 inputMovement;
     private float yRotation;
     private float xRotation;
@@ -42,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private bool isInstantKillActive;
     private bool isShooting = false;
 
-    [SerializeField] private Transform activeWeapon;
+    [SerializeField] private GameObject pauseMenuUi;
 
     private void Awake()
     {
@@ -51,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();//kijken of ik dit kan verbeteren qua references
+        characterController = GetComponent<CharacterController>();
         weapon = FindObjectOfType<Weapon>();   
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -64,11 +59,21 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleLooking();
 
-        /*HanleAiming();*/
-
         if (isShooting)
         {
             HandleShooting();
+        }
+    }
+
+    public void HandlePausing(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Time.timeScale = 0f;
+            /* uiPanel.SetActive(false);*/
+            pauseMenuUi.SetActive(true);
+            /* gameActionMap.Disable();
+             uiActionMap.Enable();*/
         }
     }
 
@@ -106,8 +111,6 @@ public class PlayerController : MonoBehaviour
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
         cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
-
-    
 
     private void HandleMovement()
     {

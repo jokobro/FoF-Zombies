@@ -42,18 +42,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aiming",
+                    "name": "Reload",
                     "type": "Button",
-                    "id": "c4f9991a-f96d-4cfe-9b59-25bc2109da0c",
+                    "id": "b3a44fae-fd15-44d6-ac53-c6b7d8d556d1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reload",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "b3a44fae-fd15-44d6-ac53-c6b7d8d556d1",
+                    "id": "69ff0bc1-bca7-4bf7-993a-f623e37c8481",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowGrenade",
+                    "type": "Button",
+                    "id": "97988418-6db4-40aa-9ec1-e4cb6392be31",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -69,15 +78,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "69ff0bc1-bca7-4bf7-993a-f623e37c8481",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Open scoreBoard",
                     "type": "Value",
                     "id": "a8c717d9-fd68-42ff-b917-59098030609f",
@@ -85,15 +85,6 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "ThrowGrenade",
-                    "type": "Button",
-                    "id": "97988418-6db4-40aa-9ec1-e4cb6392be31",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -319,17 +310,6 @@
                 },
                 {
                     "name": "",
-                    "id": "03c59c9b-16d4-4503-aaa1-a408d864e476",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aiming",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4db3d448-e7b2-47c9-8b16-f6500b60714b",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -402,7 +382,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "7607c7b6-cd76-4816-beef-bd0341cfe950",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -427,12 +407,12 @@
                 },
                 {
                     "name": "Click",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "3c7022bf-7922-4f7c-a998-c437916075ad",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RightClick",

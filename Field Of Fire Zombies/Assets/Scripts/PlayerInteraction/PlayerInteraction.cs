@@ -6,7 +6,6 @@ public class PlayerInteraction : MonoBehaviour
     public static PlayerInteraction Instance;
     [SerializeField] private string doorOpenAnimName;
     [SerializeField] private float playerInReach = 3f;
-    /*[SerializeField] private AudioClip doorOpenSound;*/
     private Interactable currentInteractable;
     private HashSet<GameObject> openedDoors = new HashSet<GameObject>();
 
@@ -34,7 +33,7 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            
+
             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
             if (newInteractable == null)
             {
@@ -101,11 +100,12 @@ public class PlayerInteraction : MonoBehaviour
             GameManager.Instance.Points -= 2000;
             GameManager.Instance.UpdatePointsUI();
             Animator doorAnim = doorParent.GetComponent<Animator>();
-            /*AudioSource doorSound = doorParent.GetComponent<AudioSource>();
-            doorSound.Play();*/
+            AudioSource doorSound = doorParent.GetComponent<AudioSource>();
+            doorSound.Play();
             if (doorAnim != null)
             {
                 doorAnim.SetBool("OpenDoor", true);
+
             }
             openedDoors.Add(doorParent); // Voeg de geopende deur toe aan de lijst
             HUDcontroller.instance.DisableInteractionText(); // Verberg tekst na aankoop
