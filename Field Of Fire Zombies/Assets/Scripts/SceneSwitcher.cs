@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class SceneSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject HighscoreScreenPanel;
+    /*[SerializeField] private GameObject HighscoreScreenPanel;*/
     [SerializeField] private GameObject pauseMenuUi;
     public void StartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Test scene");
     }
 
     public void ReturnMainmenu()
@@ -32,8 +32,6 @@ public class SceneSwitcher : MonoBehaviour
 
     public void EndGame()
     {
-
-        Debug.Log("nggger");
     }
 
     public void Resume()

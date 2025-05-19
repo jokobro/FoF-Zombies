@@ -19,12 +19,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
     [HideInInspector] public float playerHealth = 100;
-   /* [HideInInspector]*/ public float walkSpeed;
+    /* [HideInInspector]*/
+    public float walkSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
-   
+
     [Header("Drag")]
     private float gravity = -9.81f;
     private float verticalVelocity;
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
-        weapon = FindObjectOfType<Weapon>();   
+        weapon = FindObjectOfType<Weapon>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -84,7 +85,7 @@ public class PlayerController : MonoBehaviour
         if (playerHealth <= 0)
         {
             if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
-            {   
+            {
                 gameObject.SetActive(false);
                 PauseManager.Instance.EndGame();
             }
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour
         moveDirection.y = verticalVelocity;
     }
 
-    
+
     public void Shoot(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -187,30 +188,68 @@ public class PlayerController : MonoBehaviour
 
     public void ActivatePowerup(int id, float duration, GameObject powerup)
     {
-        if (id == 0)
+        switch (id)
+        {
+            case 0:
+                if (!isDoublePointsActive)
+                {
+                    ActivateDoublePoints(duration);
+                    Destroy(powerup);
+                }
+                break;
+            case 1:
+                BonusPoints();
+                Destroy(powerup);
+
+                break;
+            case 2:
+                Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
+                foreach (Weapon w in allWeapons)
+                {
+                    w.PickupMaxAmmo();
+                }
+                Destroy(powerup);
+                break;
+            case 3:
+                if (!isInstantKillActive)
+                {
+                    ActivateInstantKill(duration);
+                    Destroy(powerup);
+                }
+                break;
+            case 4:
+                waveManager.Instance.KillCurrentWave();
+                GameManager.Instance.AddScore(400);
+                Destroy(powerup);
+                break;
+        } 
+        
+        
+        
+        /*if (id == 0)
         {
             if (!isDoublePointsActive)
             {
                 ActivateDoublePoints(duration);
                 Destroy(powerup);
             }
-        }
-        else if (id == 1)
-        {
-            BonusPoints();
-            Destroy(powerup);
-           /* Debug.Log("bonus points opgepakt");*/
-        }
-        else if (id == 2)
-        {
-            Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
-            foreach (Weapon w in allWeapons)
+        }*/
+            /* else if (id == 1)
+             {
+                 BonusPoints();
+                 Destroy(powerup);
+                *//* Debug.Log("bonus points opgepakt");*//*
+             }*/
+            /*else if (id == 2)
             {
-                w.PickupMaxAmmo();
-            }
-            Destroy(powerup);
-        }
-        else if (id == 3)
+                Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
+                foreach (Weapon w in allWeapons)
+                {
+                    w.PickupMaxAmmo();
+                }
+                Destroy(powerup);
+            }*/
+        /*else if (id == 3)
         {
             if (!isInstantKillActive)
             {
@@ -223,12 +262,12 @@ public class PlayerController : MonoBehaviour
             waveManager.Instance.KillCurrentWave();
             GameManager.Instance.AddScore(400);
             Destroy(powerup);
-        }
+        }*/
     }
 
     private void ActivateInstantKill(float duration)
     {
-      /*  Debug.Log("Instant kill active");*/
+        /*  Debug.Log("Instant kill active");*/
         isInstantKillActive = true;
         weapon.damage += 1000;
         StartCoroutine(InstantKillCooldown(duration));
@@ -243,7 +282,7 @@ public class PlayerController : MonoBehaviour
 
     private void ActivateDoublePoints(float duration)
     {
-       /* Debug.Log("double points active");*/
+        /* Debug.Log("double points active");*/
         isDoublePointsActive = true;
         GameManager.Instance.scoreMultiplier = 2f;
         StartCoroutine(DoublePointsCooldown(duration));

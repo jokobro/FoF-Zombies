@@ -12,10 +12,10 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundReachedText;
     [SerializeField] private GameObject GameOverPanel;
     [SerializeField] private GameObject pauseMenuUi;
-    /*[SerializeField] private GameObject uiPanel;*/
-    [SerializeField] private GameObject showStatsPanel;
-    /*private InputActionMap gameActionMap;
-    private InputActionMap uiActionMap;*/
+    [SerializeField] private GameObject uiPanel;
+    /*[SerializeField] private GameObject showStatsPanel;*/
+    private InputActionMap gameActionMap;
+    private InputActionMap uiActionMap;
     private bool isEnding = false;
 
     private void Awake()
@@ -23,32 +23,32 @@ public class PauseManager : MonoBehaviour
         Instance = this;
     }
 
-    /*private void Start()
+    private void Start()
     {
         gameActionMap = inputActions.FindActionMap("Player");
         uiActionMap = inputActions.FindActionMap("UI");
         gameActionMap.Enable();
         uiActionMap.Disable();
-    }*/
+    }
 
-    /*public void HandlePausing(InputAction.CallbackContext context)
+    public void HandlePausing(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             Time.timeScale = 0f;
-           *//* uiPanel.SetActive(false);*//*
+            uiPanel.SetActive(false);
             pauseMenuUi.SetActive(true);
-           *//* gameActionMap.Disable();
-            uiActionMap.Enable();*//*
+            gameActionMap.Disable();
+            uiActionMap.Enable();
         }
-    }*/
+    }
 
     private void Resume()
     {
-        /*uiPanel.SetActive(true);*/
+        uiPanel.SetActive(true);
         pauseMenuUi.SetActive(false);
-        /*gameActionMap.Enable();
-        uiActionMap.Disable();*/
+        gameActionMap.Enable();
+        uiActionMap.Disable();
         Time.timeScale = 1f;
     }
 
@@ -65,13 +65,13 @@ public class PauseManager : MonoBehaviour
         if (context.performed)
         {
             HighscoreScreenPanel.SetActive(true);
-           /* uiPanel.SetActive(false);*/
+            uiPanel.SetActive(false);
         }
 
         if (context.canceled)
         {
             HighscoreScreenPanel.SetActive(false);
-            /*uiPanel.SetActive(true);*/
+            uiPanel.SetActive(true);
         }
     }
 
@@ -86,13 +86,13 @@ public class PauseManager : MonoBehaviour
 
     private IEnumerator HandleEndGameSequence()
     {
-       /* uiPanel.SetActive(false);*/
+        uiPanel.SetActive(false);
         int round = waveManager.Instance != null ? waveManager.Instance.roundNumber : 0;
         roundReachedText.text = $"You reached Round {round}.";
         GameOverPanel.SetActive(true);
         yield return new WaitForSeconds(4f);
-        showStatsPanel.SetActive(true);
-        yield return new WaitForSeconds(6f);
+        /*showStatsPanel.SetActive(true);*/
+        /*yield return new WaitForSeconds(6f);*/
         SceneManager.LoadScene("MainMenu");
     }
 }

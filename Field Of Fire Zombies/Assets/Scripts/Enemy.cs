@@ -83,9 +83,9 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         OnDeath?.Invoke();
         GameObject ExplosionEffectClone = Instantiate(explosionEffect, spawnPlace.position, Quaternion.identity);
-        Destroy(this.gameObject, 3);
         gameObject.SetActive(false);
         Destroy(ExplosionEffectClone, 2);
+        Destroy(this.gameObject, 3);
     }
 
     private void HandleEnemyDyingPickUpDropChange()
