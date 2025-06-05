@@ -1,51 +1,57 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 public class MainMenu : MonoBehaviour
 {
-    private UIDocument UIDocument;
-    private Button startButton;
-    private Button creditsButton;
-    private Button controlsButton;
-    private Button quitButton;
+    private UIDocument uiDocument;
+    private Dictionary<Button, EventCallback<ClickEvent>> registeredCallbacks = new();
 
     private void Awake()
     {
-        UIDocument = GetComponent<UIDocument>();
+        uiDocument = GetComponent<UIDocument>();
 
-        startButton = UIDocument.rootVisualElement.Q("StartButton") as Button;
-        startButton.RegisterCallback<ClickEvent>(OnPlayGameClickEvent);
-
-        creditsButton = UIDocument.rootVisualElement.Q("CreditsButton") as Button;
-        creditsButton.RegisterCallback<ClickEvent>(OpenCreditsPanel);
-
-        controlsButton = UIDocument.rootVisualElement.Q("ControlsButton") as Button;
-        //controlsButton.RegisterCallback<ClickEvent>
-
-        quitButton = UIDocument.rootVisualElement.Q("QuitButton") as Button;
-        quitButton.RegisterCallback<ClickEvent>(OnQuitGameClickEvent);
+        RegisterButton("StartButton", OnPlayGameClickEvent);
+        RegisterButton("CreditsButton", e => LoadScene("CreditsScene"));
+        RegisterButton("ControlsButton", e => LoadScene("ControlsScene"));
+        RegisterButton("QuitButton", OnQuitGameClickEvent);
     }
 
-    
+    private void RegisterButton(string name, EventCallback<ClickEvent> callback)
+    {
+        var button = uiDocument.rootVisualElement.Q<Button>(name);
+        if (button != null)
+        {
+            button.RegisterCallback(callback);
+            registeredCallbacks[button] = callback;
+        }
+    }
 
     private void OnDisable()
     {
-        startButton.UnregisterCallback<ClickEvent>(OnPlayGameClickEvent);
-        creditsButton.UnregisterCallback<ClickEvent>(OpenCreditsPanel);
-    }
-    
-    private void OpenCreditsPanel(ClickEvent clickEvent)
-    {
-        SceneManager.LoadScene("CreditsScene");
-    }
-    private void OnPlayGameClickEvent(ClickEvent clickEvent)
-    {
-        Debug.Log("button pressed to start the game");
+        foreach (var pair in registeredCallbacks)
+        {
+            pair.Key.UnregisterCallback(pair.Value);
+        }
+
+        registeredCallbacks.Clear();
     }
 
-    private void OnQuitGameClickEvent(ClickEvent clickEvent)
+    private void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private void OnPlayGameClickEvent(ClickEvent evt)
+    {
+        Debug.Log("Game start button pressed");
+        // SceneManager.LoadScene("GameScene"); // Uncomment as needed
+    }
+
+    private void OnQuitGameClickEvent(ClickEvent evt)
     {
         Debug.Log("Quit button pressed");
         Application.Quit();
     }
+
 }
