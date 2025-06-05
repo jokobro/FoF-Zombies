@@ -1,0 +1,11 @@
+:root {
+}
+
+.panel {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.unity-button {
+    width: 240px;
+    height: 110px;
+}

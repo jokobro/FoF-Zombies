@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform weaponAimingPosition;
     [SerializeField] private Transform weaponDefaultPosition;
+    [SerializeField] private GameObject pauseMenuUi;
     private CharacterController characterController;
-    /*private Camera playerCamera;*/
     private Weapon weapon;
 
     [Header("Player Settings")]
@@ -19,8 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float aimSpeed = 0.25f;
     [SerializeField] private float jumpPower = 10f;
     [HideInInspector] public float playerHealth = 100;
-    /* [HideInInspector]*/
-    public float walkSpeed;
+    [HideInInspector] public float walkSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -38,8 +37,6 @@ public class PlayerController : MonoBehaviour
     private bool isInstantKillActive;
     private bool isShooting = false;
 
-    [SerializeField] private GameObject pauseMenuUi;
-
     private void Awake()
     {
         Instance = this;
@@ -49,7 +46,6 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         weapon = FindObjectOfType<Weapon>();
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -132,7 +128,6 @@ public class PlayerController : MonoBehaviour
         moveDirection.y = verticalVelocity;
     }
 
-
     public void Shoot(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -152,7 +147,6 @@ public class PlayerController : MonoBehaviour
         if (currentWeapon != null)
         {
             currentWeapon.fireTimer += Time.deltaTime; // Update de fireTimer
-
             if (currentWeapon.fireTimer >= currentWeapon.fireRate) // Controleer of het wapen weer kan schieten
             {
                 currentWeapon.Shoot();
@@ -267,7 +261,6 @@ public class PlayerController : MonoBehaviour
 
     private void ActivateInstantKill(float duration)
     {
-        /*  Debug.Log("Instant kill active");*/
         isInstantKillActive = true;
         weapon.damage += 1000;
         StartCoroutine(InstantKillCooldown(duration));
@@ -282,7 +275,6 @@ public class PlayerController : MonoBehaviour
 
     private void ActivateDoublePoints(float duration)
     {
-        /* Debug.Log("double points active");*/
         isDoublePointsActive = true;
         GameManager.Instance.scoreMultiplier = 2f;
         StartCoroutine(DoublePointsCooldown(duration));
@@ -293,7 +285,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isDoublePointsActive = false;
         GameManager.Instance.scoreMultiplier = 1f;
-        /*Debug.Log("double points uitgezet");*/
     }
 
     private void BonusPoints()

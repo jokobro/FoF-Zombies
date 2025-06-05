@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
         pointsUiText.SetText($"{Points}");
     }
 
-
     void ShowScoreboard()
     {
         var stats = new List<ScoreboardUI.PlayerStats>
