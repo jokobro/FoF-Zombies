@@ -21,7 +21,6 @@ public class Return : MonoBehaviour
 
     private void OnReturnButtonClicked(ClickEvent clickEvent)
     {
-        Debug.Log("button gedrukt");
         SceneManager.LoadScene("MainMenu");
     }
 }

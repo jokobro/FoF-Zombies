@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveDirection;
     private Vector2 inputMovement;
+    private Vector2 lookInput;
     private float yRotation;
     private float xRotation;
     private bool isDoublePointsActive;
@@ -104,7 +105,6 @@ public class PlayerController : MonoBehaviour
         xRotation -= mouseY * sensY;
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
         cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
@@ -187,12 +187,14 @@ public class PlayerController : MonoBehaviour
             case 0:
                 if (!isDoublePointsActive)
                 {
-                    ActivateDoublePoints(duration);
+                    isDoublePointsActive = true;
+                    GameManager.Instance.scoreMultiplier = 2f;
+                    StartCoroutine(DoublePointsCooldown(duration));
                     Destroy(powerup);
                 }
                 break;
             case 1:
-                BonusPoints();
+                GameManager.Instance.AddScore(500);
                 Destroy(powerup);
 
                 break;
@@ -207,7 +209,9 @@ public class PlayerController : MonoBehaviour
             case 3:
                 if (!isInstantKillActive)
                 {
-                    ActivateInstantKill(duration);
+                    isInstantKillActive = true;
+                    weapon.damage += 1000;
+                    StartCoroutine(InstantKillCooldown(duration));
                     Destroy(powerup);
                 }
                 break;
@@ -216,54 +220,7 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.AddScore(400);
                 Destroy(powerup);
                 break;
-        } 
-        
-        
-        
-        /*if (id == 0)
-        {
-            if (!isDoublePointsActive)
-            {
-                ActivateDoublePoints(duration);
-                Destroy(powerup);
-            }
-        }*/
-            /* else if (id == 1)
-             {
-                 BonusPoints();
-                 Destroy(powerup);
-                *//* Debug.Log("bonus points opgepakt");*//*
-             }*/
-            /*else if (id == 2)
-            {
-                Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
-                foreach (Weapon w in allWeapons)
-                {
-                    w.PickupMaxAmmo();
-                }
-                Destroy(powerup);
-            }*/
-        /*else if (id == 3)
-        {
-            if (!isInstantKillActive)
-            {
-                ActivateInstantKill(duration);
-                Destroy(powerup);
-            }
         }
-        else if (id == 4)
-        {
-            waveManager.Instance.KillCurrentWave();
-            GameManager.Instance.AddScore(400);
-            Destroy(powerup);
-        }*/
-    }
-
-    private void ActivateInstantKill(float duration)
-    {
-        isInstantKillActive = true;
-        weapon.damage += 1000;
-        StartCoroutine(InstantKillCooldown(duration));
     }
 
     IEnumerator InstantKillCooldown(float duration)
@@ -273,22 +230,10 @@ public class PlayerController : MonoBehaviour
         weapon.damage -= 1000;
     }
 
-    private void ActivateDoublePoints(float duration)
-    {
-        isDoublePointsActive = true;
-        GameManager.Instance.scoreMultiplier = 2f;
-        StartCoroutine(DoublePointsCooldown(duration));
-    }
-
     IEnumerator DoublePointsCooldown(float duration)
     {
         yield return new WaitForSeconds(duration);
         isDoublePointsActive = false;
         GameManager.Instance.scoreMultiplier = 1f;
-    }
-
-    private void BonusPoints()
-    {
-        GameManager.Instance.AddScore(500);
     }
 }

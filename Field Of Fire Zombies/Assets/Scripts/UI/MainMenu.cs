@@ -10,7 +10,6 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         uiDocument = GetComponent<UIDocument>();
-
         RegisterButton("StartButton", OnPlayGameClickEvent);
         RegisterButton("CreditsButton", e => LoadScene("CreditsScene"));
         RegisterButton("ControlsButton", e => LoadScene("ControlsScene"));
@@ -33,7 +32,6 @@ public class MainMenu : MonoBehaviour
         {
             pair.Key.UnregisterCallback(pair.Value);
         }
-
         registeredCallbacks.Clear();
     }
 
@@ -50,8 +48,6 @@ public class MainMenu : MonoBehaviour
 
     private void OnQuitGameClickEvent(ClickEvent evt)
     {
-        Debug.Log("Quit button pressed");
         Application.Quit();
     }
-
 }
