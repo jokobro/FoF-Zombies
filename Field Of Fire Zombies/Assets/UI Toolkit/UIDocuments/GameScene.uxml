@@ -1,0 +1,6 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/uss.uss?fileID=7433441132597879392&amp;guid=ef6ef6e95a2fd0d4281d12c6f0c78462&amp;type=3#uss" />
+    <engine:Label text="Label" name="scoreLabel" class="text" style="position: absolute; top: 362px; left: 1012px; color: rgb(255, 255, 255); font-size: 31px;" />
+    <engine:Label text="0/0&#10;" name="ammoLabel" class="text" style="position: absolute; top: 414px; left: 961px; height: 42px; width: 135px; font-size: 30px; -unity-text-align: upper-left; color: rgb(255, 255, 255);" />
+    <engine:Label text="0&#10;" name="waveLabel" class="text" style="position: absolute; top: 0; left: 1px; color: rgb(255, 255, 255); font-size: 31px; -unity-text-align: upper-center; height: 42px; width: 78px;" />
+</engine:UXML>

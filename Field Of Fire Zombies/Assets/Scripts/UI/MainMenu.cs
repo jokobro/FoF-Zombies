@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 public class MainMenu : MonoBehaviour
 {
-    private UIDocument uiDocument;
+    private UIDocument UIDocument;
     private Dictionary<Button, EventCallback<ClickEvent>> registeredCallbacks = new();
 
     private void Awake()
     {
-        uiDocument = GetComponent<UIDocument>();
+        UIDocument = GetComponent<UIDocument>();
         RegisterButton("StartButton", OnPlayGameClickEvent);
         RegisterButton("CreditsButton", e => LoadScene("CreditsScene"));
         RegisterButton("ControlsButton", e => LoadScene("ControlsScene"));
@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
 
     private void RegisterButton(string name, EventCallback<ClickEvent> callback)
     {
-        var button = uiDocument.rootVisualElement.Q<Button>(name);
+        var button = UIDocument.rootVisualElement.Q<Button>(name);
         if (button != null)
         {
             button.RegisterCallback(callback);

@@ -33,16 +33,11 @@ public class Grenade : MonoBehaviour
 
         foreach (Collider nearbyObject in colliders)
         {
-            Enemy enemy = nearbyObject.GetComponent<Enemy>();
-            if (enemy != null)
+            IDamageable damageable = nearbyObject.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                enemy.TakeDamage(enemyDamage);
-            }
-
-            PlayerController player = nearbyObject.GetComponent<PlayerController>();
-            if (player != null)
-            {
-                player.TakeDamage(playerDamage);
+                float damage = (damageable is PlayerController) ? playerDamage : enemyDamage;
+                damageable.TakeDamage(damage);
             }
         }
         Destroy(gameObject);

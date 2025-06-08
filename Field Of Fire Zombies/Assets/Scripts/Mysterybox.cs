@@ -24,7 +24,7 @@ public class Mysterybox : Interactable
         if (isRolling || GameManager.Instance.Points < cost) return;
 
         GameManager.Instance.Points -= cost;
-        GameManager.Instance.UpdatePointsUI();
+       /* GameManager.Instance.UpdateUI();*/
         StartCoroutine(RollItem());
     }
 

@@ -23,9 +23,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private Animator animator;
     private NavMeshAgent agent;
     private Transform playerPosition;
-
     private float lastAttackTime;
     public event Action OnDeath;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -82,10 +82,8 @@ public class Enemy : MonoBehaviour, IDamageable
     public void enemyDead()
     {
         OnDeath?.Invoke();
-        GameObject ExplosionEffectClone = Instantiate(explosionEffect, spawnPlace.position, Quaternion.identity);
-        gameObject.SetActive(false);
-        Destroy(ExplosionEffectClone, 2);
-        Destroy(this.gameObject, 3);
+        animator.SetTrigger("Die");
+        /*Destroy(this.gameObject, 3);*/
     }
 
     private void HandleEnemyDyingPickUpDropChange()

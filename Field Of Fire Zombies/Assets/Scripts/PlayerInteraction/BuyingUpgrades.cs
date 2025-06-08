@@ -23,7 +23,7 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 1500)
         {
             GameManager.Instance.Points -= 1500;
-            GameManager.Instance.UpdatePointsUI();
+           /* GameManager.Instance.UpdateUI();*/
             PlayerController.Instance.walkSpeed = 12.6f; // Past de loopsnelheid aan.
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.speedColaSprite); // Voeg toe aan UI
             isSpeedColaBought = true;
@@ -35,7 +35,7 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 1000)
         {
             GameManager.Instance.Points -= 1000;
-            GameManager.Instance.UpdatePointsUI();
+           /* GameManager.Instance.UpdateUI();*/
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.quickReviveSprite);
             isQuickReviveBought = true;
             hasUsedQuickRevive = false;
@@ -47,7 +47,7 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 2500)
         {
             GameManager.Instance.Points -= 2500;
-            GameManager.Instance.UpdatePointsUI();
+           /* GameManager.Instance.UpdateUI();*/
             PlayerController.Instance.playerHealth = 170f;
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.juggernautSprite);
             isJugernautPerkBought = true;
@@ -59,7 +59,7 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
-            GameManager.Instance.UpdatePointsUI();
+            /*GameManager.Instance.UpdateUI();*/
             PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
             isDoubleTapBought = true;
 
@@ -84,7 +84,7 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 5000)
         {
             GameManager.Instance.Points -= 5000;
-            GameManager.Instance.UpdatePointsUI();
+           /* GameManager.Instance.UpdateUI();*/
             currentWeapon.fireRate = 0.150f;
             currentWeapon.damage *= 1.8f;
             currentWeapon.reloadTime *= 0.4f;

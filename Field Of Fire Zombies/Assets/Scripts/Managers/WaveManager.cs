@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,26 +8,23 @@ using UnityEngine.AI;
 public class waveManager : MonoBehaviour
 {
     public static waveManager Instance;
+    public static event Action<int> OnWaveChanged;
+
     public List<Wave> waves;
     public List<Transform> spawnPoints;
-    [SerializeField] private TextMeshProUGUI roundNumberText;
+    
     [SerializeField] private float baseSpawnDelay = 1f;
     [SerializeField] private float minSpawnDelay = 0.2f;
 
     private bool forceKillWave = false;
     private int activeEnemies = 0;
-
     public int roundNumber = 1;
 
     private void Start()
     {
         Instance = this;
+        OnWaveChanged?.Invoke(roundNumber); // eerste ronde
         StartCoroutine(RunWaves());
-    }
-
-    private void Update()
-    {
-        roundNumberText.SetText($"{roundNumber}");
     }
 
     public void KillCurrentWave()
@@ -102,6 +100,7 @@ public class waveManager : MonoBehaviour
             }
 
             roundNumber++;
+            OnWaveChanged?.Invoke(roundNumber); 
             yield return new WaitForSeconds(5f);
         }
     }

@@ -5,7 +5,7 @@ public class WeaponSwitching : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform[] weapons;
     private Weapon activeWeapon;
-    
+
     [Header("Keys")]
     [SerializeField] private KeyCode[] keys;
 
@@ -15,7 +15,7 @@ public class WeaponSwitching : MonoBehaviour
     public static WeaponSwitching instance;
     private float timeSinceLastSwitch;
     private int selectedWeapon;
-    
+
     private void Awake()
     {
         instance = this;
@@ -24,7 +24,6 @@ public class WeaponSwitching : MonoBehaviour
     {
         SetWeapons();
         Select(selectedWeapon);
-
         timeSinceLastSwitch = 0f;
     }
 
@@ -43,10 +42,17 @@ public class WeaponSwitching : MonoBehaviour
         int previousSelectedWeapon = selectedWeapon;
 
         for (int i = 0; i < keys.Length; i++)
+        {
             if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
+            {
                 selectedWeapon = i;
+            }
+        }
 
-        if (previousSelectedWeapon != selectedWeapon) Select(selectedWeapon);
+        if (previousSelectedWeapon != selectedWeapon)
+        {
+            Select(selectedWeapon);
+        }
 
         timeSinceLastSwitch += Time.deltaTime;
     }
@@ -60,11 +66,14 @@ public class WeaponSwitching : MonoBehaviour
 
         if (activeWeapon != null)
         {
-            activeWeapon.AmmoText();
+            if (activeWeapon != null)
+            {
+                activeWeapon.UpdateAmmoUI(); // gebruik de helper vanuit Weapon zelf
+            }
         }
-
         timeSinceLastSwitch = 0f;
     }
+
     public Weapon[] GetAllWeapons()
     {
         Weapon[] allWeapons = new Weapon[weapons.Length];

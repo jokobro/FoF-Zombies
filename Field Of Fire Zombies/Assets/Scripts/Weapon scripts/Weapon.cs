@@ -1,13 +1,11 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private new Transform camera;
-    /*[SerializeField] private Camera playerCamera;*/
     [SerializeField] private ParticleSystem muzzleFlash;
+    /*[SerializeField] private Camera playerCamera;*/
 
     [Header("Weapon settings")]
     public float damage;
@@ -48,13 +46,11 @@ public class Weapon : MonoBehaviour
             Debug.DrawRay(camera.position, camera.forward * maxDistance);
         }
 
-        if (fireTimer < fireRate /*+ 1.0f*/)
+        if (fireTimer < fireRate)
         {
             fireTimer += Time.deltaTime;
         }
-        AmmoText();
     }
-
     public void Shoot()
     {
         if (currentMagAmmo > 0 && Time.time > nextFire)
@@ -72,6 +68,7 @@ public class Weapon : MonoBehaviour
             }
             OnGunShot();
             currentMagAmmo--;
+            UpdateAmmoUI();
         }
     }
 
@@ -100,22 +97,29 @@ public class Weapon : MonoBehaviour
         currentMagAmmo += ammoToLoad; // Voeg de kogels toe aan het magazijn
         currentAmmo -= ammoToLoad; // Trek de gebruikte kogels af van de reserve
 
+        UpdateAmmoUI();
+
         reloading = false;
     }
 
-    private void OnDisable() => reloading = false;
+    private void OnDisable()
+    {
+        reloading = false;
+    }
 
     public void PickupMaxAmmo()
     {
         currentAmmo = maxAmmo; // Vul reserveammo maximaal aan
         currentMagAmmo = maxClipSize; // Vul het magazijn volledig
+        UpdateAmmoUI();
     }
 
-    public void AmmoText()
+    public void UpdateAmmoUI()
     {
-        if (ammoText != null)
+        GameUIController uiController = FindObjectOfType<GameUIController>();
+        if (uiController != null)
         {
-            ammoText.text = $"{currentMagAmmo}/{currentAmmo}";
+            uiController.UpdateAmmoText(currentMagAmmo, currentAmmo);
         }
     }
 }

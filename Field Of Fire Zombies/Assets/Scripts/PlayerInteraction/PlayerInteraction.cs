@@ -98,7 +98,7 @@ public class PlayerInteraction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
-            GameManager.Instance.UpdatePointsUI();
+            //GameManager.Instance.UpdateUI();
             Animator doorAnim = doorParent.GetComponent<Animator>();
             AudioSource doorSound = doorParent.GetComponent<AudioSource>();
             doorSound.Play();
