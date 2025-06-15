@@ -23,22 +23,10 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 1500)
         {
             GameManager.Instance.Points -= 1500;
-           /* GameManager.Instance.UpdateUI();*/
+            GameUIController.instance.RefreshUI();
             PlayerController.Instance.walkSpeed = 12.6f; // Past de loopsnelheid aan.
-            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.speedColaSprite); // Voeg toe aan UI
+            PerkUIManager.Instance.AddPerkToUI("speedcola"); // Voeg toe aan UI
             isSpeedColaBought = true;
-        }
-    }
-
-    public void HandleBuyingQuickRevive()
-    {
-        if (GameManager.Instance.Points >= 1000)
-        {
-            GameManager.Instance.Points -= 1000;
-           /* GameManager.Instance.UpdateUI();*/
-            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.quickReviveSprite);
-            isQuickReviveBought = true;
-            hasUsedQuickRevive = false;
         }
     }
 
@@ -47,9 +35,9 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 2500)
         {
             GameManager.Instance.Points -= 2500;
-           /* GameManager.Instance.UpdateUI();*/
+            GameUIController.instance.RefreshUI();
+            PerkUIManager.Instance.AddPerkToUI("juggernog"); // Voeg toe aan UI
             PlayerController.Instance.playerHealth = 170f;
-            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.juggernautSprite);
             isJugernautPerkBought = true;
         }
     }
@@ -59,8 +47,8 @@ public class BuyingUpgrades : MonoBehaviour
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
-            /*GameManager.Instance.UpdateUI();*/
-            PerkUIManager.Instance.AddPerkToUI(PerkUIManager.Instance.doubleTapSprite); // Voeg toe aan UI
+            GameUIController.instance.RefreshUI();
+            PerkUIManager.Instance.AddPerkToUI("doubletap");
             isDoubleTapBought = true;
 
             // Haal alle wapens op uit de weaponSwitching
@@ -76,24 +64,17 @@ public class BuyingUpgrades : MonoBehaviour
         }
     }
 
-    public void HandleBuyingWeaponUpgrade()
+    public void HandleBuyingQuickRevive()
     {
-        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
-        if (currentWeapon.isWeaponUpgraded) return; // Voorkom herhaalde interactie
-
-        if (GameManager.Instance.Points >= 5000)
+        if (GameManager.Instance.Points >= 1000)
         {
-            GameManager.Instance.Points -= 5000;
-           /* GameManager.Instance.UpdateUI();*/
-            currentWeapon.fireRate = 0.150f;
-            currentWeapon.damage *= 1.8f;
-            currentWeapon.reloadTime *= 0.4f;
-            currentWeapon.isWeaponUpgraded = true;
-            HUDcontroller.instance.DisableInteractionText(); // Verberg tekst na aankoop
-            PlayerInteraction.Instance.ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
+            GameManager.Instance.Points -= 1000;
+            GameUIController.instance.RefreshUI();
+            PerkUIManager.Instance.AddPerkToUI("quickrevive");
+            isQuickReviveBought = true;
+            hasUsedQuickRevive = false;
         }
     }
-
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt
     public void UseQuickRevive()
     {
@@ -104,6 +85,25 @@ public class BuyingUpgrades : MonoBehaviour
             isQuickReviveBought = true;
 
             // extra logica voor reviven toevoegen
+        }
+    }
+
+
+    public void HandleBuyingWeaponUpgrade()
+    {
+        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
+        if (currentWeapon.isWeaponUpgraded) return; // Voorkom herhaalde interactie
+
+        if (GameManager.Instance.Points >= 5000)
+        {
+            GameManager.Instance.Points -= 5000;
+            GameUIController.instance.RefreshUI();
+            currentWeapon.fireRate = 0.150f;
+            currentWeapon.damage *= 1.8f;
+            currentWeapon.reloadTime *= 0.4f;
+            currentWeapon.isWeaponUpgraded = true;
+            GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
+            PlayerInteraction.Instance.ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
         }
     }
 }

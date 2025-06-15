@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
             if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
             {
                 gameObject.SetActive(false);
-                PauseManager.Instance.EndGame();
+                /*PauseManager.instance.EndGame(); */         //nog fixen
             }
             else
             {

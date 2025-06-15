@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private Transform playerPosition;
     private float lastAttackTime;
     public event Action OnDeath;
-
+    private bool isDead = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -61,11 +61,14 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void MoveToTarget(float distanceToPlayer)
     {
-        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        if (isDead == false)
         {
-            agent.SetDestination(playerPosition.position);
-            agent.isStopped = distanceToPlayer <= attackDistance;
-            animator.applyRootMotion = false;
+            if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+            {
+                agent.SetDestination(playerPosition.position);
+                agent.isStopped = distanceToPlayer <= attackDistance;
+                animator.applyRootMotion = false;
+            }
         }
     }
     public void TakeDamage(float damageAmount)
@@ -82,8 +85,9 @@ public class Enemy : MonoBehaviour, IDamageable
     public void enemyDead()
     {
         OnDeath?.Invoke();
+        isDead = true;
         animator.SetTrigger("Die");
-        /*Destroy(this.gameObject, 3);*/
+        Destroy(this.gameObject, 3);
     }
 
     private void HandleEnemyDyingPickUpDropChange()

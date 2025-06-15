@@ -1,98 +1,91 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager Instance;
     [SerializeField] private InputActionAsset inputActions;
-    [SerializeField] private GameObject HighscoreScreenPanel;
-    [SerializeField] private TextMeshProUGUI roundReachedText;
-    [SerializeField] private GameObject GameOverPanel;
-    [SerializeField] private GameObject pauseMenuUi;
-    [SerializeField] private GameObject uiPanel;
-    /*[SerializeField] private GameObject showStatsPanel;*/
+    public static PauseManager instance;
+    private VisualElement pauseScreen;
+    private VisualElement hud;
+    private Button resumeButton;
+    private Button endGameButton;
+    private bool isPaused = false;
+
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;
-    private bool isEnding = false;
+    private InputAction pauseAction;
 
     private void Awake()
     {
-        Instance = this;
-    }
-
-    private void Start()
-    {
+        instance = this;
         gameActionMap = inputActions.FindActionMap("Player");
         uiActionMap = inputActions.FindActionMap("UI");
         gameActionMap.Enable();
         uiActionMap.Disable();
+        pauseAction = inputActions.FindActionMap("Player").FindAction("Pause");
+        pauseAction.performed += ctx => TogglePause();
+        pauseAction.Enable();
     }
 
-    public void HandlePausing(InputAction.CallbackContext context)
+    private void Start()
     {
-        if (context.performed)
+        var root = GetComponent<UIDocument>().rootVisualElement;
+
+        pauseScreen = root.Q<VisualElement>("PauseScreen");
+        hud = root.Q<VisualElement>("HUDContainer");
+        resumeButton = root.Q<Button>("ResumeButton");
+        endGameButton = root.Q<Button>("EndGameButton");
+        endGameButton.RegisterCallback<ClickEvent>(EndGame);
+        pauseScreen.style.display = DisplayStyle.None;
+
+
+        if (resumeButton != null)
         {
-            Time.timeScale = 0f;
-            uiPanel.SetActive(false);
-            pauseMenuUi.SetActive(true);
-            gameActionMap.Disable();
-            uiActionMap.Enable();
+
+
+            resumeButton.clicked += () =>
+            {
+                Debug.Log("Resume button clicked");
+                ResumeGame();
+            };
         }
+        Debug.Log(resumeButton == null ? "ResumeButton is NULL" : "ResumeButton gevonden!");
     }
 
-    private void Resume()
+    private void TogglePause()
     {
-        uiPanel.SetActive(true);
-        pauseMenuUi.SetActive(false);
+        if (!isPaused)
+            PauseGame();
+        else
+            ResumeGame();
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        gameActionMap.Disable();
+        uiActionMap.Enable();
+        pauseScreen.style.display = DisplayStyle.Flex;
+        hud.style.display = DisplayStyle.None;
+        isPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
         gameActionMap.Enable();
         uiActionMap.Disable();
-        Time.timeScale = 1f;
+        pauseScreen.style.display = DisplayStyle.None;
+        hud.style.display = DisplayStyle.Flex;
+        isPaused = false;
     }
 
-    public void OnResumeButtonPressed()
+    private void EndGame(ClickEvent clickEvent)
     {
-        Resume();
-        Debug.Log("resume button");
-    }
-
-    public void HandleOpeningHighScore(InputAction.CallbackContext context)
-    {
-        if (isEnding) return;
-
-        if (context.performed)
-        {
-            HighscoreScreenPanel.SetActive(true);
-            uiPanel.SetActive(false);
-        }
-
-        if (context.canceled)
-        {
-            HighscoreScreenPanel.SetActive(false);
-            uiPanel.SetActive(true);
-        }
-    }
-
-   
-    public void EndGame()
-    {
-        isEnding = true; // Zet dit ALVORENS iets zichtbaar wordt
-        
-        Time.timeScale = 1f;
-        StartCoroutine(HandleEndGameSequence());
-    }
-
-    private IEnumerator HandleEndGameSequence()
-    {
-        uiPanel.SetActive(false);
-        int round = waveManager.Instance != null ? waveManager.Instance.roundNumber : 0;
-        roundReachedText.text = $"You reached Round {round}.";
-        GameOverPanel.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        /*showStatsPanel.SetActive(true);*/
-        /*yield return new WaitForSeconds(6f);*/
-        SceneManager.LoadScene("MainMenu");
+        Debug.Log("game has ended");
+        //hier nog logica toevoegen wanneer er op end game wordt gedrukt
     }
 }

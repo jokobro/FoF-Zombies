@@ -34,7 +34,7 @@ public class Mysterybox : Interactable
         canTakeItem = false;
 
 
-        HUDcontroller.instance.DisableInteractionText();
+        GameUIController.instance.DisableInteractionText();
 
         if (currentItem != null)
         {
@@ -124,6 +124,6 @@ public class Mysterybox : Interactable
 
         Destroy(currentItem); // Verwijder het wapen uit de box
 
-        HUDcontroller.instance.DisableInteractionText();
+        GameUIController.instance.DisableInteractionText();
     }
 }

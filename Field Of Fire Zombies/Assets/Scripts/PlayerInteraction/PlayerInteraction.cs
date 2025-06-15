@@ -48,15 +48,15 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (box.CanTakeItem)
                 {
-                    HUDcontroller.instance.EnableInteractionText("Press F to pick up weapon");
+                    GameUIController.instance.EnableInteractionText("Press F to pick up weapon");
                 }
                 else if (!box.IsRolling)
                 {
-                    HUDcontroller.instance.EnableInteractionText(box.message);
+                    GameUIController.instance.EnableInteractionText(box.message);
                 }
                 else
                 {
-                    HUDcontroller.instance.DisableInteractionText();
+                    GameUIController.instance.DisableInteractionText();
                 }
                 return;
             }
@@ -83,7 +83,7 @@ public class PlayerInteraction : MonoBehaviour
              perkUpgrades.IsJunngernautPerkBought ||
              perkUpgrades.IsDoubleTapBought)
         {
-            HUDcontroller.instance.DisableInteractionText(); // Verberg tekst als een perk is gekocht
+            GameUIController.instance.DisableInteractionText(); // Verberg tekst als een perk is gekocht
             return true;
         }
         return false;
@@ -94,21 +94,20 @@ public class PlayerInteraction : MonoBehaviour
         GameObject doorParent = doorCollider.transform.parent?.parent?.gameObject; // Ga 2 niveaus omhoog naar DoorParent
         if (doorParent == null || openedDoors.Contains(doorParent)) return;
 
-        HUDcontroller.instance.EnableInteractionText("Press E to open door (2000 points)");
+        GameUIController.instance.EnableInteractionText("Press E to open door (2000 points)");
         if (Input.GetKeyDown(KeyCode.E) && GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
-            //GameManager.Instance.UpdateUI();
+            GameUIController.instance.RefreshUI();
             Animator doorAnim = doorParent.GetComponent<Animator>();
             AudioSource doorSound = doorParent.GetComponent<AudioSource>();
             doorSound.Play();
             if (doorAnim != null)
             {
                 doorAnim.SetBool("OpenDoor", true);
-
             }
             openedDoors.Add(doorParent); // Voeg de geopende deur toe aan de lijst
-            HUDcontroller.instance.DisableInteractionText(); // Verberg tekst na aankoop
+            GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
             ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
         }
     }
@@ -116,12 +115,12 @@ public class PlayerInteraction : MonoBehaviour
     private void SetNewCurrentInteractable(Interactable newInteractable)
     {
         currentInteractable = newInteractable;
-        HUDcontroller.instance.EnableInteractionText(currentInteractable.message);
+       GameUIController.instance.EnableInteractionText(currentInteractable.message);
     }
 
     private void DisableCurrentInteractable()
     {
-        HUDcontroller.instance.DisableInteractionText();
+        GameUIController.instance.DisableInteractionText();
         currentInteractable = null;
     }
 
