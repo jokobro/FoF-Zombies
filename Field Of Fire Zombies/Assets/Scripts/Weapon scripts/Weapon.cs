@@ -5,8 +5,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private new Transform camera;
     [SerializeField] private ParticleSystem muzzleFlash;
-    /*[SerializeField] private Camera playerCamera;*/
-
+   
     [Header("Weapon settings")]
     public float damage;
     public int currentMagAmmo; // Ammo in magazijn
@@ -40,10 +39,10 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (camera != null)
+        /*if (camera != null)
         {
             Debug.DrawRay(camera.position, camera.forward * maxDistance);
-        }
+        }*/
 
         if (fireTimer < fireRate)
         {
