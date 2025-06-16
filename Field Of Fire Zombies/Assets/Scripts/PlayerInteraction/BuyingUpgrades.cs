@@ -88,7 +88,6 @@ public class BuyingUpgrades : MonoBehaviour
         }
     }
 
-
     public void HandleBuyingWeaponUpgrade()
     {
         Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();

@@ -38,7 +38,6 @@ public class Weapon : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (camera != null)

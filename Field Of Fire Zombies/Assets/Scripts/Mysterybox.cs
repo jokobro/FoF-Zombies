@@ -33,7 +33,6 @@ public class Mysterybox : Interactable
         isRolling = true;
         canTakeItem = false;
 
-
         GameUIController.instance.DisableInteractionText();
 
         if (currentItem != null)

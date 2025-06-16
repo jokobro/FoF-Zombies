@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
     public static PauseManager instance;
     private VisualElement pauseScreen;
+    private VisualElement endgameScreen;
     private VisualElement hud;
     private Button resumeButton;
     private Button endGameButton;
@@ -35,17 +35,16 @@ public class PauseManager : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
 
         pauseScreen = root.Q<VisualElement>("PauseScreen");
+        endgameScreen = root.Q<VisualElement>("GameOverScreen");
         hud = root.Q<VisualElement>("HUDContainer");
         resumeButton = root.Q<Button>("ResumeButton");
         endGameButton = root.Q<Button>("EndGameButton");
         endGameButton.RegisterCallback<ClickEvent>(EndGame);
         pauseScreen.style.display = DisplayStyle.None;
-
+        endgameScreen.style.display = DisplayStyle.None;
 
         if (resumeButton != null)
         {
-
-
             resumeButton.clicked += () =>
             {
                 Debug.Log("Resume button clicked");
@@ -85,7 +84,14 @@ public class PauseManager : MonoBehaviour
 
     private void EndGame(ClickEvent clickEvent)
     {
-        Debug.Log("game has ended");
+        HandleEndingTheGame();
         //hier nog logica toevoegen wanneer er op end game wordt gedrukt
+    }
+
+    public void HandleEndingTheGame()
+    {
+        endgameScreen.style.display = DisplayStyle.Flex;
+        hud.style.display = DisplayStyle.None;
+        Debug.Log("Game is about the end");
     }
 }

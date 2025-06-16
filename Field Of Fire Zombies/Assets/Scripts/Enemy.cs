@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float pickupDropChance = 0.3f;
 
     private Animator animator;
+    private CapsuleCollider capsuleCollider;
     private NavMeshAgent agent;
     private Transform playerPosition;
     private float lastAttackTime;
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool isDead = false;
     private void Awake()
     {
+        capsuleCollider = GetComponent<CapsuleCollider>();
         animator = GetComponent<Animator>();
         playerPosition = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
@@ -87,6 +89,7 @@ public class Enemy : MonoBehaviour, IDamageable
         OnDeath?.Invoke();
         isDead = true;
         animator.SetTrigger("Die");
+        capsuleCollider.enabled = false;
         Destroy(this.gameObject, 3);
     }
 

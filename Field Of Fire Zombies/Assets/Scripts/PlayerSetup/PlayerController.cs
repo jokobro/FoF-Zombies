@@ -8,9 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
-    [SerializeField] private Transform weaponAimingPosition;
+    [SerializeField] private Transform weaponAimingPosition;// hier ook nog naar kijken
     [SerializeField] private Transform weaponDefaultPosition;
-    [SerializeField] private GameObject pauseMenuUi;
     private CharacterController characterController;
     private Weapon weapon;
 
@@ -63,18 +62,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void HandlePausing(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Time.timeScale = 0f;
-            /* uiPanel.SetActive(false);*/
-            pauseMenuUi.SetActive(true);
-            /* gameActionMap.Disable();
-             uiActionMap.Enable();*/
-        }
-    }
-
     public void TakeDamage(float damageAmount)
     {
         playerHealth -= damageAmount;
@@ -84,7 +71,7 @@ public class PlayerController : MonoBehaviour
             if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
             {
                 gameObject.SetActive(false);
-                /*PauseManager.instance.EndGame(); */         //nog fixen
+                PauseManager.instance.HandleEndingTheGame();  //nog fixen
             }
             else
             {
