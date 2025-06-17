@@ -30,20 +30,11 @@ public class Weapon : MonoBehaviour
             {
                 camera = mainCam.transform;
             }
-            else
-            {
-                Debug.LogWarning("Weapon kon geen MainCamera vinden!");
-            }
         }
     }
 
     private void Update()
     {
-        /*if (camera != null)
-        {
-            Debug.DrawRay(camera.position, camera.forward * maxDistance);
-        }*/
-
         if (fireTimer < fireRate)
         {
             fireTimer += Time.deltaTime;

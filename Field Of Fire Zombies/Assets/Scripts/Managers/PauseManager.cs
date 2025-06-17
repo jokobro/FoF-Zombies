@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PauseManager : MonoBehaviour
@@ -51,15 +50,22 @@ public class PauseManager : MonoBehaviour
                 ResumeGame();
             };
         }
-        Debug.Log(resumeButton == null ? "ResumeButton is NULL" : "ResumeButton gevonden!");
     }
 
     private void TogglePause()
     {
         if (!isPaused)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
             PauseGame();
+        }
         else
+        {
             ResumeGame();
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
+        }
     }
 
     public void PauseGame()
