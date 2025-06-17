@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PauseManager : MonoBehaviour
@@ -11,6 +13,7 @@ public class PauseManager : MonoBehaviour
     private VisualElement hud;
     private Button resumeButton;
     private Button endGameButton;
+    private Label roundReachedLabel;
     private bool isPaused = false;
 
     private InputActionMap gameActionMap;
@@ -41,15 +44,12 @@ public class PauseManager : MonoBehaviour
         endGameButton.RegisterCallback<ClickEvent>(EndGame);
         pauseScreen.style.display = DisplayStyle.None;
         endgameScreen.style.display = DisplayStyle.None;
+        roundReachedLabel = root.Q<Label>("RoundReachedText");
 
-        if (resumeButton != null)
+        resumeButton.clicked += () =>
         {
-            resumeButton.clicked += () =>
-            {
-                Debug.Log("Resume button clicked");
-                ResumeGame();
-            };
-        }
+            ResumeGame();
+        };
     }
 
     private void TogglePause()
@@ -63,8 +63,6 @@ public class PauseManager : MonoBehaviour
         else
         {
             ResumeGame();
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-            UnityEngine.Cursor.visible = false;
         }
     }
 
@@ -80,6 +78,8 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
         Time.timeScale = 1f;
         gameActionMap.Enable();
         uiActionMap.Disable();
@@ -91,13 +91,25 @@ public class PauseManager : MonoBehaviour
     private void EndGame(ClickEvent clickEvent)
     {
         HandleEndingTheGame();
-        //hier nog logica toevoegen wanneer er op end game wordt gedrukt
     }
 
     public void HandleEndingTheGame()
     {
+        StartCoroutine(EndGameCycle());
         endgameScreen.style.display = DisplayStyle.Flex;
+        pauseScreen.style.display = DisplayStyle.None;
         hud.style.display = DisplayStyle.None;
-        Debug.Log("Game is about the end");
+
+        if (roundReachedLabel != null && waveManager.Instance != null)
+        {
+            int round = waveManager.Instance.roundNumber;
+            roundReachedLabel.text = $"Round Reached {round}";
+        }
+    }
+
+    private IEnumerator EndGameCycle()
+    {
+        yield return new WaitForSecondsRealtime(3);
+        SceneManager.LoadScene("MainMenu");
     }
 }

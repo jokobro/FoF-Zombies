@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour, IDamageable
     public int pointsAmount = 10;
 
     [Header("References")]
-    [SerializeField] private GameObject explosionEffect;
     [SerializeField] private List<GameObject> pickups;
     [SerializeField] private Transform spawnPlace;
 
@@ -29,10 +28,10 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool isDead = false;
     private void Awake()
     {
-        capsuleCollider = GetComponent<CapsuleCollider>();
         animator = GetComponent<Animator>();
-        playerPosition = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        playerPosition = GameObject.Find("Player").transform;
         animator.applyRootMotion = true;
     }
 

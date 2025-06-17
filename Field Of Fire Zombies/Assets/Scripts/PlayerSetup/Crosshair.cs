@@ -8,12 +8,10 @@ public class Crosshair : MonoBehaviour
     [SerializeField] private float speed = 10f;
 
     private CharacterController characterController;
-
     private VisualElement topLine;
     private VisualElement bottomLine;
     private VisualElement leftLine;
     private VisualElement rightLine;
-
     private float currentOffset;
 
     private void Awake()

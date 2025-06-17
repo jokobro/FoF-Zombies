@@ -6,8 +6,8 @@
 }
 
 .unity-button {
-    width: 240px;
-    height: 110px;
+    width: 145px;
+    height: 65px;
     background-image: url("project://database/Assets/Assets/UI/Buttons/Return.png?fileID=2800000&guid=551b8e0804467ae488a1a801fd552e0f&type=3#Return");
 }
 
@@ -16,4 +16,8 @@
 }
 
 .image {
+}
+
+.background-color {
+    background-color: rgba(0, 0, 0, 0);
 }
