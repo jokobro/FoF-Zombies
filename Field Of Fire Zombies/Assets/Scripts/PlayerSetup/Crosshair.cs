@@ -3,64 +3,45 @@ using UnityEngine.UIElements;
 
 public class Crosshair : MonoBehaviour
 {
-    [SerializeField] private float restingOffset = 10f;
-    [SerializeField] private float maxOffset = 30f;
-    [SerializeField] private float speed = 10f;
+    private VisualElement topLine, bottomLine, leftLine, rightLine;
+    private float currentSize;
+    [SerializeField] private float restingSize = 10f;
+    [SerializeField] private float maxSize = 30f;
+    [SerializeField] private float speed = 5f;
 
     private CharacterController characterController;
-    private VisualElement topLine;
-    private VisualElement bottomLine;
-    private VisualElement leftLine;
-    private VisualElement rightLine;
-    private float currentOffset;
 
-    private void Awake()
+    void Start()
     {
-        characterController = FindAnyObjectByType<CharacterController>();
         var root = GetComponent<UIDocument>().rootVisualElement;
+        var crosshair = root.Q<VisualElement>("Crosshair");
 
-        topLine = root.Q<VisualElement>("Topline");
-        bottomLine = root.Q<VisualElement>("Bottomline");
-        leftLine = root.Q<VisualElement>("Leftline");
-        rightLine = root.Q<VisualElement>("Rightline");
+        topLine = crosshair.Q<VisualElement>("TopLine");
+        bottomLine = crosshair.Q<VisualElement>("BottomLine");
+        leftLine = crosshair.Q<VisualElement>("LeftLine");
+        rightLine = crosshair.Q<VisualElement>("RightLine");
 
-        currentOffset = restingOffset;
-        ApplyOffset();
+        characterController = FindAnyObjectByType<CharacterController>();
+        currentSize = restingSize;
     }
 
-    private void Update()
+    void Update()
     {
-        float targetOffset = IsMoving ? maxOffset : restingOffset;
-        currentOffset = Mathf.Lerp(currentOffset, targetOffset, Time.deltaTime * speed);
-        ApplyOffset();
+        float targetSize = IsMoving() ? maxSize : restingSize;
+        currentSize = Mathf.Lerp(currentSize, targetSize, Time.deltaTime * speed);
+        ApplySpacing(currentSize);
     }
 
-    private void ApplyOffset()
+    private bool IsMoving()
     {
-        if (topLine != null)
-            topLine.style.top = currentOffset;
-
-        if (bottomLine != null)
-            bottomLine.style.bottom = currentOffset;
-
-        if (leftLine != null)
-            leftLine.style.left = currentOffset;
-
-        if (rightLine != null)
-            rightLine.style.right = currentOffset;
+        return characterController != null && characterController.velocity.sqrMagnitude > 0.1f;
     }
 
-    private bool IsMoving
+    private void ApplySpacing(float spacing)
     {
-        get
-        {
-            if (characterController != null && characterController.velocity.sqrMagnitude > 0.01f)
-                return true;
-
-            return Input.GetAxis("Horizontal") != 0 ||
-                   Input.GetAxis("Vertical") != 0 ||
-                   Input.GetAxis("Mouse X") != 0 ||
-                   Input.GetAxis("Mouse Y") != 0;
-        }
+        topLine.style.top = -spacing;
+        bottomLine.style.top = spacing;
+        leftLine.style.left = -spacing;
+        rightLine.style.left = spacing;
     }
 }

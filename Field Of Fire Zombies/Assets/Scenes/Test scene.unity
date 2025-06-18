@@ -299,8 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5661101342994541bb6da1fec974969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restingOffset: 10
-  maxOffset: 30
+  restingSize: 10
+  maxSize: 30
   speed: 10
 --- !u!1 &325266187
 GameObject:
