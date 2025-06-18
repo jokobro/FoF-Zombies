@@ -205,8 +205,8 @@ GameObject:
   - component: {fileID: 280333056}
   - component: {fileID: 280333055}
   - component: {fileID: 280333054}
-  - component: {fileID: 280333057}
   - component: {fileID: 280333058}
+  - component: {fileID: 280333057}
   - component: {fileID: 280333059}
   m_Layer: 0
   m_Name: UiController
@@ -299,9 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5661101342994541bb6da1fec974969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restingSize: 29
-  maxSize: 140
-  speed: 10
 --- !u!1 &325266187
 GameObject:
   m_ObjectHideFlags: 0
