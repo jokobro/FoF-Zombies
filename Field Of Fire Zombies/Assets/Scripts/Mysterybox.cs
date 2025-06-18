@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mysterybox : Interactable
@@ -24,7 +23,7 @@ public class Mysterybox : Interactable
         if (isRolling || GameManager.Instance.Points < cost) return;
 
         GameManager.Instance.Points -= cost;
-       /* GameManager.Instance.UpdateUI();*/
+        GameUIController.instance.RefreshUI();
         StartCoroutine(RollItem());
     }
 
