@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -84,21 +83,15 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void enemyDead()
     {
-        if(isDead) return;
-
-        isDead = true;
+        Debug.Log($"Enemy {gameObject.name} is dood, roept OnDeath aan...");
         OnDeath?.Invoke();
+        isDead = true;
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
         agent.enabled = false;
-        StartCoroutine(DelayedDestroy());
+        Destroy(gameObject, 3f);
     }
 
-    private IEnumerator DelayedDestroy()
-    {
-        yield return new WaitForSeconds(3f); // of wacht tot animatie klaar is
-        Destroy(gameObject);
-    }
 
     private void HandleEnemyDyingPickUpDropChange()
     {
