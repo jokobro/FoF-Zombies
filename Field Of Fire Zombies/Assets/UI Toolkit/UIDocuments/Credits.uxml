@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/uss.uss?fileID=7433441132597879392&amp;guid=ef6ef6e95a2fd0d4281d12c6f0c78462&amp;type=3#uss" />
     <engine:VisualElement name="Credits" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Assets/UI/creditsFoto.png?fileID=2800000&amp;guid=c1008a4fd08564d4e9470cee7242812d&amp;type=3#creditsFoto&quot;);">
-        <engine:Button name="ReturnButton" style="position: absolute; bottom: 0; background-image: url(&quot;project://database/Assets/Assets/UI/Buttons/Return.png?fileID=2800000&amp;guid=551b8e0804467ae488a1a801fd552e0f&amp;type=3#Return&quot;);" />
+        <engine:Button name="ReturnButton" style="position: absolute; bottom: 0; background-image: url(&quot;project://database/Assets/Assets/UI/Buttons/Return.png?fileID=2800000&amp;guid=551b8e0804467ae488a1a801fd552e0f&amp;type=3#Return&quot;); width: 235px; height: 139px;" />
     </engine:VisualElement>
 </engine:UXML>

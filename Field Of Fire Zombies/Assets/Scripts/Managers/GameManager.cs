@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     public static event Action<int> OnPointsChanged;
@@ -12,6 +11,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         OnPointsChanged?.Invoke(Points);
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 165;
     }
         
     public void AddScore(int pointsAmount)

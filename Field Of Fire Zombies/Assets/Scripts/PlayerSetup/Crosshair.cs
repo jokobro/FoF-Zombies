@@ -6,7 +6,7 @@ public class Crosshair : MonoBehaviour
     private VisualElement topLine, bottomLine, leftLine, rightLine;
     private float currentSize;
     private float restingSize = 29f;
-    private float maxSize = 140f;
+    private float maxSize = 120f;
     private float speed = 10f;
     private CharacterController characterController;
 

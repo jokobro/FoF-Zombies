@@ -34,7 +34,12 @@ public class Weapon : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   //dit later verwijderen
+        if (camera != null)
+        {
+            Debug.DrawRay(camera.position, camera.forward * maxDistance);
+        }
+
         if (fireTimer < fireRate)
         {
             fireTimer += Time.deltaTime;

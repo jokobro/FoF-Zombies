@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     private UIDocument UIDocument;
@@ -42,8 +42,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnPlayGameClickEvent(ClickEvent evt)
     {
-        Debug.Log("Game start button pressed");
-        // SceneManager.LoadScene("GameScene"); // Uncomment as needed
+        SceneManager.LoadScene("GameScene"); // Uncomment as needed
     }
 
     private void OnQuitGameClickEvent(ClickEvent evt)

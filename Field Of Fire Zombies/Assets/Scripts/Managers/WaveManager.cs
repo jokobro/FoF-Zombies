@@ -23,7 +23,7 @@ public class waveManager : MonoBehaviour
     {
         Instance = this;
         OnWaveChanged?.Invoke(roundNumber); // eerste ronde
-        StartCoroutine(RunWaves());
+        StartCoroutine(SpawnWaveCoroutine());
     }
 
     public void KillCurrentWave()
@@ -42,11 +42,14 @@ public class waveManager : MonoBehaviour
     public void RegisterEnemy()
     {
         activeEnemies++;
+        Debug.Log($"RegisterEnemy aangeroepen, activeEnemies = {activeEnemies}");
     }
 
     public void UnregisterEnemy()
     {
         activeEnemies--;
+        if (activeEnemies < 0) activeEnemies = 0; // voorkomt negatieve values
+        Debug.Log($"Enemy verslagen. Nog over: {activeEnemies}");
     }
 
     bool AllEnemiesDefeated()
@@ -54,19 +57,20 @@ public class waveManager : MonoBehaviour
         return activeEnemies <= 0;
     }
 
-    IEnumerator RunWaves()
+    /*IEnumerator RunWaves()
     {
-        for (int i = 0; i < waves.Count; i++)
+        while (roundNumber - 1 < waves.Count)
         {
             forceKillWave = false;
-            Wave currentWave = waves[i];
+            Wave currentWave = waves[roundNumber - 1];
             float spawnDelay = Mathf.Max(baseSpawnDelay - (roundNumber * 0.05f), minSpawnDelay);
 
             foreach (EnemySpawnData enemyData in currentWave.enemiesToSpawn)
             {
                 for (int j = 0; j < enemyData.amount; j++)
                 {
-                    if (forceKillWave) yield break;
+                    if (forceKillWave) 
+                        break;
 
                     Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
                     GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
@@ -92,6 +96,7 @@ public class waveManager : MonoBehaviour
                     yield return new WaitForSeconds(spawnDelay);
                 }
             }
+            Debug.Log($"Wachten op einde wave {roundNumber}");
             while (!AllEnemiesDefeated() && !forceKillWave)
             {
                 yield return null;
@@ -101,7 +106,72 @@ public class waveManager : MonoBehaviour
             OnWaveChanged?.Invoke(roundNumber); 
             yield return new WaitForSeconds(5f);
         }
+    }*/
+
+    IEnumerator SpawnWaveCoroutine()
+    {
+        if (roundNumber - 1 >= waves.Count)
+        {
+            Debug.Log("Alle waves voltooid.");
+            yield break;
+        }
+
+        forceKillWave = false;
+        Wave currentWave = waves[roundNumber - 1];
+        float spawnDelay = Mathf.Max(baseSpawnDelay - (roundNumber * 0.05f), minSpawnDelay);
+
+        Debug.Log($"Wave {roundNumber} begint!");
+
+        foreach (EnemySpawnData enemyData in currentWave.enemiesToSpawn)
+        {
+            for (int j = 0; j < enemyData.amount; j++)
+            {
+                if (forceKillWave)
+                {
+                    yield break;
+                }
+
+                Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
+                GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
+
+                Enemy enemyScript = enemy.GetComponent<Enemy>();
+                if (enemyScript != null)
+                {
+                    RegisterEnemy();
+                    enemyScript.OnDeath += UnregisterEnemy;
+
+                    float damageMultiplier = 1f + (roundNumber * 0.1f);
+                    float speedMultiplier = 1f + (roundNumber * 0.05f);
+
+                    enemyScript.damage *= damageMultiplier;
+                    enemyScript.health *= damageMultiplier;
+
+                    RegisterEnemy();
+                    enemyScript.OnDeath += UnregisterEnemy;
+                    Debug.Log($"Enemy {enemyScript.name} gespawned en event gelinkt.");
+                }
+
+                NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                if (agent != null)
+                {
+                    agent.speed *= 1f + (roundNumber * 0.05f);
+                }
+
+                yield return new WaitForSeconds(spawnDelay);
+            }
+        }
+
+        Debug.Log("Wachten tot alle enemies dood zijn...");
+        yield return new WaitUntil(() => AllEnemiesDefeated() || forceKillWave);
+        Debug.Log("Alle enemies dood of wave geforceerd afgebroken.");
+
+        roundNumber++;
+        OnWaveChanged?.Invoke(roundNumber);
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(SpawnWaveCoroutine());
     }
+
 }
 [System.Serializable]
 public class EnemySpawnData

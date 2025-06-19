@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,16 +17,14 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private List<GameObject> pickups;
     [SerializeField] private Transform spawnPlace;
 
-    [Header("Pickup Settings")]
-    [SerializeField] private float pickupDropChance = 0.3f;
-
     private Animator animator;
     private CapsuleCollider capsuleCollider;
     private NavMeshAgent agent;
     private Transform playerPosition;
     private float lastAttackTime;
-    public event Action OnDeath;
     private bool isDead = false;
+    public event Action OnDeath;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -85,11 +84,20 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void enemyDead()
     {
-        OnDeath?.Invoke();
+        if(isDead) return;
+
         isDead = true;
+        OnDeath?.Invoke();
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
-        Destroy(this.gameObject, 3);
+        agent.enabled = false;
+        StartCoroutine(DelayedDestroy());
+    }
+
+    private IEnumerator DelayedDestroy()
+    {
+        yield return new WaitForSeconds(3f); // of wacht tot animatie klaar is
+        Destroy(gameObject);
     }
 
     private void HandleEnemyDyingPickUpDropChange()
