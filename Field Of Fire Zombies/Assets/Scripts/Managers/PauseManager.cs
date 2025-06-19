@@ -102,7 +102,7 @@ public class PauseManager : MonoBehaviour
 
         if (roundReachedLabel != null && waveManager.Instance != null)
         {
-            int round = waveManager.Instance.roundNumber;
+            int round = waveManager.Instance != null ? waveManager.Instance.CurrentWave : 0;   
             roundReachedLabel.text = $"Round Reached {round}";
         }
     }

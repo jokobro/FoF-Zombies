@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case 4:
-                waveManager.Instance.KillCurrentWave();
+                waveManager.Instance.KillAllEnemies();
                 GameManager.Instance.AddScore(400);
                 Destroy(powerup);
                 break;

@@ -5,7 +5,9 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private new Transform camera;
     [SerializeField] private ParticleSystem muzzleFlash;
-   
+    [SerializeField] private LayerMask enemyLayerMask;
+    
+    
     [Header("Weapon settings")]
     public float damage;
     public int currentMagAmmo; // Ammo in magazijn
@@ -20,6 +22,10 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
+
+
+   
+
 
     private void Awake()
     {
@@ -51,8 +57,9 @@ public class Weapon : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
 
-            if (Physics.Raycast(camera.position, camera.forward, out RaycastHit hitInfo, maxDistance))
+            if (Physics.Raycast(camera.position, camera.forward, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
+                Debug.Log("Hit: " + hitInfo.transform.name);
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(damage);
             }

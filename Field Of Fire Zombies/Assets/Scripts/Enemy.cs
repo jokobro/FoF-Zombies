@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -83,12 +83,15 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void enemyDead()
     {
-        Debug.Log($"Enemy {gameObject.name} is dood, roept OnDeath aan...");
-        OnDeath?.Invoke();
+        if (isDead) return;
+        Debug.Log($"💀 Enemy {gameObject.name} dood.");
+
         isDead = true;
+        OnDeath?.Invoke(); // Belangrijk voor WaveManager!
+
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
-        agent.enabled = false;
+
         Destroy(gameObject, 3f);
     }
 
