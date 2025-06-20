@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         OnPointsChanged?.Invoke(Points);
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 165;
+       /* QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 165;*/
     }
         
     public void AddScore(int pointsAmount)

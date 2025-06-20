@@ -21,7 +21,6 @@ public class waveManager : MonoBehaviour
     private int activeEnemies = 0;
     private bool waveInProgress = false;
     private bool forceKill = false;
-
     public int CurrentWave => currentWave + 1; // +1 zodat het vanaf 1 telt
 
     private void Awake()
@@ -36,22 +35,14 @@ public class waveManager : MonoBehaviour
     }
 
     // Wordt aangeroepen door Enemy.cs bij spawn
-    public void RegisterEnemy()
+    private void RegisterEnemy()
     {
         activeEnemies++;
-        Debug.Log($"Enemy geregistreerd. Totaal: {activeEnemies}");
     }
 
-    public void UnregisterEnemy()
+    private void UnregisterEnemy()
     {
-        Debug.Log($"UnregisterEnemy aangeroepen voor enemy");
         activeEnemies = Mathf.Max(0, activeEnemies - 1);
-        Debug.Log($" [UnregisterEnemy] Enemy verwijderd. Nog actief: {activeEnemies}");
-
-        if (activeEnemies == 0 && waveInProgress)
-        {
-            Debug.Log(" [UnregisterEnemy] Alle enemies voor deze wave verslagen!");
-        }
     }
 
     public void KillAllEnemies() // Nuke effect
@@ -77,20 +68,16 @@ public class waveManager : MonoBehaviour
             forceKill = false;
 
             currentWave++; // wave 1 begint bij index 1 (voor UI consistentie)
-            Debug.Log($"Start wave {currentWave}");
 
             OnWaveChanged?.Invoke(currentWave);
             GameUIController.instance?.UpdateWaveText(currentWave);
 
             yield return StartCoroutine(SpawnWave(waves[currentWave - 1]));
 
-            Debug.Log($" Enemies gespawned. Wachten op kill... ({activeEnemies} enemies)");
             yield return new WaitUntil(() => activeEnemies <= 0 || forceKill);
 
-            Debug.Log($" Wave {currentWave} voltooid!");
             yield return new WaitForSeconds(5f);
         }
-
         Debug.Log(" Alle waves voltooid!");
     }
 
@@ -104,12 +91,10 @@ public class waveManager : MonoBehaviour
 
                 Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
                 GameObject newEnemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
-                Debug.Log($" Enemy prefab '{enemyData.enemyPrefab.name}' gespawned.");
 
                 Enemy enemyScript = newEnemy.GetComponent<Enemy>();
                 if (enemyScript != null)
                 {
-                    Debug.Log($" Enemy script gevonden op '{newEnemy.name}'. Registreren...");
                     RegisterEnemy();
                     enemyScript.OnDeath += UnregisterEnemy;
                     float healthMultiplier = 1f + (currentWave - 1) * 0.1f;
@@ -118,12 +103,8 @@ public class waveManager : MonoBehaviour
                     enemyScript.health *= healthMultiplier;
                     enemyScript.damage *= damageMultiplier;
 
-                   
+                    RegisterEnemy();
                     enemyScript.OnDeath += UnregisterEnemy;
-                }
-                else
-                {
-                    Debug.LogWarning($" Geen Enemy script gevonden op '{newEnemy.name}'! Wordt NIET geregistreerd.");
                 }
 
                 NavMeshAgent agent = newEnemy.GetComponent<NavMeshAgent>();

@@ -84,16 +84,12 @@ public class Enemy : MonoBehaviour, IDamageable
     public void enemyDead()
     {
         if (isDead) return;
-        Debug.Log($" Enemy {gameObject.name} dood.");
-
-
         isDead = true;
-        Debug.Log($"Enemy {gameObject.name} roept OnDeath aan");
         OnDeath?.Invoke(); // Belangrijk voor WaveManager!
-        Debug.Log($"Enemy {gameObject.name} heeft OnDeath afgerond");
+        /*OnDeath = null; */
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
-
+        GameManager.Instance.AddScore(125);        
         Destroy(gameObject, 3f);
     }
 

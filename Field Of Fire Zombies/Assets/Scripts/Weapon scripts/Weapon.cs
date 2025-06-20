@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private new Transform camera;
     [SerializeField] private ParticleSystem muzzleFlash;
+    [SerializeField] private AudioSource gunShotSound;
     [SerializeField] private LayerMask enemyLayerMask;
     
     
@@ -22,10 +23,6 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
-
-
-   
-
 
     private void Awake()
     {
@@ -57,6 +54,9 @@ public class Weapon : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
 
+            int enemyLayerMask = LayerMask.GetMask("Enemy");
+
+
             if (Physics.Raycast(camera.position, camera.forward, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
                 Debug.Log("Hit: " + hitInfo.transform.name);
@@ -76,6 +76,7 @@ public class Weapon : MonoBehaviour
     private void OnGunShot()
     {
         muzzleFlash.Play();
+       /* gunShotSound.Play();*/
     }
 
     public void StartReload()

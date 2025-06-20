@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 2476314688288278763}
   - component: {fileID: 2360749196673929751}
   m_Layer: 0
-  m_Name: 'M26 [Prefab]'
+  m_Name: M26 Grenade Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -531,6 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941ef9c3447235b4a8a88c6dd04e9442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionEffect: {fileID: 560014183069458990, guid: 621e45f610d611746802ad828f66b094, type: 3}
+  explosionEffectPrefab: {fileID: 560014183069458990, guid: 621e45f610d611746802ad828f66b094, type: 3}
   blastRadius: 5
   delay: 3

@@ -1,14 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 public class GrenadeThrower : MonoBehaviour
 {
     [SerializeField] private GameObject grenadePrefab;
+     private GrenadeUIManager uiManager;
     private float throwForce = 10f;
     private int grenadeAmount = 3;
+    private const int maxGrenades = 3;
+   
+    private void Start()
+    {
+        uiManager = FindAnyObjectByType<GrenadeUIManager>();
+        uiManager.UpdateGrenadeUI(grenadeAmount);
+    }
 
     public void AddGrenades(int amount)
     {
-        grenadeAmount += amount;
+        grenadeAmount = Mathf.Min(grenadeAmount + amount, maxGrenades);
+        uiManager.UpdateGrenadeUI(grenadeAmount);
     }
 
     public void HandleThrowingGrenade(InputAction.CallbackContext context)
@@ -19,6 +29,7 @@ public class GrenadeThrower : MonoBehaviour
             Rigidbody rb = grenade.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
             grenadeAmount--;
+            uiManager.UpdateGrenadeUI(grenadeAmount);
         }
     }
 }

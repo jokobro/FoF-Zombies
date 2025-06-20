@@ -8,14 +8,11 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
-  /*  [SerializeField] private Transform weaponAimingPosition;// hier ook nog naar kijken
-    [SerializeField] private Transform weaponDefaultPosition;*/
     private CharacterController characterController;
     private Weapon weapon;
 
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
-    /*[SerializeField] private float aimSpeed = 0.25f;*/
     [SerializeField] private float jumpPower = 10f;
     [HideInInspector] public float playerHealth = 100;
     [HideInInspector] public float walkSpeed;
@@ -30,7 +27,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveDirection;
     private Vector2 inputMovement;
-    private Vector2 lookInput;
     private float yRotation;
     private float xRotation;
     private bool isDoublePointsActive;
