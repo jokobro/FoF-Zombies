@@ -16,9 +16,9 @@ RenderSettings:
   serializedVersion: 10
   m_Fog: 1
   m_FogColor: {r: 0.512381, g: 0.56115764, b: 0.5955882, a: 1}
-  m_FogMode: 1
-  m_FogDensity: 0.01
-  m_LinearFogStart: 30
+  m_FogMode: 3
+  m_FogDensity: 0.136
+  m_LinearFogStart: 79.6
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
@@ -27,7 +27,7 @@ RenderSettings:
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 1772e55893e3144459e0ff419881062f, type: 2}
-  m_HaloStrength: 0.5
+  m_HaloStrength: 0.453
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
@@ -17872,13 +17872,13 @@ MonoBehaviour:
   waves:
   - enemiesToSpawn:
     - enemyPrefab: {fileID: 7021142232385329774, guid: 3c7dc57c24b122e4e977555a28d26aab, type: 3}
-      amount: 2
-  - enemiesToSpawn:
-    - enemyPrefab: {fileID: 7021142232385329774, guid: 3c7dc57c24b122e4e977555a28d26aab, type: 3}
       amount: 4
   - enemiesToSpawn:
     - enemyPrefab: {fileID: 7021142232385329774, guid: 3c7dc57c24b122e4e977555a28d26aab, type: 3}
-      amount: 5
+      amount: 6
+  - enemiesToSpawn:
+    - enemyPrefab: {fileID: 7021142232385329774, guid: 3c7dc57c24b122e4e977555a28d26aab, type: 3}
+      amount: 8
   spawnPoints:
   - {fileID: 2104844360}
   - {fileID: 1813431472}
