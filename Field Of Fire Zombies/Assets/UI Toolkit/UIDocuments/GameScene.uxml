@@ -19,7 +19,7 @@
         <engine:VisualElement name="GrenadeIcon3" style="flex-grow: 1; width: 60px; height: 55px; position: absolute; top: 975px; left: 1800px;" />
         <engine:Label text="5000" name="scoreLabel" class="text" style="position: absolute; top: 763px; left: 1746px; color: rgb(255, 255, 255); font-size: 55px; height: 74px; width: 165px;" />
     </engine:VisualElement>
-    <engine:VisualElement name="PauseScreen" class="background-color" style="flex-grow: 1; height: 1090px; width: 1940px; position: absolute; top: -6px; left: -11px; -unity-background-image-tint-color: rgb(24, 21, 21); color: rgb(27, 27, 27); background-color: rgb(166, 166, 166);">
+    <engine:VisualElement name="PauseScreen" class="background-color" style="flex-grow: 1; height: 1090px; width: 1940px; position: absolute; top: -6px; left: -11px; -unity-background-image-tint-color: rgb(24, 21, 21); color: rgb(27, 27, 27); background-color: rgba(166, 166, 166, 0.22);">
         <engine:Button name="EndGameButton" style="position: absolute; top: -2px; left: 0; background-image: url(&quot;project://database/Assets/Assets/UI/Buttons/endgame.png?fileID=2800000&amp;guid=217c88618249ac64680768fe9d9cfb62&amp;type=3#endgame&quot;); height: 130px; width: 235px;" />
         <engine:Label text="Paused" name="Label" style="position: absolute; top: 303px; left: 840px; height: 55px; width: 305px; font-size: 78px; -unity-text-align: middle-center; right: auto; bottom: auto;" />
         <engine:Button name="ResumeButton" style="position: absolute; top: 945px; left: -1px; background-image: url(&quot;project://database/Assets/Assets/UI/Buttons/Resume.png?fileID=2800000&amp;guid=df90e77b049833045b2a700f424ad47c&amp;type=3#Resume&quot;); height: 130px; width: 235px;" />

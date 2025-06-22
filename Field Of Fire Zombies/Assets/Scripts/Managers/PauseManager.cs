@@ -14,7 +14,7 @@ public class PauseManager : MonoBehaviour
     private Button resumeButton;
     private Button endGameButton;
     private Label roundReachedLabel;
-    private bool isPaused = false;
+    [HideInInspector] public bool isPaused = false;
 
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;

@@ -81,15 +81,22 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLooking()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * 0.1f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * 0.1f;
+        if (PauseManager.instance.isPaused)
+        {
+            return;
+        }
+        else
+        {
+            float mouseX = Input.GetAxisRaw("Mouse X") * 0.1f;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * 0.1f;
 
-        yRotation += mouseX * sensX;
-        xRotation -= mouseY * sensY;
+            yRotation += mouseX * sensX;
+            xRotation -= mouseY * sensY;
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
-        cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        }
     }
 
     private void HandleMovement()
