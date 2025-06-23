@@ -4904,7 +4904,7 @@ GameObject:
   m_Layer: 0
   m_Name: Ak-47
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4937,9 +4937,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77caf728eb45f864c87e4e724d5382d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoText: {fileID: 0}
   camera: {fileID: 0}
   muzzleFlash: {fileID: 6658667904929855487}
+  gunShotSound: {fileID: 0}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   damage: 40
   currentMagAmmo: 30
   maxClipSize: 30
