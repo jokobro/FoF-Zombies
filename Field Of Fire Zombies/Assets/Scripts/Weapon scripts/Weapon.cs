@@ -75,7 +75,7 @@ public class Weapon : MonoBehaviour
 
     private void OnGunShot()
     {
-        muzzleFlash.Play();
+         muzzleFlash.Play();
        /* gunShotSound.Play();*/
     }
 
