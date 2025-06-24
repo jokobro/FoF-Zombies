@@ -53,9 +53,11 @@ public class Weapon : MonoBehaviour
         if (currentMagAmmo > 0 && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-
             int enemyLayerMask = LayerMask.GetMask("Enemy");
-
+            if (camera != null)
+            {
+                Debug.DrawRay(camera.position, camera.forward * maxDistance,Color.red);
+            }
 
             if (Physics.Raycast(camera.position, camera.forward, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
