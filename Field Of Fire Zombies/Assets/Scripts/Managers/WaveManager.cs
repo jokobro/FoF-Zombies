@@ -54,7 +54,11 @@ public class waveManager : MonoBehaviour
         {
             Enemy e = enemy.GetComponent<Enemy>();
             if (e != null)
-                e.enemyDead();
+            {
+                e.OnDeath -= UnregisterEnemy; // voorkom dubbele aanroep
+                e.enemyDead(); // deze roept normaal OnDeath aan
+                UnregisterEnemy(); // handmatig afmelden
+            }
         }
     }
 

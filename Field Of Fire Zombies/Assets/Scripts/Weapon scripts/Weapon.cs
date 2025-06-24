@@ -3,12 +3,11 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private new Transform camera;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private AudioSource gunShotSound;
     [SerializeField] private LayerMask enemyLayerMask;
-    
-    
+    [SerializeField] private float aimOffsetY = 20f;
+
     [Header("Weapon settings")]
     public float damage;
     public int currentMagAmmo; // Ammo in magazijn
@@ -24,42 +23,18 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public bool isWeaponUpgraded = false;
     private bool reloading;
 
-    private void Awake()
-    {
-        if (camera == null)
-        {
-            Camera mainCam = Camera.main;
-            if (mainCam != null)
-            {
-                camera = mainCam.transform;
-            }
-        }
-    }
-
     private void Update()
-    {   //dit later verwijderen
-        if (camera != null)
-        {
-            Debug.DrawRay(camera.position, camera.forward * maxDistance);
-        }
-
-        if (fireTimer < fireRate)
-        {
-            fireTimer += Time.deltaTime;
-        }
+    {
+        fireTimer += Time.deltaTime;
     }
     public void Shoot()
     {
         if (currentMagAmmo > 0 && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            int enemyLayerMask = LayerMask.GetMask("Enemy");
-            if (camera != null)
-            {
-                Debug.DrawRay(camera.position, camera.forward * maxDistance,Color.red);
-            }
 
-            if (Physics.Raycast(camera.position, camera.forward, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
                 Debug.Log("Hit: " + hitInfo.transform.name);
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
@@ -77,8 +52,8 @@ public class Weapon : MonoBehaviour
 
     private void OnGunShot()
     {
-         muzzleFlash.Play();
-       /* gunShotSound.Play();*/
+        muzzleFlash.Play();
+        /* gunShotSound.Play();*/
     }
 
     public void StartReload()

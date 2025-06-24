@@ -26,3 +26,54 @@
     width: 60px;
     height: 80px;
 }
+
+#crosshair-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1px;
+    height: 1px;
+    background-color: transparent; 
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border: 1px solid red; 
+}
+
+
+#crosshair-top {
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    width: 2px;
+    height: 10px;
+    background-color: white;
+}
+
+#crosshair-bottom {
+    position: absolute;
+    top: 1px;
+    left: -1px;
+    width: 2px;
+    height: 10px;
+    background-color: white;
+}
+
+/* Horizontale lijnen */
+
+#crosshair-left {
+    position: absolute;
+    top: -1px;
+    left: -10px;
+    width: 10px;
+    height: 2px;
+    background-color: white;
+}
+
+#crosshair-right {
+    position: absolute;
+    top: -1px;
+    left: 1px;
+    width: 10px;
+    height: 2px;
+    background-color: white;
+}

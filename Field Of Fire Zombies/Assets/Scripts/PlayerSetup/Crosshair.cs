@@ -13,11 +13,11 @@ public class Crosshair : MonoBehaviour
     private void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
-        var crosshair = root.Q<VisualElement>("Crosshair");
-        topLine = crosshair.Q<VisualElement>("TopLine");
-        bottomLine = crosshair.Q<VisualElement>("BottomLine");
-        leftLine = crosshair.Q<VisualElement>("LeftLine");
-        rightLine = crosshair.Q<VisualElement>("RightLine");
+        var crosshair = root.Q<VisualElement>("crosshair-center");
+        topLine = crosshair.Q<VisualElement>("crosshair-top");
+        bottomLine = crosshair.Q<VisualElement>("crosshair-bottom");
+        leftLine = crosshair.Q<VisualElement>("crosshair-left");
+        rightLine = crosshair.Q<VisualElement>("crosshair-right");
         characterController = FindAnyObjectByType<CharacterController>();
         currentSize = restingSize;
     }
