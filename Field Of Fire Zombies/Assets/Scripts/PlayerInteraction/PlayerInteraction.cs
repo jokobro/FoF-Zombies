@@ -99,13 +99,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             GameManager.Instance.Points -= 2000;
             GameUIController.instance.RefreshUI();
+
             Animator doorAnim = doorParent.GetComponent<Animator>();
-            AudioSource doorSound = doorParent.GetComponent<AudioSource>();
-            doorSound.Play();
+            // AudioSource doorSound = doorParent.GetComponent<AudioSource>();
+            // if (doorSound != null) doorSound.Play(); // UITGESCHAKELD
+
             if (doorAnim != null)
             {
                 doorAnim.SetBool("OpenDoor", true);
             }
+
             openedDoors.Add(doorParent); // Voeg de geopende deur toe aan de lijst
             GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
             ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt

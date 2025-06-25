@@ -192,7 +192,10 @@ public class PlayerController : MonoBehaviour
                 Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
                 foreach (Weapon w in allWeapons)
                 {
-                    w.PickupMaxAmmo();
+                    if (w != null)
+                    {
+                        w.PickupMaxAmmo();
+                    }
                 }
                 Destroy(powerup);
                 break;

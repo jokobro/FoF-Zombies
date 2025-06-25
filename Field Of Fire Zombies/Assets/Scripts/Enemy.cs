@@ -86,7 +86,8 @@ public class Enemy : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
         OnDeath?.Invoke(); // Belangrijk voor WaveManager!
-        /*OnDeath = null; */
+        agent.enabled = false;
+        animator.applyRootMotion = true;
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
         GameManager.Instance.AddScore(125);        

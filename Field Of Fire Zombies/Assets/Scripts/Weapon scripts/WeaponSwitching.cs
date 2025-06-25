@@ -15,7 +15,7 @@ public class WeaponSwitching : MonoBehaviour
     public static WeaponSwitching instance;
     private float timeSinceLastSwitch;
     private int selectedWeapon;
-    private Transform[] weapons;
+    /*[SerializeField]*/ private Transform[] weapons;
 
     private void Awake()
     {
@@ -37,7 +37,10 @@ public class WeaponSwitching : MonoBehaviour
         {
             if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
             {
-                selectedWeapon = i;
+                if (i < weapons.Length && weapons[i] != null)
+                {
+                    selectedWeapon = i;
+                }
             }
         }
 
@@ -65,13 +68,26 @@ public class WeaponSwitching : MonoBehaviour
 
     private void Select(int weaponIndex)
     {
+        UpdateWeapons(); // <- Zorg dat je altijd up-to-date bent
+
         for (int i = 0; i < weapons.Length; i++)
         {
-            weapons[i].gameObject.SetActive(i == weaponIndex);
+            if (weapons[i] != null)
+            {
+                weapons[i].gameObject.SetActive(i == weaponIndex);
+            }
         }
 
-        activeWeapon = weapons[weaponIndex].GetComponent<Weapon>();
-        activeWeapon?.UpdateAmmoUI();
+        // Probeer het nieuwe actieve wapen op te halen
+        if (weaponIndex >= 0 && weaponIndex < weapons.Length && weapons[weaponIndex] != null)
+        {
+            activeWeapon = weapons[weaponIndex].GetComponent<Weapon>();
+            activeWeapon?.UpdateAmmoUI();
+        }
+        else
+        {
+            activeWeapon = null;
+        }
 
         timeSinceLastSwitch = 0f;
     }
@@ -81,7 +97,10 @@ public class WeaponSwitching : MonoBehaviour
         Weapon[] allWeapons = new Weapon[weapons.Length];
         for (int i = 0; i < weapons.Length; i++)
         {
-            allWeapons[i] = weapons[i].GetComponent<Weapon>();
+            if (weapons[i] != null)
+            {
+                allWeapons[i] = weapons[i].GetComponent<Weapon>();
+            }
         }
         return allWeapons;
     }
