@@ -88,6 +88,9 @@ public class Mysterybox : Interactable
         float t = 0f;
         while (t < 1f)
         {
+            if (item == null)
+                yield break;
+
             item.position = Vector3.Lerp(startPos, endPos, t);
             t += Time.deltaTime;
             yield return null;
@@ -99,30 +102,26 @@ public class Mysterybox : Interactable
         WeaponSwitching weaponSwitching = WeaponSwitching.instance;
 
         if (rolledWeapon == null)
-        {
             return;
-        }
 
-        // Verwijder huidig actief wapen
+        // Verwijder het huidige actieve wapen
         Weapon oldWeapon = weaponSwitching.GetActiveWeapon();
         if (oldWeapon != null)
         {
             Destroy(oldWeapon.gameObject);
         }
 
-        // Instantiate nieuwe wapen onder player
-        GameObject newWeaponObj = Instantiate(currentItem);
-        newWeaponObj.transform.SetParent(weaponSwitching.transform);
+        // Spawn het nieuwe wapen in de weapon socket
+        Transform weaponSocket = weaponSwitching.GetWeaponSocket();
+        GameObject newWeaponObj = Instantiate(currentItem, weaponSocket);
         newWeaponObj.transform.localPosition = Vector3.zero;
         newWeaponObj.transform.localRotation = Quaternion.identity;
 
-        // Update de weapon list in weapon switching
+        // Update weapon list en selecteer het nieuwe wapen
         weaponSwitching.UpdateWeapons();
-
-        // Selecteer het laatst toegevoegde wapen (de nieuwe dus)
         weaponSwitching.SelectLastWeapon();
 
-        Destroy(currentItem); // Verwijder wapen uit mysterybox (de versie in de wereld)
+        Destroy(currentItem); // Verwijder het wapen uit de box
 
         GameUIController.instance.DisableInteractionText();
     }

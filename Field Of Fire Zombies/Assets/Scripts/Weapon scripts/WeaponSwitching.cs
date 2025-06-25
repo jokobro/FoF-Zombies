@@ -1,9 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponSwitching : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform[] weapons;
+    [SerializeField] private Transform weaponSocket; // Hier spawnen nieuwe wapens
     private Weapon activeWeapon;
 
     [Header("Keys")]
@@ -15,26 +15,18 @@ public class WeaponSwitching : MonoBehaviour
     public static WeaponSwitching instance;
     private float timeSinceLastSwitch;
     private int selectedWeapon;
+    private Transform[] weapons;
 
     private void Awake()
     {
         instance = this;
     }
+
     private void Start()
     {
         SetWeapons();
         Select(selectedWeapon);
         timeSinceLastSwitch = 0f;
-    }
-
-    private void SetWeapons()
-    {
-        weapons = new Transform[transform.childCount];
-
-        for (int i = 0; i < transform.childCount; i++)
-            weapons[i] = transform.GetChild(i);
-
-        if (keys == null) keys = new KeyCode[weapons.Length];
     }
 
     private void Update()
@@ -57,34 +49,43 @@ public class WeaponSwitching : MonoBehaviour
         timeSinceLastSwitch += Time.deltaTime;
     }
 
+    private void SetWeapons()
+    {
+        weapons = new Transform[weaponSocket.childCount];
+        for (int i = 0; i < weaponSocket.childCount; i++)
+        {
+            weapons[i] = weaponSocket.GetChild(i);
+        }
+
+        if (keys == null || keys.Length != weapons.Length)
+        {
+            keys = new KeyCode[weapons.Length];
+        }
+    }
+
     private void Select(int weaponIndex)
     {
         for (int i = 0; i < weapons.Length; i++)
+        {
             weapons[i].gameObject.SetActive(i == weaponIndex);
+        }
 
         activeWeapon = weapons[weaponIndex].GetComponent<Weapon>();
+        activeWeapon?.UpdateAmmoUI();
 
-        if (activeWeapon != null)
-        {
-            if (activeWeapon != null)
-            {
-                activeWeapon.UpdateAmmoUI(); // gebruik de helper vanuit Weapon zelf
-            }
-        }
         timeSinceLastSwitch = 0f;
     }
 
     public Weapon[] GetAllWeapons()
     {
         Weapon[] allWeapons = new Weapon[weapons.Length];
-
         for (int i = 0; i < weapons.Length; i++)
         {
             allWeapons[i] = weapons[i].GetComponent<Weapon>();
         }
-
         return allWeapons;
     }
+
     public Weapon GetActiveWeapon()
     {
         return activeWeapon;
@@ -92,10 +93,10 @@ public class WeaponSwitching : MonoBehaviour
 
     public void UpdateWeapons()
     {
-        weapons = new Transform[transform.childCount];
-        for (int i = 0; i < transform.childCount; i++)
+        weapons = new Transform[weaponSocket.childCount];
+        for (int i = 0; i < weaponSocket.childCount; i++)
         {
-            weapons[i] = transform.GetChild(i);
+            weapons[i] = weaponSocket.GetChild(i);
         }
     }
 
@@ -103,5 +104,10 @@ public class WeaponSwitching : MonoBehaviour
     {
         selectedWeapon = weapons.Length - 1;
         Select(selectedWeapon);
+    }
+
+    public Transform GetWeaponSocket()
+    {
+        return weaponSocket;
     }
 }
