@@ -6,7 +6,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private AudioSource gunShotSound;
     [SerializeField] private LayerMask enemyLayerMask;
-    [SerializeField] private float aimOffsetY = 20f;
 
     [Header("Weapon settings")]
     public float damage;
@@ -21,11 +20,16 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
+    private float aimOffsetY = 20f;
     private bool reloading;
 
     private void Update()
     {
         fireTimer += Time.deltaTime;
+
+
+        Ray debugRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
+        Debug.DrawRay(debugRay.origin, debugRay.direction * maxDistance, Color.red);
     }
     public void Shoot()
     {

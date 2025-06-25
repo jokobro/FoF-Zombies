@@ -45,20 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77caf728eb45f864c87e4e724d5382d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
   muzzleFlash: {fileID: 6718225293430694348}
   gunShotSound: {fileID: 0}
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  damage: 0
-  currentMagAmmo: 0
-  maxClipSize: 0
-  currentAmmo: 0
-  maxAmmo: 0
-  maxDistance: 0
-  reloadTime: 3
-  fireRate: 0
+  damage: 27
+  currentMagAmmo: 30
+  maxClipSize: 30
+  currentAmmo: 200
+  maxAmmo: 200
+  maxDistance: 200
+  reloadTime: 2
+  fireRate: 0.23
   fireTimer: 0
   nextFire: 0
   isWeaponUpgraded: 0

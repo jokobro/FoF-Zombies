@@ -36,9 +36,9 @@ public class Mysterybox : Interactable
 
         if (currentItem != null)
         {
-          Destroy(currentItem);
+            Destroy(currentItem);
         }
-            
+
 
         yield return new WaitForSeconds(0.5f);
 
@@ -100,9 +100,8 @@ public class Mysterybox : Interactable
 
         if (rolledWeapon == null)
         {
-         return;
+            return;
         }
-        
 
         // Verwijder huidig actief wapen
         Weapon oldWeapon = weaponSwitching.GetActiveWeapon();
@@ -111,16 +110,19 @@ public class Mysterybox : Interactable
             Destroy(oldWeapon.gameObject);
         }
 
-        // Voeg nieuwe wapen toe aan speler
-        GameObject newWeaponObj = Instantiate(currentItem, weaponSwitching.transform);
+        // Instantiate nieuwe wapen onder player
+        GameObject newWeaponObj = Instantiate(currentItem);
+        newWeaponObj.transform.SetParent(weaponSwitching.transform);
         newWeaponObj.transform.localPosition = Vector3.zero;
         newWeaponObj.transform.localRotation = Quaternion.identity;
 
-        // Update weapon list en selecteer deze
+        // Update de weapon list in weapon switching
         weaponSwitching.UpdateWeapons();
+
+        // Selecteer het laatst toegevoegde wapen (de nieuwe dus)
         weaponSwitching.SelectLastWeapon();
 
-        Destroy(currentItem); // Verwijder het wapen uit de box
+        Destroy(currentItem); // Verwijder wapen uit mysterybox (de versie in de wereld)
 
         GameUIController.instance.DisableInteractionText();
     }
