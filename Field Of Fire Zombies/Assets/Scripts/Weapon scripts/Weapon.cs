@@ -20,16 +20,15 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
-    private float aimOffsetY = 20f;
+    private float aimOffsetY = 10f;
     private bool reloading;
 
     private void Update()
     {
         fireTimer += Time.deltaTime;
 
-
-        Ray debugRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
-        Debug.DrawRay(debugRay.origin, debugRay.direction * maxDistance, Color.red);
+        /*Ray debugRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
+        Debug.DrawRay(debugRay.origin, debugRay.direction * maxDistance, Color.red);*/
     }
     public void Shoot()
     {
