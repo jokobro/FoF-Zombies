@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class BuyGrenadeRefill : MonoBehaviour
 {
     [SerializeField] private int refillCost = 600;
@@ -16,7 +15,6 @@ public class BuyGrenadeRefill : MonoBehaviour
 
         if (grenadeThrower.CurrentGrenadeCount >= grenadeThrower.MaxGrenades)
         {
-            Debug.Log("You already have the maximum number of grenades.");
             return;
         }
 
@@ -28,7 +26,7 @@ public class BuyGrenadeRefill : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough points to refill grenades.");
+            return;
         }
     }
 }
