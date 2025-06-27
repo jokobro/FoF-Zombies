@@ -23742,7 +23742,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: weaponPrefabs.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[0]'
@@ -23767,7 +23767,7 @@ PrefabInstance:
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[5]'
       value: 
-      objectReference: {fileID: 4553267527867674166, guid: c4f66704cd36bf14db7a55dcaa5b915f, type: 3}
+      objectReference: {fileID: 2128950253734173231, guid: 1fd3310cad5110f43a88d242ab8e0550, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: onInteraction.m_PersistentCalls.m_Calls.Array.size
       value: 0
