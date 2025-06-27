@@ -23700,6 +23700,10 @@ PrefabInstance:
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[5]'
       value: 
+      objectReference: {fileID: 8144025827001842877, guid: 44045eaf38288864eb8b7e285c9202f1, type: 3}
+    - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
+      propertyPath: 'weaponPrefabs.Array.data[6]'
+      value: 
       objectReference: {fileID: 2128950253734173231, guid: 1fd3310cad5110f43a88d242ab8e0550, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: onInteraction.m_PersistentCalls.m_Calls.Array.size

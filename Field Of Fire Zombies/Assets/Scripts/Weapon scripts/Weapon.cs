@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
             if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
-                Debug.Log("Hit: " + hitInfo.transform.name);
+                /*Debug.Log("Hit: " + hitInfo.transform.name);*/
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(damage);
             }

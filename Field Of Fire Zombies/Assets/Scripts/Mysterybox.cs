@@ -25,7 +25,7 @@ public class Mysterybox : Interactable
     public override void HandleInteraction()
     {
         base.HandleInteraction();
-        Debug.Log("Mysterybox HandleInteraction called");
+        /*Debug.Log("Mysterybox HandleInteraction called");*/
         if (isRolling || GameManager.Instance.Points < cost) return;
 
         GameManager.Instance.Points -= cost;
