@@ -72,19 +72,19 @@ public class BuyingUpgrades : MonoBehaviour
             GameUIController.instance.RefreshUI();
             PerkUIManager.Instance.AddPerkToUI("quickrevive");
             isQuickReviveBought = true;
-            hasUsedQuickRevive = false;
+            hasUsedQuickRevive = false; // reset!
         }
     }
     // Roep deze methode aan wanneer de speler Quick Revive gebruikt
     public void UseQuickRevive()
     {
-        if (isQuickReviveBought)
+        if (isQuickReviveBought && !hasUsedQuickRevive)
         {
+            hasUsedQuickRevive = true;
             Debug.Log("Quick Revive gebruikt!");
-            hasUsedQuickRevive = false;
-            isQuickReviveBought = true;
+            PerkUIManager.Instance.RemovePerkFromUI("quickrevive");
 
-            // extra logica voor reviven toevoegen
+            PlayerController.Instance.StartCoroutine(PlayerController.Instance.QuickReviveRoutine());
         }
     }
 
