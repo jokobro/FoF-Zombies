@@ -8,7 +8,10 @@ public class GrenadeThrower : MonoBehaviour
     private float throwForce = 10f;
     private int grenadeAmount = 3;
     private const int maxGrenades = 3;
-   
+
+    public int CurrentGrenadeCount => grenadeAmount;
+    public int MaxGrenades => maxGrenades;
+
     private void Start()
     {
         uiManager = FindAnyObjectByType<GrenadeUIManager>();
@@ -31,5 +34,16 @@ public class GrenadeThrower : MonoBehaviour
             grenadeAmount--;
             uiManager.UpdateGrenadeUI(grenadeAmount);
         }
+    }
+
+    public int GetGrenadeCount()
+    {
+        return grenadeAmount;
+    }
+
+    public void RefillGrenades()
+    {
+        grenadeAmount = maxGrenades;
+        uiManager.UpdateGrenadeUI(grenadeAmount);
     }
 }

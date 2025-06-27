@@ -39,7 +39,6 @@ public class Mysterybox : Interactable
         canTakeItem = false;
 
         GameUIController.instance.DisableInteractionText();
-
         animator.Play("mysterbox_Open_Anim");
 
         if (currentItem != null)
@@ -53,36 +52,26 @@ public class Mysterybox : Interactable
         GameObject item = Instantiate(weaponPrefabs[index], spawnPoint.position, spawnPoint.rotation);
         currentItem = item;
 
-        // Optionele animatie omhoog
         StartCoroutine(MoveItemUp(item.transform));
 
         rolledWeapon = item.GetComponent<Weapon>();
-        if (rolledWeapon == null && item.CompareTag("Grenade"))
+
+        canTakeItem = true;
+        float timer = 0f;
+        while (timer < showDuration)
         {
-            GrenadeThrower thrower = FindObjectOfType<GrenadeThrower>();
-            thrower.SendMessage("AddGrenades", 3, SendMessageOptions.DontRequireReceiver);
-            canTakeItem = false;
-            yield return new WaitForSeconds(1f);
-            Destroy(currentItem);
-        }
-        else
-        {
-            canTakeItem = true;
-            float timer = 0f;
-            while (timer < showDuration)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    TakeNewWeapon();
-                    break;
-                }
-                timer += Time.deltaTime;
-                yield return null;
+                TakeNewWeapon();
+                break;
             }
 
-            if (currentItem != null)
-                Destroy(currentItem);
+            timer += Time.deltaTime;
+            yield return null;
         }
+
+        if (currentItem != null)
+            Destroy(currentItem);
 
         animator.Play("Mysterbox_Closing_anim");
 

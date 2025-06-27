@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour
     [Header("References")]
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private AudioSource gunShotSound;
+    [SerializeField] private AudioSource reloadSound;
     [SerializeField] private LayerMask enemyLayerMask;
 
     [Header("Weapon settings")]
@@ -20,7 +21,7 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
-    private float aimOffsetY = 10f;
+    private float aimOffsetY = 20f;
     private bool reloading;
 
     private void Update()
@@ -56,7 +57,7 @@ public class Weapon : MonoBehaviour
     private void OnGunShot()
     {
         muzzleFlash.Play();
-        /* gunShotSound.Play();*/
+        gunShotSound.Play();
     }
 
     public void StartReload()
@@ -65,6 +66,7 @@ public class Weapon : MonoBehaviour
         {
             nextFire = Time.time + reloadTime;
             StartCoroutine(Reload());
+            reloadSound.Play();
         }
     }
 

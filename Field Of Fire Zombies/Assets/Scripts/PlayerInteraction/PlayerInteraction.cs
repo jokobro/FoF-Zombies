@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private string doorOpenAnimName;
     [SerializeField] private float playerInReach = 3f;
     private Interactable currentInteractable;
-    private HashSet<GameObject> openedDoors = new HashSet<GameObject>();
+    /*private HashSet<GameObject> openedDoors = new HashSet<GameObject>();*/
 
     private void Awake()
     {
@@ -27,11 +27,11 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, playerInReach))
         {
-            if (hit.collider.CompareTag("Door"))
+            /*if (hit.collider.CompareTag("Door"))
             {
                 ShowDoorInteraction(hit.collider);
                 return;
-            }
+            }*/
 
 
             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
@@ -89,7 +89,7 @@ public class PlayerInteraction : MonoBehaviour
         return false;
     }
 
-    private void ShowDoorInteraction(Collider doorCollider)
+    /*private void ShowDoorInteraction(Collider doorCollider)
     {
         GameObject doorParent = doorCollider.transform.parent?.parent?.gameObject; // Ga 2 niveaus omhoog naar DoorParent
         if (doorParent == null || openedDoors.Contains(doorParent)) return;
@@ -113,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour
             GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
             ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
         }
-    }
+    }*/
 
     private void SetNewCurrentInteractable(Interactable newInteractable)
     {
