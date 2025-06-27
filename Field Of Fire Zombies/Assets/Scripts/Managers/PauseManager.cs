@@ -111,5 +111,7 @@ public class PauseManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(3);
         SceneManager.LoadScene("MainMenu");
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
     }
 }

@@ -1,13 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Mysterybox : Interactable
 {
     [SerializeField] private GameObject[] weaponPrefabs;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform spawnPoint; 
     [SerializeField] private float showDuration = 5f;
     [SerializeField] private int cost = 950;
 
+    private Animator animator;
     private GameObject currentItem;
     private bool isRolling = false;
     private bool canTakeItem = false;
@@ -15,6 +16,11 @@ public class Mysterybox : Interactable
 
     public bool CanTakeItem => canTakeItem;
     public bool IsRolling => isRolling;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     public override void HandleInteraction()
     {
@@ -34,11 +40,12 @@ public class Mysterybox : Interactable
 
         GameUIController.instance.DisableInteractionText();
 
+        animator.Play("mysterbox_Open_Anim");
+
         if (currentItem != null)
         {
             Destroy(currentItem);
         }
-
 
         yield return new WaitForSeconds(0.5f);
 
@@ -76,6 +83,8 @@ public class Mysterybox : Interactable
             if (currentItem != null)
                 Destroy(currentItem);
         }
+
+        animator.Play("Mysterbox_Closing_anim");
 
         canTakeItem = false;
         isRolling = false;
@@ -126,5 +135,8 @@ public class Mysterybox : Interactable
 
         Destroy(currentItem);
         GameUIController.instance.DisableInteractionText();
+        animator.Play("Mysterbox_Closing_anim");
+        canTakeItem = false;
+        isRolling = false;
     }
 }
