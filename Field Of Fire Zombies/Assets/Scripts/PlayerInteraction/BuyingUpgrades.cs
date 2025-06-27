@@ -2,14 +2,14 @@ using UnityEngine;
 public class BuyingUpgrades : MonoBehaviour
 {
     public static BuyingUpgrades Instance;
-    [HideInInspector] public bool hasUsedQuickRevive = false;
-    private bool isQuickReviveBought = false;
+    /*[HideInInspector] public bool hasUsedQuickRevive = false;
+    private bool isQuickReviveBought = false;*/
     private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
     private bool isSpeedColaBought = false;
 
     public bool IsSpeedColaBought => isSpeedColaBought;
-    public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;
+   /* public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;*/
     public bool IsJunngernautPerkBought => isJugernautPerkBought;
     public bool IsDoubleTapBought => isDoubleTapBought;
 
@@ -64,7 +64,7 @@ public class BuyingUpgrades : MonoBehaviour
         }
     }
 
-    public void HandleBuyingQuickRevive()
+    /*public void HandleBuyingQuickRevive()
     {
         if (GameManager.Instance.Points >= 1000)
         {
@@ -86,7 +86,7 @@ public class BuyingUpgrades : MonoBehaviour
 
             // extra logica voor reviven toevoegen
         }
-    }
+    }*/
 
     public void HandleBuyingWeaponUpgrade()
     {

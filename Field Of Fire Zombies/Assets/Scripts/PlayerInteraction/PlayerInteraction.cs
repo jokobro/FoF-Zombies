@@ -79,7 +79,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool PerkAlreadyBought(BuyingUpgrades perkUpgrades)
     {
         if (perkUpgrades.IsSpeedColaBought ||
-             perkUpgrades.IsQuickReviveBought ||
+            /* perkUpgrades.IsQuickReviveBought ||*/
              perkUpgrades.IsJunngernautPerkBought ||
              perkUpgrades.IsDoubleTapBought)
         {

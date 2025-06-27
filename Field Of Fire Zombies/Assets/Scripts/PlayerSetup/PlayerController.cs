@@ -64,18 +64,8 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            if (BuyingUpgrades.Instance.IsQuickReviveBought == false)
-            {
-                gameObject.SetActive(false);
-                PauseManager.instance.HandleEndingTheGame();  //nog fixen
-            }
-            else
-            {
-                if (BuyingUpgrades.Instance.hasUsedQuickRevive == false)
-                {
-                    BuyingUpgrades.Instance.UseQuickRevive();
-                }
-            }
+            gameObject.SetActive(false);
+            PauseManager.instance.HandleEndingTheGame();  //nog fixen
         }
     }
 
