@@ -3,6 +3,7 @@ using UnityEngine;
 public class Grenade : MonoBehaviour
 {
     [SerializeField] private GameObject explosionEffectPrefab;
+    /*[SerializeField] private AudioSource explosionsound;*/
     [SerializeField] private float blastRadius = 5f;
     [SerializeField] private float delay = 3f;
     private float playerDamage = 39f; // Reduced damage for player
@@ -29,9 +30,10 @@ public class Grenade : MonoBehaviour
     {
         // Sla een referentie op naar het gemaakte explosie-effect
         GameObject instantiatedExplosionEffect = Instantiate(explosionEffectPrefab, transform.position, transform.rotation);
+        
         // Vernietig het explosie-effect na 2 seconden
         Destroy(instantiatedExplosionEffect, 2f);
-        
+       /* explosionsound.Play();*/
         Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius);
 
         foreach (Collider nearbyObject in colliders)

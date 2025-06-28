@@ -62,7 +62,7 @@ public class Weapon : MonoBehaviour
 
     public void StartReload()
     {
-        if (!reloading && this.gameObject.activeSelf)
+        if (!reloading && this.gameObject.activeSelf && currentMagAmmo < maxClipSize)
         {
             nextFire = Time.time + reloadTime;
             StartCoroutine(Reload());
