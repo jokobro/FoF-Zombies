@@ -19649,6 +19649,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 646583711}
     m_Modifications:
+    - target: {fileID: 1347119229691323158, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347119229691323158, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347119229691323158, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269461780326605061, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.24806869
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269461780326605061, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.11981776
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269461780326605061, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.22567411
+      objectReference: {fileID: 0}
     - target: {fileID: 4514741955587875804, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
       propertyPath: fireRate
       value: 0.5
@@ -23760,7 +23784,7 @@ PrefabInstance:
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[3]'
       value: 
-      objectReference: {fileID: 5295771556665001777, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      objectReference: {fileID: 1996574861951985022, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[4]'
       value: 

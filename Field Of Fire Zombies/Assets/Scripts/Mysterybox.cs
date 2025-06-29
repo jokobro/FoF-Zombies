@@ -25,7 +25,6 @@ public class Mysterybox : Interactable
     public override void HandleInteraction()
     {
         base.HandleInteraction();
-        /*Debug.Log("Mysterybox HandleInteraction called");*/
         if (isRolling || GameManager.Instance.Points < cost) return;
 
         GameManager.Instance.Points -= cost;
@@ -35,55 +34,6 @@ public class Mysterybox : Interactable
 
     private IEnumerator RollItem()
     {
-        /*isRolling = true;
-        canTakeItem = false;
-
-        GameUIController.instance.DisableInteractionText();
-        animator.Play("mysterbox_Open_Anim");
-
-        if (currentItem != null)
-        {
-            Destroy(currentItem);
-        }
-
-        yield return new WaitForSeconds(0.5f);
-
-        int index;
-        do
-        {
-            index = Random.Range(0, weaponPrefabs.Length);
-        } while (weaponPrefabs.Length > 1 && index == lastWeaponIndex);
-
-        lastWeaponIndex = index;
-
-        GameObject item = Instantiate(weaponPrefabs[index], spawnPoint.position, spawnPoint.rotation);
-        currentItem = item;
-
-        StartCoroutine(MoveItemUp(item.transform));
-        rolledWeapon = item.GetComponent<Weapon>();
-
-        canTakeItem = true;
-        float timer = 0f;
-        while (timer < showDuration)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                TakeNewWeapon();
-                break;
-            }
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        if (currentItem != null)
-            Destroy(currentItem);
-
-        animator.Play("Mysterbox_Closing_anim");
-
-        canTakeItem = false;
-        isRolling = false;*/
-
         isRolling = true;
         canTakeItem = false;
 
@@ -135,7 +85,6 @@ public class Mysterybox : Interactable
         animator.Play("Mysterbox_Closing_anim");
 
         isRolling = false;
-
     }
 
     private IEnumerator MoveItemUp(Transform item)
@@ -190,10 +139,9 @@ public class Mysterybox : Interactable
         }
 
         // Voeg nieuwe wapen toe aan socket
-        GameObject newWeaponObj = Instantiate(currentItem, weaponSocket);
+        GameObject newWeaponObj = Instantiate(rolledWeapon.gameObject, weaponSocket);
         newWeaponObj.transform.localPosition = Vector3.zero;
         newWeaponObj.transform.localRotation = Quaternion.identity;
-
         // Update en selecteer nieuwe wapen
         weaponSwitching.UpdateWeapons();
         weaponSwitching.SelectLastWeapon();
