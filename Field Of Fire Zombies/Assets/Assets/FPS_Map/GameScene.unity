@@ -17632,7 +17632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreMultiplier: 1
-  Points: 5000
+  Points: 500
 --- !u!114 &1253650378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19689,6 +19689,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5332449793033068990, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.01725924
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332449793033068990, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1356471
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332449793033068990, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5278538
+      objectReference: {fileID: 0}
     - target: {fileID: 5494427283661892918, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
       propertyPath: currentMagAmmo
       value: 30
@@ -20356,15 +20368,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 484736249121590580, guid: 7de79f662169d9f458a247b26e442753, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 82.27
+      value: 110.53692
       objectReference: {fileID: 0}
     - target: {fileID: 484736249121590580, guid: 7de79f662169d9f458a247b26e442753, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 113
+      value: 111.98061
       objectReference: {fileID: 0}
     - target: {fileID: 484736249121590580, guid: 7de79f662169d9f458a247b26e442753, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.67
+      value: 38.20144
       objectReference: {fileID: 0}
     - target: {fileID: 484736249121590580, guid: 7de79f662169d9f458a247b26e442753, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23767,20 +23779,20 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: weaponPrefabs.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 1119603779386926913, guid: f817dddbac31e644b8bc9c631dc33c61, type: 3}
+      objectReference: {fileID: 8144025827001842877, guid: 44045eaf38288864eb8b7e285c9202f1, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[1]'
       value: 
-      objectReference: {fileID: 700933520525269705, guid: 49fa41d3f7c2d814d883b7da8f3efa53, type: 3}
+      objectReference: {fileID: 1119603779386926913, guid: f817dddbac31e644b8bc9c631dc33c61, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[2]'
       value: 
-      objectReference: {fileID: 8474631011437180858, guid: 6b9d0667e342c884ebc378dec0c6c48b, type: 3}
+      objectReference: {fileID: 700933520525269705, guid: 49fa41d3f7c2d814d883b7da8f3efa53, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[3]'
       value: 
@@ -23792,11 +23804,11 @@ PrefabInstance:
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[5]'
       value: 
-      objectReference: {fileID: 8144025827001842877, guid: 44045eaf38288864eb8b7e285c9202f1, type: 3}
+      objectReference: {fileID: 8474631011437180858, guid: 6b9d0667e342c884ebc378dec0c6c48b, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: 'weaponPrefabs.Array.data[6]'
       value: 
-      objectReference: {fileID: 2128950253734173231, guid: 1fd3310cad5110f43a88d242ab8e0550, type: 3}
+      objectReference: {fileID: 4635571819422454826, guid: 679122b207c804f4ab265436bf7bbd3d, type: 3}
     - target: {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       propertyPath: onInteraction.m_PersistentCalls.m_Calls.Array.size
       value: 0
