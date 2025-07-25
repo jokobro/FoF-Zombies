@@ -2,14 +2,11 @@ using UnityEngine;
 public class BuyingUpgrades : MonoBehaviour
 {
     public static BuyingUpgrades Instance;
-    /*[HideInInspector] public bool hasUsedQuickRevive = false;
-    private bool isQuickReviveBought = false;*/
     private bool isJugernautPerkBought = false;
     private bool isDoubleTapBought = false;
     private bool isSpeedColaBought = false;
 
     public bool IsSpeedColaBought => isSpeedColaBought;
-   /* public bool IsQuickReviveBought => isQuickReviveBought && !hasUsedQuickRevive;*/
     public bool IsJunngernautPerkBought => isJugernautPerkBought;
     public bool IsDoubleTapBought => isDoubleTapBought;
 
@@ -37,7 +34,7 @@ public class BuyingUpgrades : MonoBehaviour
             GameManager.Instance.Points -= 2500;
             GameUIController.instance.RefreshUI();
             PerkUIManager.Instance.AddPerkToUI("juggernog"); // Voeg toe aan UI
-            PlayerController.Instance.playerHealth = 170f;
+            PlayerController.Instance.playerMaxHealth = 170f;
             isJugernautPerkBought = true;
         }
     }
@@ -63,30 +60,6 @@ public class BuyingUpgrades : MonoBehaviour
             }
         }
     }
-
-    /*public void HandleBuyingQuickRevive()
-    {
-        if (GameManager.Instance.Points >= 1000)
-        {
-            GameManager.Instance.Points -= 1000;
-            GameUIController.instance.RefreshUI();
-            PerkUIManager.Instance.AddPerkToUI("quickrevive");
-            isQuickReviveBought = true;
-            hasUsedQuickRevive = false;
-        }
-    }
-    // Roep deze methode aan wanneer de speler Quick Revive gebruikt
-    public void UseQuickRevive()
-    {
-        if (isQuickReviveBought)
-        {
-            Debug.Log("Quick Revive gebruikt!");
-            hasUsedQuickRevive = false;
-            isQuickReviveBought = true;
-
-            // extra logica voor reviven toevoegen
-        }
-    }*/
 
     public void HandleBuyingWeaponUpgrade()
     {

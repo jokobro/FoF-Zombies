@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float jumpPower = 10f;
-    [HideInInspector] public float playerHealth = 100;
+    [HideInInspector] public float playerMaxHealth = 100;
+    [HideInInspector] public float playerCurrentHealth = 100;
     [HideInInspector] public float walkSpeed;
 
     [Header("Look Settings")]
@@ -25,6 +26,12 @@ public class PlayerController : MonoBehaviour
     private float gravity = -9.81f;
     private float verticalVelocity;
 
+    [Header("Regeneration")]
+    [SerializeField] private float timeBetweenDamageAndRegen = .5f; //the amount of time after taking damage before beginning to regen
+    private float startRegenTime = 0.0f;
+    [SerializeField] private float regenRate = 10.0f; //Amount regenerated/second
+    private bool needsRegen = false;
+
     private Vector3 moveDirection;
     private Vector2 inputMovement;
     private float yRotation;
@@ -32,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private bool isDoublePointsActive;
     private bool isInstantKillActive;
     private bool isShooting = false;
+
+    private bool RegenCanStart => Time.time > startRegenTime;
 
     private void Awake()
     {
@@ -56,16 +65,34 @@ public class PlayerController : MonoBehaviour
         {
             HandleShooting();
         }
+
+        if(needsRegen && RegenCanStart)
+        {
+            RegenerateHealth();
+        }
     }
 
     public void TakeDamage(float damageAmount)
     {
-        playerHealth -= damageAmount;
+        playerCurrentHealth -= damageAmount;
+        needsRegen = true;
+        startRegenTime = Time.time + timeBetweenDamageAndRegen;
 
-        if (playerHealth <= 0)
+        if (playerCurrentHealth <= 0)
         {
             gameObject.SetActive(false);
             PauseManager.instance.HandleEndingTheGame();  //nog fixen
+        }
+    }
+
+    private void RegenerateHealth()
+    {
+        playerCurrentHealth += regenRate * Time.deltaTime;
+
+        if (playerCurrentHealth >= playerMaxHealth)
+        {
+            playerCurrentHealth = playerMaxHealth;
+            needsRegen = false;
         }
     }
 

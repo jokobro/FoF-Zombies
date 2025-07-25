@@ -46,10 +46,7 @@ public class PauseManager : MonoBehaviour
         endgameScreen.style.display = DisplayStyle.None;
         roundReachedLabel = root.Q<Label>("RoundReachedText");
 
-        resumeButton.clicked += () =>
-        {
-            ResumeGame();
-        };
+        resumeButton.clicked += () =>{ResumeGame();};
     }
 
     private void TogglePause()
@@ -113,5 +110,7 @@ public class PauseManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
         UnityEngine.Cursor.lockState = CursorLockMode.None;
         UnityEngine.Cursor.visible = true;
+        gameActionMap.Disable();
+        uiActionMap.Enable();
     }
 }

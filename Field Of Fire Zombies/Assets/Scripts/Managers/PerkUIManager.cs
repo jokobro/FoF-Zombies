@@ -32,14 +32,6 @@ public class PerkUIManager : MonoBehaviour
                 perkSlots[currentSlotIndex].style.backgroundImage = new StyleBackground(texture);
                 currentSlotIndex++;
             }
-            else
-            {
-                Debug.LogWarning($"Perk sprite '{perkName}' niet gevonden in Resources/PerkIcons/");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Alle perk slots zijn al gevuld.");
         }
     }
 

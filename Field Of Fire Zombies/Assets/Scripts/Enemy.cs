@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Combat Settings")]
     public float health = 100f;
     public float damage = 10f;
-    public float attackDistance = 2f;
+    public float attackDistance = 1.5f;
     public float attackCooldown = 1.5f;
     public int pointsAmount = 10;
 
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void HandleAttacking(float distanceToPlayer)
     {
-        if (distanceToPlayer <= attackDistance && Time.time > lastAttackTime + attackCooldown)
+        if (!isDead && distanceToPlayer <= attackDistance && Time.time > lastAttackTime + attackCooldown)
         {
             Vector3 lookDirection = (playerPosition.position - transform.position).normalized;
             lookDirection.y = 0f; // Zorgt dat hij niet omhoog/omlaag kijkt
