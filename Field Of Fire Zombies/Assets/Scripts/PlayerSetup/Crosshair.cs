@@ -4,12 +4,12 @@ using UnityEngine.UIElements;
 public class Crosshair : MonoBehaviour
 {
     private VisualElement topLine, bottomLine, leftLine, rightLine;
-    private float currentSize;
-   [SerializeField] private float restingSize = 29f;
-   [SerializeField]  private float maxSize = 120f;
-    private float speed = 10f;
     private CharacterController characterController;
-
+    private float currentSize;
+    private float restingSize = 22f;
+    private float maxSize = 106f;
+    private float speed = 10f;
+    
     private void Start()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
