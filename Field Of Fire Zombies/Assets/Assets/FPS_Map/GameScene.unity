@@ -13763,6 +13763,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5661101342994541bb6da1fec974969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  restingSize: 18.2
+  maxSize: 96
 --- !u!114 &989658238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20430,6 +20432,14 @@ PrefabInstance:
       propertyPath: isBeingRevived
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1284371431321325359, guid: 7de79f662169d9f458a247b26e442753, type: 3}
+      propertyPath: playerMaxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284371431321325359, guid: 7de79f662169d9f458a247b26e442753, type: 3}
+      propertyPath: playerCurrentHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1321009765932656176, guid: 7de79f662169d9f458a247b26e442753, type: 3}
       propertyPath: m_ActionEvents.Array.size
       value: 18
@@ -23876,6 +23886,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 848388845533280965, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
     - {fileID: 8010186808407486987, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
+    - {fileID: 3386079766626528915, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4488637711923366005, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
@@ -23888,6 +23899,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5995574157998854401, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1728795208}
+    - targetCorrespondingSourceObject: {fileID: 5995574157998854401, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1728795211}
   m_SourcePrefab: {fileID: 100100000, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
 --- !u!1 &1728795202 stripped
 GameObject:
@@ -23916,6 +23930,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1728795211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728795202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b3a2d2ca3e9754493e902cf9650bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Press F to open Mystery Box (950 points)
+  onInteraction:
+    m_PersistentCalls:
+      m_Calls: []
+  weaponPrefabs:
+  - {fileID: 8144025827001842877, guid: 44045eaf38288864eb8b7e285c9202f1, type: 3}
+  - {fileID: 1119603779386926913, guid: f817dddbac31e644b8bc9c631dc33c61, type: 3}
+  - {fileID: 700933520525269705, guid: 49fa41d3f7c2d814d883b7da8f3efa53, type: 3}
+  - {fileID: 1996574861951985022, guid: 84596dff3cc9fca47a410eb2cb46fb93, type: 3}
+  - {fileID: 4175553350876728121, guid: ed23a94d555fda64ebc97f7109a16971, type: 3}
+  - {fileID: 8474631011437180858, guid: 6b9d0667e342c884ebc378dec0c6c48b, type: 3}
+  - {fileID: 4635571819422454826, guid: 679122b207c804f4ab265436bf7bbd3d, type: 3}
+  spawnPoint: {fileID: 2127030551}
+  showDuration: 5
+  cost: 950
 --- !u!1001 &1735162179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29790,6 +29831,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011416029138, guid: 845bb3e01ad4efe44adb29f965b2150b, type: 3}
   m_PrefabInstance: {fileID: 2126205541}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2127030551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5054491013623929709, guid: c026a12d976ee7b4db01479344ac90a9, type: 3}
+  m_PrefabInstance: {fileID: 1728795201}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2127847517
 PrefabInstance:

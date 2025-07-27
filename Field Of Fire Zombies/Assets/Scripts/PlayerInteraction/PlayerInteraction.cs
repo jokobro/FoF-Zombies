@@ -4,10 +4,9 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction Instance;
-    [SerializeField] private string doorOpenAnimName;
-    [SerializeField] private float playerInReach = 3f;
     private Interactable currentInteractable;
-    /*private HashSet<GameObject> openedDoors = new HashSet<GameObject>();*/
+    public Vector3 relativeDirection = new Vector3(0, 0, 1);
+    private float playerInReach = 3f;
 
     private void Awake()
     {
@@ -20,6 +19,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentInteractable.HandleInteraction();
         }
+
+        Vector3 debugDirection = Camera.main.transform.TransformDirection(relativeDirection.normalized);
+        Debug.DrawRay(Camera.main.transform.position, debugDirection * playerInReach, Color.red);
     }
 
     private void CheckInteraction()
@@ -27,13 +29,6 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, playerInReach))
         {
-            /*if (hit.collider.CompareTag("Door"))
-            {
-                ShowDoorInteraction(hit.collider);
-                return;
-            }*/
-
-
             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
             if (newInteractable == null)
             {
@@ -79,7 +74,6 @@ public class PlayerInteraction : MonoBehaviour
     private bool PerkAlreadyBought(BuyingUpgrades perkUpgrades)
     {
         if (perkUpgrades.IsSpeedColaBought ||
-            /* perkUpgrades.IsQuickReviveBought ||*/
              perkUpgrades.IsJunngernautPerkBought ||
              perkUpgrades.IsDoubleTapBought)
         {
@@ -88,32 +82,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         return false;
     }
-
-    /*private void ShowDoorInteraction(Collider doorCollider)
-    {
-        GameObject doorParent = doorCollider.transform.parent?.parent?.gameObject; // Ga 2 niveaus omhoog naar DoorParent
-        if (doorParent == null || openedDoors.Contains(doorParent)) return;
-
-        GameUIController.instance.EnableInteractionText("Press E to open door (2000 points)");
-        if (Input.GetKeyDown(KeyCode.E) && GameManager.Instance.Points >= 2000)
-        {
-            GameManager.Instance.Points -= 2000;
-            GameUIController.instance.RefreshUI();
-
-            Animator doorAnim = doorParent.GetComponent<Animator>();
-            // AudioSource doorSound = doorParent.GetComponent<AudioSource>();
-            // if (doorSound != null) doorSound.Play(); // UITGESCHAKELD
-
-            if (doorAnim != null)
-            {
-                doorAnim.SetBool("OpenDoor", true);
-            }
-
-            openedDoors.Add(doorParent); // Voeg de geopende deur toe aan de lijst
-            GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
-            ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
-        }
-    }*/
 
     private void SetNewCurrentInteractable(Interactable newInteractable)
     {

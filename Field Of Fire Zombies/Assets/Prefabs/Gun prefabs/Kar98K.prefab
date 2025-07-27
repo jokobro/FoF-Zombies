@@ -53,7 +53,7 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  damage: 80
+  damage: 170
   currentMagAmmo: 5
   maxClipSize: 5
   currentAmmo: 40

@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float jumpPower = 10f;
-    [HideInInspector] public float playerMaxHealth = 100;
-    [HideInInspector] public float playerCurrentHealth = 100;
+
+    [SerializeField] private float playerCurrentHealth;
+     public float playerMaxHealth;
     [HideInInspector] public float walkSpeed;
 
     [Header("Look Settings")]
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
             HandleShooting();
         }
 
-        if(needsRegen && RegenCanStart)
+        if (needsRegen && RegenCanStart)
         {
             RegenerateHealth();
         }
