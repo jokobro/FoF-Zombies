@@ -13763,8 +13763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5661101342994541bb6da1fec974969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restingSize: 18.2
-  maxSize: 96
 --- !u!114 &989658238
 MonoBehaviour:
   m_ObjectHideFlags: 0

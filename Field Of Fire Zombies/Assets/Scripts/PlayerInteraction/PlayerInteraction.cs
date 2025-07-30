@@ -1,27 +1,27 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction Instance;
     private Interactable currentInteractable;
-    public Vector3 relativeDirection = new Vector3(0, 0, 1);
     private float playerInReach = 3f;
 
     private void Awake()
     {
         Instance = this;
     }
+
     private void Update()
     {
         CheckInteraction();
+
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
             currentInteractable.HandleInteraction();
         }
 
-        Vector3 debugDirection = Camera.main.transform.TransformDirection(relativeDirection.normalized);
-        Debug.DrawRay(Camera.main.transform.position, debugDirection * playerInReach, Color.red);
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * playerInReach, Color.red);
     }
 
     private void CheckInteraction()
@@ -30,12 +30,14 @@ public class PlayerInteraction : MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, playerInReach))
         {
             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
+
             if (newInteractable == null)
             {
                 DisableCurrentInteractable();
                 return;
             }
 
+            // Mysterybox
             Mysterybox box = newInteractable.GetComponent<Mysterybox>();
             if (box != null)
             {
@@ -56,37 +58,40 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            BuyingUpgrades upgrades = newInteractable.GetComponent<BuyingUpgrades>();
-            if (upgrades != null && !PerkAlreadyBought(upgrades))
+            // Perk machine
+            BuyingUpgrades upgrade = newInteractable.GetComponent<BuyingUpgrades>();
+            if (upgrade != null)
             {
+                if (PerkAlreadyBought(upgrade))
+                {
+                    DisableCurrentInteractable();
+                    return;
+                }
+
                 Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
-                if (currentWeapon != null && currentWeapon.isWeaponUpgraded) return;
-                SetNewCurrentInteractable(newInteractable);
+                if (currentWeapon != null && currentWeapon.isWeaponUpgraded)
+                {
+                    DisableCurrentInteractable();
+                    return;
+                }
+
+                currentInteractable = newInteractable;
+                GameUIController.instance.EnableInteractionText(currentInteractable.message);
                 return;
             }
-            SetNewCurrentInteractable(newInteractable);
+
+            // Algemene interactable
+            currentInteractable = newInteractable;
+            GameUIController.instance.EnableInteractionText(currentInteractable.message);
             return;
         }
 
         DisableCurrentInteractable();
     }
 
-    private bool PerkAlreadyBought(BuyingUpgrades perkUpgrades)
+    private bool PerkAlreadyBought(BuyingUpgrades upgrade)
     {
-        if (perkUpgrades.IsSpeedColaBought ||
-             perkUpgrades.IsJunngernautPerkBought ||
-             perkUpgrades.IsDoubleTapBought)
-        {
-            GameUIController.instance.DisableInteractionText(); // Verberg tekst als een perk is gekocht
-            return true;
-        }
-        return false;
-    }
-
-    private void SetNewCurrentInteractable(Interactable newInteractable)
-    {
-        currentInteractable = newInteractable;
-       GameUIController.instance.EnableInteractionText(currentInteractable.message);
+        return upgrade != null && BuyingUpgrades.Instance.IsPerkBought(upgrade.perkType);
     }
 
     private void DisableCurrentInteractable()

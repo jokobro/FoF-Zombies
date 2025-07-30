@@ -1,63 +1,88 @@
+using System.Collections.Generic;
 using UnityEngine;
-public class BuyingUpgrades : MonoBehaviour
+public class BuyingUpgrades : Interactable
 {
     public static BuyingUpgrades Instance;
-    private bool isJugernautPerkBought = false;
-    private bool isDoubleTapBought = false;
-    private bool isSpeedColaBought = false;
 
-    public bool IsSpeedColaBought => isSpeedColaBought;
-    public bool IsJunngernautPerkBought => isJugernautPerkBought;
-    public bool IsDoubleTapBought => isDoubleTapBought;
+    private HashSet<PerkType> boughtPerks = new HashSet<PerkType>();
+    public bool IsPerkBought(PerkType perk) => boughtPerks.Contains(perk);
+
+    public PerkType perkType;
+   
+
+    public enum PerkType
+    {
+        SpeedCola,
+        Juggernog,
+        DoubleTap,
+    }
 
     private void Awake()
     {
         Instance = this;
     }
+    public override void HandleInteraction()
+    {
+        base.HandleInteraction(); // Dit roept je onInteraction event aan dat je in de Inspector hebt ingesteld
+    }
 
+    
     public void HandleBuyingSpeedCola()
     {
+        if (IsPerkBought(PerkType.SpeedCola)) return;
+
         if (GameManager.Instance.Points >= 1500)
         {
             GameManager.Instance.Points -= 1500;
             GameUIController.instance.RefreshUI();
-            PlayerController.Instance.walkSpeed = 12.6f; // Past de loopsnelheid aan.
-            PerkUIManager.Instance.AddPerkToUI("speedcola"); // Voeg toe aan UI
-            isSpeedColaBought = true;
+            PlayerController.Instance.walkSpeed = 12.6f;
+            PerkUIManager.Instance.AddPerkToUI("speedcola");
+            boughtPerks.Add(PerkType.SpeedCola);
+
+            GameUIController.instance.DisableInteractionText();
+            PlayerInteraction.Instance.ClearInteraction();
         }
     }
 
     public void HandleBuyingJuggernaut()
     {
+        if (IsPerkBought(PerkType.Juggernog)) return;
+
         if (GameManager.Instance.Points >= 2500)
         {
             GameManager.Instance.Points -= 2500;
             GameUIController.instance.RefreshUI();
-            PerkUIManager.Instance.AddPerkToUI("juggernog"); // Voeg toe aan UI
+            PerkUIManager.Instance.AddPerkToUI("juggernog");
             PlayerController.Instance.playerMaxHealth = 170f;
-            isJugernautPerkBought = true;
+            boughtPerks.Add(PerkType.Juggernog);
+
+            GameUIController.instance.DisableInteractionText();
+            PlayerInteraction.Instance.ClearInteraction();
         }
     }
 
     public void HandleBuyingDoubleTap()
     {
+        if (IsPerkBought(PerkType.DoubleTap)) return;
+
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
             GameUIController.instance.RefreshUI();
             PerkUIManager.Instance.AddPerkToUI("doubletap");
-            isDoubleTapBought = true;
+            boughtPerks.Add(PerkType.DoubleTap);
 
-            // Haal alle wapens op uit de weaponSwitching
             Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
-
-            foreach (Weapon currentWeapon in allWeapons)// Loop door alle wapens en pas de vuursnelheid aan
+            foreach (Weapon currentWeapon in allWeapons)
             {
                 if (currentWeapon != null)
                 {
-                    currentWeapon.fireRate *= 0.4f; // Verminder de vuursnelheid met 60%
+                    currentWeapon.fireRate *= 0.4f;
                 }
             }
+
+            GameUIController.instance.DisableInteractionText();
+            PlayerInteraction.Instance.ClearInteraction();
         }
     }
 
