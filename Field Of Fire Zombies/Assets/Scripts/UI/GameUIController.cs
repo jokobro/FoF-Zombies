@@ -24,7 +24,7 @@ public class GameUIController : MonoBehaviour
         interactionLabel = root.Q<Label>("InteractionText");
 
         bloodSplatter1 = root.Q<VisualElement>("BloodSplatter1");
-        bloodSplatter2 = root.Q<VisualElement>("BloodSplatter2");        
+        bloodSplatter2 = root.Q<VisualElement>("BloodSplatter2");
         bloodSplatter1.style.visibility = Visibility.Hidden;
         bloodSplatter2.style.visibility = Visibility.Hidden;
 
@@ -35,7 +35,7 @@ public class GameUIController : MonoBehaviour
         {
             UpdateScoreText(GameManager.Instance.Points);
         }
-        
+
         if (interactionLabel != null)
         {
             interactionLabel.visible = false;

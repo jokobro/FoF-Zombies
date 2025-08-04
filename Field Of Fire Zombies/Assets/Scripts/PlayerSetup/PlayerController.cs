@@ -1,7 +1,7 @@
-using System.Collections;
+ï»¿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -11,21 +11,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
     private CharacterController characterController;
-
-    // Cached references - gecontroleerd op validity
     private GameUIController cachedUIController;
-    private Weapon cachedWeapon;
     private WeaponSwitching weaponSwitching;
     private PauseManager pauseManager;
     private GameManager gameManager;
+    private Weapon cachedWeapon;
 
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float jumpPower = 10f;
-
-    public float playerCurrentHealth;
-    public float playerMaxHealth;
     [HideInInspector] public float walkSpeed;
+    [HideInInspector] public float playerCurrentHealth;
+    [HideInInspector] public float playerMaxHealth;
 
     [Header("Look Settings")]
     [SerializeField] private float sensX = 10f;
@@ -36,10 +33,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     private float verticalVelocity;
 
     [Header("Regeneration")]
-    [SerializeField] private float timeBetweenDamageAndRegen = 0.5f;
+    private float timeBetweenDamageAndRegen = 6f;
     private float startRegenTime = 0.0f;
-    [SerializeField] private float regenRate = 10.0f;
+    private float regenRate = 2.2f;
     private bool needsRegen = false;
+
+    [Header("Powerup Audio")]
+    [SerializeField] private AudioClip bonusPointsSound;
+    [SerializeField] private AudioClip doublePointsSound;
+    [SerializeField] private AudioClip maxAmmoSound;
+    [SerializeField] private AudioClip instantKillSound;
+    [SerializeField] private AudioClip nukeSound;
+    private float powerupAudioVolume = 1f;
 
     private Vector3 moveDirection;
     private Vector2 inputMovement;
@@ -56,7 +61,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     private bool hasValidUIController;
     private bool hasValidPauseManager;
     private bool hasValidWeaponSwitching;
-
     private bool RegenCanStart => Time.time > startRegenTime;
 
     private void Awake()
@@ -85,7 +89,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void CacheAllReferences()
     {
-        // Cache alle references in één keer en set validity flags
+        // Cache alle references in Ã©Ã©n keer en set validity flags
         cachedUIController = GameUIController.instance;
         hasValidUIController = cachedUIController != null;
 
@@ -99,7 +103,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         // Only search for weapon once if really needed
         if (cachedWeapon == null)
+        {
             cachedWeapon = FindObjectOfType<Weapon>();
+        }
     }
 
     private void Update()
@@ -220,8 +226,16 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void HandleShooting()
     {
+        if (WeaponUpgradeManager.Instance != null && WeaponUpgradeManager.Instance.isUpgrading)
+        {
+            return;
+        }
+
         // Gebruik cached reference zonder null-conditional operator
-        if (!hasValidWeaponSwitching) return;
+        if (!hasValidWeaponSwitching)
+        {
+            return;
+        }
 
         Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
         if (currentWeapon != null)
@@ -241,7 +255,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
             if (currentWeapon != null)
+            {
                 currentWeapon.StartReload();
+            }
         }
     }
 
@@ -269,19 +285,20 @@ public class PlayerController : MonoBehaviour, IDamageable
                 {
                     isDoublePointsActive = true;
                     gameManager.scoreMultiplier = 2f;
+                    PowerupUIManager.Instance?.ShowPowerup(0, duration);
                     StartCoroutine(DoublePointsCooldown(duration));
+                    AudioSource.PlayClipAtPoint(doublePointsSound, transform.position, powerupAudioVolume);
                     Destroy(powerup);
                 }
                 break;
-
             case 1: // Bonus Points
                 if (gameManager != null)
                 {
                     gameManager.AddScore(500);
+                    AudioSource.PlayClipAtPoint(bonusPointsSound, transform.position, powerupAudioVolume);
                     Destroy(powerup);
                 }
                 break;
-
             case 2: // Max Ammo
                 if (hasValidWeaponSwitching)
                 {
@@ -297,24 +314,27 @@ public class PlayerController : MonoBehaviour, IDamageable
                 }
                 Destroy(powerup);
                 break;
-
             case 3: // Instant Kill
                 if (!isInstantKillActive && cachedWeapon != null)
                 {
                     isInstantKillActive = true;
                     cachedWeapon.damage += 1000;
+                    PowerupUIManager.Instance?.ShowPowerup(3, duration);
                     StartCoroutine(InstantKillCooldown(duration));
+                    AudioSource.PlayClipAtPoint(instantKillSound, transform.position, powerupAudioVolume);
                     Destroy(powerup);
                 }
                 break;
-
             case 4: // Nuke
                 waveManager waveManagerInstance = waveManager.Instance;
                 if (waveManagerInstance != null)
                 {
+                    AudioSource.PlayClipAtPoint(nukeSound, transform.position, powerupAudioVolume);
                     waveManagerInstance.KillAllEnemies();
                     if (gameManager != null)
+                    {
                         gameManager.AddScore(400);
+                    }
                 }
                 Destroy(powerup);
                 break;
@@ -334,12 +354,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(duration);
         isDoublePointsActive = false;
         if (gameManager != null)
+        {
             gameManager.scoreMultiplier = 1f;
-    }
-
-    // Method om references te refreshen als nodig
-    public void RefreshCachedReferences()
-    {
-        CacheAllReferences();
+        }
     }
 }

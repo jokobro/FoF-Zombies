@@ -25,6 +25,9 @@ public class waveManager : MonoBehaviour
 
     public int CurrentWave => currentWave + 1; // +1 zodat het vanaf 1 telt
 
+    [SerializeField] private AudioClip roundChangeSound;
+    private float powerupAudioVolume = 1f;
+
     private void Awake()
     {
         if (Instance == null)
@@ -96,11 +99,12 @@ public class waveManager : MonoBehaviour
 
             yield return new WaitForSeconds(5f);
         }
-       /* Debug.Log(" Alle waves voltooid!");*/
     }
 
     private IEnumerator SpawnWave(Wave wave)
     {
+
+        AudioSource.PlayClipAtPoint(roundChangeSound, Camera.main.transform.position, powerupAudioVolume);
         foreach (EnemySpawnData enemyData in wave.enemiesToSpawn)
         {
             for (int i = 0; i < enemyData.amount; i++)

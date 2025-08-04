@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private AudioClip endGameSound;
+
     public static PauseManager instance;
     private VisualElement pauseScreen;
     private VisualElement endgameScreen;
@@ -19,6 +21,7 @@ public class PauseManager : MonoBehaviour
     private InputActionMap gameActionMap;
     private InputActionMap uiActionMap;
     private InputAction pauseAction;
+    private float powerupAudioVolume = 1f;
 
     private void Awake()
     {
@@ -45,8 +48,7 @@ public class PauseManager : MonoBehaviour
         pauseScreen.style.display = DisplayStyle.None;
         endgameScreen.style.display = DisplayStyle.None;
         roundReachedLabel = root.Q<Label>("RoundReachedText");
-
-        resumeButton.clicked += () =>{ResumeGame();};
+        resumeButton.clicked += () => { ResumeGame(); };
     }
 
     private void TogglePause()
@@ -87,12 +89,24 @@ public class PauseManager : MonoBehaviour
 
     private void EndGame(ClickEvent clickEvent)
     {
+        if (endGameSound != null)
+        {
+            AudioSource.PlayClipAtPoint(endGameSound, Camera.main.transform.position, powerupAudioVolume);
+        }
+        // Wacht een korte tijd voordat het endgame scherm verschijnt
+        StartCoroutine(DelayedEndGame());
+    }
+
+    private IEnumerator DelayedEndGame()
+    {
+        // Wacht 1 seconden voordat het scherm verschijnt
+        yield return new WaitForSecondsRealtime(1f);
+        // Nu pas het endgame scherm tonen
         HandleEndingTheGame();
     }
 
     public void HandleEndingTheGame()
     {
-        StartCoroutine(EndGameCycle());
         endgameScreen.style.display = DisplayStyle.Flex;
         pauseScreen.style.display = DisplayStyle.None;
         hud.style.display = DisplayStyle.None;
@@ -102,11 +116,12 @@ public class PauseManager : MonoBehaviour
             int round = Mathf.Max(1, waveManager.Instance.CurrentWave - 1);
             roundReachedLabel.text = $"Round Reached {round}";
         }
+        StartCoroutine(EndGameCycle());
     }
 
     private IEnumerator EndGameCycle()
     {
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(19);
         SceneManager.LoadScene("MainMenu");
         UnityEngine.Cursor.lockState = CursorLockMode.None;
         UnityEngine.Cursor.visible = true;

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BuyingUpgrades : Interactable
 {
+    [SerializeField] private AudioSource weaponUpgradeSound;
+   
     [Header("Perk Configuration")]
     public PerkType perkType;
 
@@ -40,7 +42,7 @@ public class BuyingUpgrades : Interactable
         {
             GameManager.Instance.Points -= 1500;
             GameUIController.instance.RefreshUI();
-            PlayerController.Instance.walkSpeed = 12.6f;
+            PlayerController.Instance.walkSpeed = 5.85f;
             PerkUIManager.Instance.AddPerkToUI("speedcola");
             PerkManager.Instance.BuyPerk(PerkType.SpeedCola);
 
@@ -101,10 +103,15 @@ public class BuyingUpgrades : Interactable
         {
             GameManager.Instance.Points -= 5000;
             GameUIController.instance.RefreshUI();
+
+            WeaponUpgradeManager.Instance.StartWeaponUpgrade(5f); // 5 seconden
+            weaponUpgradeSound.Play();
+
             currentWeapon.fireRate = 0.150f;
             currentWeapon.damage *= 1.8f;
             currentWeapon.reloadTime *= 0.4f;
             currentWeapon.isWeaponUpgraded = true;
+
             GameUIController.instance.DisableInteractionText();
             PlayerInteraction.Instance.ClearInteraction();
         }
