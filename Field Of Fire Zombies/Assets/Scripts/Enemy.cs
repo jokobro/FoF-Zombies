@@ -29,21 +29,30 @@ public class Enemy : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        playerPosition = GameObject.Find("Player").transform;
+        /*playerPosition = GameObject.Find("Player").transform;*/
         animator.applyRootMotion = true;
+
+        if (PlayerController.Instance != null)
+        {
+            playerPosition = PlayerController.Instance.transform;
+        }
     }
 
     private void Update()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);
+        float sqrDistanceToPlayer = (transform.position - playerPosition.position).sqrMagnitude;
+        float distanceToPlayer = MathF.Sqrt(sqrDistanceToPlayer);
+
+       /* float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);*/
         animator.SetFloat("DistanceToPlayer", distanceToPlayer);
         MoveToTarget(distanceToPlayer);
-        HandleAttacking(distanceToPlayer);
+        HandleAttacking(sqrDistanceToPlayer);
     }
 
-    private void HandleAttacking(float distanceToPlayer)
+    private void HandleAttacking(float sqrDistanceToPlayer)
     {
-        if (!isDead && distanceToPlayer <= attackDistance && Time.time > lastAttackTime + attackCooldown)
+        float sqrAttackDistance = attackDistance * attackDistance;
+        if (!isDead && sqrDistanceToPlayer <= sqrAttackDistance && Time.time > lastAttackTime + attackCooldown)
         {
             Vector3 lookDirection = (playerPosition.position - transform.position).normalized;
             lookDirection.y = 0f; // Zorgt dat hij niet omhoog/omlaag kijkt
@@ -98,7 +107,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private void HandleEnemyDyingPickUpDropChange()
     {
         float dropChance = UnityEngine.Random.Range(0f, 1f); // Geeft een float tussen 0 en 1
-        if (dropChance <= 0.3f && pickups.Count > 0) // 30% kans en controleer of er pickups zijn
+        if (dropChance <= 0.12f && pickups.Count > 0) // 30% kans en controleer of er pickups zijn
         {
             int randomIndex = UnityEngine.Random.Range(0, pickups.Count);
             Instantiate(pickups[randomIndex], spawnPlace.position, Quaternion.identity);

@@ -9,6 +9,10 @@ public class GameUIController : MonoBehaviour
     private Label waveLabel;
     private Label interactionLabel;
 
+    [Header("healthUI")]
+    public VisualElement bloodSplatter1;
+    public VisualElement bloodSplatter2;
+
     private void Awake()
     {
         instance = this;
@@ -18,6 +22,11 @@ public class GameUIController : MonoBehaviour
         scoreLabel = root.Q<Label>("scoreLabel");
         waveLabel = root.Q<Label>("waveLabel");
         interactionLabel = root.Q<Label>("InteractionText");
+
+        bloodSplatter1 = root.Q<VisualElement>("BloodSplatter1");
+        bloodSplatter2 = root.Q<VisualElement>("BloodSplatter2");        
+        bloodSplatter1.style.visibility = Visibility.Hidden;
+        bloodSplatter2.style.visibility = Visibility.Hidden;
 
         GameManager.OnPointsChanged += UpdateScoreText;
         waveManager.OnWaveChanged += UpdateWaveText;

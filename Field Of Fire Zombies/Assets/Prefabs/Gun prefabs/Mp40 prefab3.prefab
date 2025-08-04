@@ -10235,7 +10235,7 @@ MonoBehaviour:
   currentAmmo: 300
   maxAmmo: 300
   maxDistance: 40000
-  reloadTime: 2.4
+  reloadTime: 3
   fireRate: 0.16
   fireTimer: 8.1210375
   nextFire: 10.287862
@@ -10347,8 +10347,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9d1ca8d255dc8244f93bd33436d1b461, type: 3}
-  m_Resource: {fileID: 8300000, guid: 9d1ca8d255dc8244f93bd33436d1b461, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 120ba72560631fd4099061bda0093902, type: 3}
+  m_Resource: {fileID: 8300000, guid: 120ba72560631fd4099061bda0093902, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

@@ -1,35 +1,40 @@
-using System.Collections.Generic;
 using UnityEngine;
+
 public class BuyingUpgrades : Interactable
 {
-    public static BuyingUpgrades Instance;
-
-    private HashSet<PerkType> boughtPerks = new HashSet<PerkType>();
-    public bool IsPerkBought(PerkType perk) => boughtPerks.Contains(perk);
-
+    [Header("Perk Configuration")]
     public PerkType perkType;
-   
 
     public enum PerkType
     {
         SpeedCola,
         Juggernog,
         DoubleTap,
+        WeaponUpgrade
     }
 
-    private void Awake()
-    {
-        Instance = this;
-    }
     public override void HandleInteraction()
     {
-        base.HandleInteraction(); // Dit roept je onInteraction event aan dat je in de Inspector hebt ingesteld
+        switch (perkType)
+        {
+            case PerkType.SpeedCola:
+                HandleBuyingSpeedCola();
+                break;
+            case PerkType.Juggernog:
+                HandleBuyingJuggernaut();
+                break;
+            case PerkType.DoubleTap:
+                HandleBuyingDoubleTap();
+                break;
+            case PerkType.WeaponUpgrade:
+                HandleBuyingWeaponUpgrade();
+                break;
+        }
     }
 
-    
     public void HandleBuyingSpeedCola()
     {
-        if (IsPerkBought(PerkType.SpeedCola)) return;
+        if (PerkManager.Instance.IsPerkBought(PerkType.SpeedCola)) return;
 
         if (GameManager.Instance.Points >= 1500)
         {
@@ -37,7 +42,7 @@ public class BuyingUpgrades : Interactable
             GameUIController.instance.RefreshUI();
             PlayerController.Instance.walkSpeed = 12.6f;
             PerkUIManager.Instance.AddPerkToUI("speedcola");
-            boughtPerks.Add(PerkType.SpeedCola);
+            PerkManager.Instance.BuyPerk(PerkType.SpeedCola);
 
             GameUIController.instance.DisableInteractionText();
             PlayerInteraction.Instance.ClearInteraction();
@@ -46,7 +51,7 @@ public class BuyingUpgrades : Interactable
 
     public void HandleBuyingJuggernaut()
     {
-        if (IsPerkBought(PerkType.Juggernog)) return;
+        if (PerkManager.Instance.IsPerkBought(PerkType.Juggernog)) return;
 
         if (GameManager.Instance.Points >= 2500)
         {
@@ -54,7 +59,8 @@ public class BuyingUpgrades : Interactable
             GameUIController.instance.RefreshUI();
             PerkUIManager.Instance.AddPerkToUI("juggernog");
             PlayerController.Instance.playerMaxHealth = 170f;
-            boughtPerks.Add(PerkType.Juggernog);
+            PlayerController.Instance.playerCurrentHealth = 170f;
+            PerkManager.Instance.BuyPerk(PerkType.Juggernog);
 
             GameUIController.instance.DisableInteractionText();
             PlayerInteraction.Instance.ClearInteraction();
@@ -63,14 +69,14 @@ public class BuyingUpgrades : Interactable
 
     public void HandleBuyingDoubleTap()
     {
-        if (IsPerkBought(PerkType.DoubleTap)) return;
+        if (PerkManager.Instance.IsPerkBought(PerkType.DoubleTap)) return;
 
         if (GameManager.Instance.Points >= 2000)
         {
             GameManager.Instance.Points -= 2000;
             GameUIController.instance.RefreshUI();
             PerkUIManager.Instance.AddPerkToUI("doubletap");
-            boughtPerks.Add(PerkType.DoubleTap);
+            PerkManager.Instance.BuyPerk(PerkType.DoubleTap);
 
             Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
             foreach (Weapon currentWeapon in allWeapons)
@@ -89,7 +95,7 @@ public class BuyingUpgrades : Interactable
     public void HandleBuyingWeaponUpgrade()
     {
         Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
-        if (currentWeapon.isWeaponUpgraded) return; // Voorkom herhaalde interactie
+        if (currentWeapon.isWeaponUpgraded) return;
 
         if (GameManager.Instance.Points >= 5000)
         {
@@ -99,8 +105,8 @@ public class BuyingUpgrades : Interactable
             currentWeapon.damage *= 1.8f;
             currentWeapon.reloadTime *= 0.4f;
             currentWeapon.isWeaponUpgraded = true;
-            GameUIController.instance.DisableInteractionText(); // Verberg tekst na aankoop
-            PlayerInteraction.Instance.ClearInteraction(); // Zorg ervoor dat de interactietekst wordt bijgewerkt
+            GameUIController.instance.DisableInteractionText();
+            PlayerInteraction.Instance.ClearInteraction();
         }
     }
 }

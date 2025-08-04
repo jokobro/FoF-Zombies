@@ -1,25 +1,39 @@
 ﻿using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class WeaponSwitching : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform weaponSocket; // Hier spawnen nieuwe wapens
+    [SerializeField] private Transform weaponSocket;
     private Weapon activeWeapon;
 
-    [Header("Keys")]
-    [SerializeField] private KeyCode[] keys;
-
     [Header("Settings")]
-    [SerializeField] private float switchTime;
+    [SerializeField] private float switchTime = 0.5f;
 
     public static WeaponSwitching instance;
     private float timeSinceLastSwitch;
     private int selectedWeapon;
-    /*[SerializeField]*/ private Transform[] weapons;
+    private Transform[] weapons;
+
+    private PlayerControls.PlayerControls controls;
 
     private void Awake()
     {
         instance = this;
+        controls = new PlayerControls.PlayerControls(); 
+
+        controls.Player.ScrollWeapon.performed += OnScrollWeapon;
+        controls.Player.SelectWeapon1.performed += OnSelectWeapon1;
+        controls.Player.SelectWeapon2.performed += OnSelectWeapon2;
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
     }
 
     private void Start()
@@ -31,25 +45,64 @@ public class WeaponSwitching : MonoBehaviour
 
     private void Update()
     {
-        int previousSelectedWeapon = selectedWeapon;
+        timeSinceLastSwitch += Time.deltaTime;
+    }
 
-        for (int i = 0; i < keys.Length; i++)
+    private void OnScrollWeapon(InputAction.CallbackContext context)
+    {
+        if (timeSinceLastSwitch < switchTime)
+            return;
+
+        Vector2 scrollValue = context.ReadValue<Vector2>();
+        float scrollY = scrollValue.y;
+
+        if (Mathf.Abs(scrollY) > 0.1f) // Threshold om kleine scroll bewegingen te negeren
         {
-            if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
+            int previousSelectedWeapon = selectedWeapon;
+
+            if (scrollY > 0) // Scroll up
             {
-                if (i < weapons.Length && weapons[i] != null)
-                {
-                    selectedWeapon = i;
-                }
+                selectedWeapon--;
+                if (selectedWeapon < 0)
+                    selectedWeapon = weapons.Length - 1;
+            }
+            else if (scrollY < 0) // Scroll down
+            {
+                selectedWeapon++;
+                if (selectedWeapon >= weapons.Length)
+                    selectedWeapon = 0;
+            }
+
+            if (previousSelectedWeapon != selectedWeapon)
+            {
+                Select(selectedWeapon);
             }
         }
+    }
 
-        if (previousSelectedWeapon != selectedWeapon)
+    // Voor directe selectie van wapen 1 (key "1")
+    private void OnSelectWeapon1(InputAction.CallbackContext context)
+    {
+        SelectSpecificWeapon(0);
+    }
+
+    // Voor directe selectie van wapen 2 (key "2")
+    private void OnSelectWeapon2(InputAction.CallbackContext context)
+    {
+        SelectSpecificWeapon(1);
+    }
+
+    // Method voor directe weapon selection
+    public void SelectSpecificWeapon(int weaponIndex)
+    {
+        if (timeSinceLastSwitch < switchTime)
+            return;
+
+        if (weaponIndex >= 0 && weaponIndex < weapons.Length)
         {
+            selectedWeapon = weaponIndex;
             Select(selectedWeapon);
         }
-
-        timeSinceLastSwitch += Time.deltaTime;
     }
 
     private void SetWeapons()
@@ -59,16 +112,11 @@ public class WeaponSwitching : MonoBehaviour
         {
             weapons[i] = weaponSocket.GetChild(i);
         }
-
-        if (keys == null || keys.Length != weapons.Length)
-        {
-            keys = new KeyCode[weapons.Length];
-        }
     }
 
     private void Select(int weaponIndex)
     {
-        UpdateWeapons(); // <- Zorg dat je altijd up-to-date bent
+        UpdateWeapons();
 
         for (int i = 0; i < weapons.Length; i++)
         {
@@ -78,7 +126,6 @@ public class WeaponSwitching : MonoBehaviour
             }
         }
 
-        // Probeer het nieuwe actieve wapen op te halen
         if (weaponIndex >= 0 && weaponIndex < weapons.Length && weapons[weaponIndex] != null)
         {
             activeWeapon = weapons[weaponIndex].GetComponent<Weapon>();

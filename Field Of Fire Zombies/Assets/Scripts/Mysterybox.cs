@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Mysterybox : Interactable
 {
@@ -8,18 +9,41 @@ public class Mysterybox : Interactable
     [SerializeField] private float showDuration = 5f;
     [SerializeField] private int cost = 950;
 
+    private PlayerControls.PlayerControls controls;
     private GameObject currentItem;
     private Weapon rolledWeapon;
     private Animator animator;
     private bool isRolling = false;
     private bool canTakeItem = false;
     private int lastWeaponIndex = -1;
+    private bool interactPressed = false;
     public bool CanTakeItem => canTakeItem;
     public bool IsRolling => isRolling;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        controls = new PlayerControls.PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.Player.Interact.performed += OnInteractPressed;
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Interact.performed -= OnInteractPressed;
+        controls.Player.Disable();
+    }
+
+    private void OnInteractPressed(InputAction.CallbackContext context)
+    {
+        if (canTakeItem)
+        {
+            interactPressed = true;
+        }
     }
 
     public override void HandleInteraction()
@@ -36,6 +60,7 @@ public class Mysterybox : Interactable
     {
         isRolling = true;
         canTakeItem = false;
+        interactPressed = false;
 
         GameUIController.instance.DisableInteractionText();
         animator.Play("mysterbox_Open_Anim");
@@ -67,10 +92,11 @@ public class Mysterybox : Interactable
 
         while (timer < showDuration)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (interactPressed) // Vervangen van Input.GetKeyDown(KeyCode.F)
             {
+                interactPressed = false;
                 TakeNewWeapon();
-                yield break; // Stop hier, omdat TakeNewWeapon alles afhandelt
+                yield break;
             }
 
             timer += Time.deltaTime;
@@ -122,6 +148,8 @@ public class Mysterybox : Interactable
 
     private void TakeNewWeapon()
     {
+        interactPressed = false;
+
         WeaponSwitching weaponSwitching = WeaponSwitching.instance;
 
         if (rolledWeapon == null)

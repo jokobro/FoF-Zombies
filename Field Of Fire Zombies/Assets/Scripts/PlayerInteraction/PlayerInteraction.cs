@@ -1,33 +1,51 @@
 ﻿using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction Instance;
     private Interactable currentInteractable;
     private float playerInReach = 3f;
+    [SerializeField] private float sphereRadius = 0.4f; // Radius voor SphereCast detectie
+    private PlayerControls.PlayerControls controls;
 
     private void Awake()
     {
         Instance = this;
+        controls = new PlayerControls.PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.Player.Interact.performed += OnInteract;
+    }
+
+    private void OnDisable()
+    {
+        controls.Player.Interact.performed -= OnInteract;
+        controls.Player.Disable();
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.HandleInteraction();
+        }
     }
 
     private void Update()
     {
         CheckInteraction();
-
-        if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
-        {
-            currentInteractable.HandleInteraction();
-        }
-
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * playerInReach, Color.red);
     }
 
     private void CheckInteraction()
     {
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, playerInReach))
+
+        // Gebruik SphereCast voor betere detectie - je hoeft niet precies te mikken
+        if (Physics.SphereCast(Camera.main.transform.position, sphereRadius, Camera.main.transform.forward, out hit, playerInReach))
         {
             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
 
@@ -68,11 +86,15 @@ public class PlayerInteraction : MonoBehaviour
                     return;
                 }
 
-                Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
-                if (currentWeapon != null && currentWeapon.isWeaponUpgraded)
+                // Check voor weapon upgrade
+                if (upgrade.perkType == BuyingUpgrades.PerkType.WeaponUpgrade)
                 {
-                    DisableCurrentInteractable();
-                    return;
+                    Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
+                    if (currentWeapon != null && currentWeapon.isWeaponUpgraded)
+                    {
+                        DisableCurrentInteractable();
+                        return;
+                    }
                 }
 
                 currentInteractable = newInteractable;
@@ -91,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool PerkAlreadyBought(BuyingUpgrades upgrade)
     {
-        return upgrade != null && BuyingUpgrades.Instance.IsPerkBought(upgrade.perkType);
+        return upgrade != null && PerkManager.Instance.IsPerkBought(upgrade.perkType);
     }
 
     private void DisableCurrentInteractable()

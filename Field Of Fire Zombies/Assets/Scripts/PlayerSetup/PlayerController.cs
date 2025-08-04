@@ -1,22 +1,30 @@
 using System.Collections;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     public static PlayerController Instance;
+
     [Header("References")]
     [SerializeField] private Transform cameraHolder;
     [SerializeField] private Transform orientation;
     private CharacterController characterController;
-    private Weapon weapon;
+
+    // Cached references - gecontroleerd op validity
+    private GameUIController cachedUIController;
+    private Weapon cachedWeapon;
+    private WeaponSwitching weaponSwitching;
+    private PauseManager pauseManager;
+    private GameManager gameManager;
 
     [Header("Player Settings")]
     [SerializeField] private float gravityMultiplier = 3.0f;
     [SerializeField] private float jumpPower = 10f;
 
-    [SerializeField] private float playerCurrentHealth;
-     public float playerMaxHealth;
+    public float playerCurrentHealth;
+    public float playerMaxHealth;
     [HideInInspector] public float walkSpeed;
 
     [Header("Look Settings")]
@@ -28,9 +36,9 @@ public class PlayerController : MonoBehaviour
     private float verticalVelocity;
 
     [Header("Regeneration")]
-    [SerializeField] private float timeBetweenDamageAndRegen = .5f; //the amount of time after taking damage before beginning to regen
+    [SerializeField] private float timeBetweenDamageAndRegen = 0.5f;
     private float startRegenTime = 0.0f;
-    [SerializeField] private float regenRate = 10.0f; //Amount regenerated/second
+    [SerializeField] private float regenRate = 10.0f;
     private bool needsRegen = false;
 
     private Vector3 moveDirection;
@@ -41,19 +49,57 @@ public class PlayerController : MonoBehaviour
     private bool isInstantKillActive;
     private bool isShooting = false;
 
+    // Pre-calculated values
+    private readonly float mouseInputMultiplier = 0.1f;
+
+    // Performance flags - vermijd herhaaldelijke null checks
+    private bool hasValidUIController;
+    private bool hasValidPauseManager;
+    private bool hasValidWeaponSwitching;
+
     private bool RegenCanStart => Time.time > startRegenTime;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
-        weapon = FindObjectOfType<Weapon>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CacheAllReferences();
+
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
+
+        UpdateHealthUI();
+    }
+
+    private void CacheAllReferences()
+    {
+        // Cache alle references in één keer en set validity flags
+        cachedUIController = GameUIController.instance;
+        hasValidUIController = cachedUIController != null;
+
+        pauseManager = PauseManager.instance;
+        hasValidPauseManager = pauseManager != null;
+
+        weaponSwitching = WeaponSwitching.instance;
+        hasValidWeaponSwitching = weaponSwitching != null;
+
+        gameManager = GameManager.Instance;
+
+        // Only search for weapon once if really needed
+        if (cachedWeapon == null)
+            cachedWeapon = FindObjectOfType<Weapon>();
     }
 
     private void Update()
@@ -79,10 +125,14 @@ public class PlayerController : MonoBehaviour
         needsRegen = true;
         startRegenTime = Time.time + timeBetweenDamageAndRegen;
 
+        UpdateHealthUI();
+
         if (playerCurrentHealth <= 0)
         {
             gameObject.SetActive(false);
-            PauseManager.instance.HandleEndingTheGame();  //nog fixen
+            // Gebruik cached reference
+            if (hasValidPauseManager)
+                pauseManager.HandleEndingTheGame();
         }
     }
 
@@ -95,26 +145,46 @@ public class PlayerController : MonoBehaviour
             playerCurrentHealth = playerMaxHealth;
             needsRegen = false;
         }
+
+        UpdateHealthUI();
+    }
+
+    private void UpdateHealthUI()
+    {
+        // Gebruik validity flag in plaats van null check elke keer
+        if (!hasValidUIController) return;
+
+        float healthRatio = playerCurrentHealth / playerMaxHealth;
+
+        cachedUIController.bloodSplatter1.style.visibility = Visibility.Hidden;
+        cachedUIController.bloodSplatter2.style.visibility = Visibility.Hidden;
+
+        if (healthRatio <= 0.45f)
+        {
+            cachedUIController.bloodSplatter2.style.visibility = Visibility.Visible;
+        }
+        else if (healthRatio <= 0.8f)
+        {
+            cachedUIController.bloodSplatter1.style.visibility = Visibility.Visible;
+        }
     }
 
     private void HandleLooking()
     {
-        if (PauseManager.instance.isPaused)
-        {
+        // Gebruik cached reference en validity flag
+        if (hasValidPauseManager && pauseManager.isPaused)
             return;
-        }
-        else
-        {
-            float mouseX = Input.GetAxisRaw("Mouse X") * 0.1f;
-            float mouseY = Input.GetAxisRaw("Mouse Y") * 0.1f;
 
-            yRotation += mouseX * sensX;
-            xRotation -= mouseY * sensY;
+        // Pre-calculated multiplier
+        float mouseX = Input.GetAxisRaw("Mouse X") * mouseInputMultiplier;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseInputMultiplier;
 
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-            orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
-            cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        }
+        yRotation += mouseX * sensX;
+        xRotation -= mouseY * sensY;
+
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+        cameraHolder.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 
     private void HandleMovement()
@@ -150,26 +220,28 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShooting()
     {
-        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
+        // Gebruik cached reference zonder null-conditional operator
+        if (!hasValidWeaponSwitching) return;
 
+        Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
         if (currentWeapon != null)
         {
-            currentWeapon.fireTimer += Time.deltaTime; // Update de fireTimer
-            if (currentWeapon.fireTimer >= currentWeapon.fireRate) // Controleer of het wapen weer kan schieten
+            currentWeapon.fireTimer += Time.deltaTime;
+            if (currentWeapon.fireTimer >= currentWeapon.fireRate)
             {
                 currentWeapon.Shoot();
-                currentWeapon.fireTimer = 0.0f; // Reset de fireTimer
+                currentWeapon.fireTimer = 0.0f;
             }
         }
     }
 
     public void Reload(InputAction.CallbackContext context)
     {
-        Weapon currentWeapon = WeaponSwitching.instance.GetActiveWeapon();
-
-        if (currentWeapon != null)
+        if (context.performed && hasValidWeaponSwitching)
         {
-            currentWeapon.StartReload();
+            Weapon currentWeapon = weaponSwitching.GetActiveWeapon();
+            if (currentWeapon != null)
+                currentWeapon.StartReload();
         }
     }
 
@@ -192,59 +264,82 @@ public class PlayerController : MonoBehaviour
     {
         switch (id)
         {
-            case 0:
-                if (!isDoublePointsActive)
+            case 0: // Double Points
+                if (!isDoublePointsActive && gameManager != null)
                 {
                     isDoublePointsActive = true;
-                    GameManager.Instance.scoreMultiplier = 2f;
+                    gameManager.scoreMultiplier = 2f;
                     StartCoroutine(DoublePointsCooldown(duration));
                     Destroy(powerup);
                 }
                 break;
-            case 1:
-                GameManager.Instance.AddScore(500);
-                Destroy(powerup);
 
-                break;
-            case 2:
-                Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
-                foreach (Weapon w in allWeapons)
+            case 1: // Bonus Points
+                if (gameManager != null)
                 {
-                    if (w != null)
+                    gameManager.AddScore(500);
+                    Destroy(powerup);
+                }
+                break;
+
+            case 2: // Max Ammo
+                if (hasValidWeaponSwitching)
+                {
+                    Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+                    if (allWeapons != null)
                     {
-                        w.PickupMaxAmmo();
+                        for (int i = 0; i < allWeapons.Length; i++)
+                        {
+                            if (allWeapons[i] != null)
+                                allWeapons[i].PickupMaxAmmo();
+                        }
                     }
                 }
                 Destroy(powerup);
                 break;
-            case 3:
-                if (!isInstantKillActive)
+
+            case 3: // Instant Kill
+                if (!isInstantKillActive && cachedWeapon != null)
                 {
                     isInstantKillActive = true;
-                    weapon.damage += 1000;
+                    cachedWeapon.damage += 1000;
                     StartCoroutine(InstantKillCooldown(duration));
                     Destroy(powerup);
                 }
                 break;
-            case 4:
-                waveManager.Instance.KillAllEnemies();
-                GameManager.Instance.AddScore(400);
+
+            case 4: // Nuke
+                waveManager waveManagerInstance = waveManager.Instance;
+                if (waveManagerInstance != null)
+                {
+                    waveManagerInstance.KillAllEnemies();
+                    if (gameManager != null)
+                        gameManager.AddScore(400);
+                }
                 Destroy(powerup);
                 break;
         }
     }
 
-    IEnumerator InstantKillCooldown(float duration)
+    private IEnumerator InstantKillCooldown(float duration)
     {
         yield return new WaitForSeconds(duration);
         isInstantKillActive = false;
-        weapon.damage -= 1000;
+        if (cachedWeapon != null)
+            cachedWeapon.damage -= 1000;
     }
 
-    IEnumerator DoublePointsCooldown(float duration)
+    private IEnumerator DoublePointsCooldown(float duration)
     {
         yield return new WaitForSeconds(duration);
         isDoublePointsActive = false;
-        GameManager.Instance.scoreMultiplier = 1f;
+        if (gameManager != null)
+            gameManager.scoreMultiplier = 1f;
+    }
+
+    // Method om references te refreshen als nodig
+    public void RefreshCachedReferences()
+    {
+        CacheAllReferences();
     }
 }

@@ -21,16 +21,26 @@ public class waveManager : MonoBehaviour
     private int activeEnemies = 0;
     private bool waveInProgress = false;
     private bool forceKill = false;
+    private GameUIController cachedUIController;
+
     public int CurrentWave => currentWave + 1; // +1 zodat het vanaf 1 telt
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
     {
+        cachedUIController = GameUIController.instance;
         StartCoroutine(WaveRoutine());
     }
 
@@ -74,7 +84,11 @@ public class waveManager : MonoBehaviour
             currentWave++; // wave 1 begint bij index 1 (voor UI consistentie)
 
             OnWaveChanged?.Invoke(currentWave);
-            GameUIController.instance?.UpdateWaveText(currentWave);
+            
+            if(cachedUIController != null)
+            {
+                cachedUIController.UpdateWaveText(currentWave);
+            }
 
             yield return StartCoroutine(SpawnWave(waves[currentWave - 1]));
 
@@ -82,7 +96,7 @@ public class waveManager : MonoBehaviour
 
             yield return new WaitForSeconds(5f);
         }
-        Debug.Log(" Alle waves voltooid!");
+       /* Debug.Log(" Alle waves voltooid!");*/
     }
 
     private IEnumerator SpawnWave(Wave wave)
@@ -99,8 +113,11 @@ public class waveManager : MonoBehaviour
                 Enemy enemyScript = newEnemy.GetComponent<Enemy>();
                 if (enemyScript != null)
                 {
+                    // Fixed: Only register enemy once
                     RegisterEnemy();
                     enemyScript.OnDeath += UnregisterEnemy;
+
+                    // Scale enemy stats based on wave
                     float healthMultiplier = 1f + (currentWave - 1) * 0.1f;
                     float damageMultiplier = 1f + (currentWave - 1) * 0.1f;
 

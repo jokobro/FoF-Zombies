@@ -21,26 +21,37 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float fireTimer;
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
+
+
+    private GameUIController cachedUIController;
+    private Camera mainCamera;
     private float aimOffsetY = 20f;
     private bool reloading;
+    private Vector3 screenCenter;
+
+
+    private void Start()
+    {
+        cachedUIController = GameUIController.instance;
+        mainCamera = Camera.main;
+        screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, - aimOffsetY);
+
+        UpdateAmmoUI();
+    }
 
     private void Update()
     {
         fireTimer += Time.deltaTime;
-
-        /*Ray debugRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
-        Debug.DrawRay(debugRay.origin, debugRay.direction * maxDistance, Color.red);*/
     }
     public void Shoot()
     {
-        if (currentMagAmmo > 0 && Time.time > nextFire)
+        if (currentMagAmmo > 0 && Time.time > nextFire && !reloading)
         {
             nextFire = Time.time + fireRate;
 
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2 - aimOffsetY));
+            Ray ray = mainCamera.ScreenPointToRay(screenCenter);
             if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, enemyLayerMask))
             {
-                /*Debug.Log("Hit: " + hitInfo.transform.name);*/
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(damage);
             }
@@ -100,10 +111,9 @@ public class Weapon : MonoBehaviour
 
     public void UpdateAmmoUI()
     {
-        GameUIController uiController = FindObjectOfType<GameUIController>();
-        if (uiController != null)
+        if (cachedUIController != null)
         {
-            uiController.UpdateAmmoText(currentMagAmmo, currentAmmo);
+            cachedUIController.UpdateAmmoText(currentMagAmmo, currentAmmo);
         }
     }
 }

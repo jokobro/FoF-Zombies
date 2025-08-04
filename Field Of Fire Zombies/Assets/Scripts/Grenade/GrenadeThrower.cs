@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 public class GrenadeThrower : MonoBehaviour
 {
     [SerializeField] private GameObject grenadePrefab;
-     private GrenadeUIManager uiManager;
+    private GrenadeUIManager uiManager;
     private float throwForce = 10f;
     private int grenadeAmount = 3;
     private const int maxGrenades = 3;
