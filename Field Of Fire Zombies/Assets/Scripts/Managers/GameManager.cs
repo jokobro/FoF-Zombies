@@ -9,7 +9,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance.gameObject);
+        }
         Instance = this;
+
         OnPointsChanged?.Invoke(Points);
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 165;

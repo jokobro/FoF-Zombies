@@ -277,5 +277,4 @@ public class Mysterybox : Interactable
         isRolling = false;
         canUseBox = true;
     }
-
 }

@@ -18,7 +18,6 @@ public class PerkUIManager : MonoBehaviour
         perkSlots[0] = root.Q<VisualElement>("PerkSlot1");
         perkSlots[1] = root.Q<VisualElement>("PerkSlot2");
         perkSlots[2] = root.Q<VisualElement>("PerkSlot3");
-        perkSlots[3] = root.Q<VisualElement>("PerkSlot4");
     }
 
     public void AddPerkToUI(string perkName)

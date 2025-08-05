@@ -65,15 +65,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Destroy(Instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        Instance = this;
     }
 
     private void Start()
@@ -135,8 +131,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (playerCurrentHealth <= 0)
         {
-            gameObject.SetActive(false);
-            // Gebruik cached reference
+            isShooting = false;
+
             if (hasValidPauseManager)
                 pauseManager.HandleEndingTheGame();
         }

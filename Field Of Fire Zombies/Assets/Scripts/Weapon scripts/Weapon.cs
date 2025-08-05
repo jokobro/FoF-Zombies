@@ -28,14 +28,14 @@ public class Weapon : MonoBehaviour
     private float aimOffsetY = 20f;
     private bool reloading;
     private Vector3 screenCenter;
-
+    private float originalFireRate;
 
     private void Start()
     {
         cachedUIController = GameUIController.instance;
         mainCamera = Camera.main;
         screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, - aimOffsetY);
-
+        originalFireRate = fireRate;
         UpdateAmmoUI();
     }
 
@@ -63,6 +63,10 @@ public class Weapon : MonoBehaviour
             currentMagAmmo--;
             UpdateAmmoUI();
         }
+    }
+    public void ResetToOriginalFireRate()
+    {
+        fireRate = originalFireRate;
     }
 
     private void OnGunShot()

@@ -29,7 +29,6 @@ public class Enemy : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-        /*playerPosition = GameObject.Find("Player").transform;*/
         animator.applyRootMotion = true;
 
         if (PlayerController.Instance != null)
@@ -42,8 +41,6 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         float sqrDistanceToPlayer = (transform.position - playerPosition.position).sqrMagnitude;
         float distanceToPlayer = MathF.Sqrt(sqrDistanceToPlayer);
-
-       /* float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);*/
         animator.SetFloat("DistanceToPlayer", distanceToPlayer);
         MoveToTarget(distanceToPlayer);
         HandleAttacking(sqrDistanceToPlayer);
@@ -99,10 +96,9 @@ public class Enemy : MonoBehaviour, IDamageable
         animator.applyRootMotion = true;
         animator.SetTrigger("Die");
         capsuleCollider.enabled = false;
-        GameManager.Instance.AddScore(125);        
+        GameManager.Instance.AddScore(125);
         Destroy(gameObject, 3f);
     }
-
 
     private void HandleEnemyDyingPickUpDropChange()
     {

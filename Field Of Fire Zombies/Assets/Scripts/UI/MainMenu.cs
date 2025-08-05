@@ -6,7 +6,6 @@ public class MainMenu : MonoBehaviour
 {
     private UIDocument UIDocument;
     private VisualElement[] overlayPanels;
-
     private Dictionary<Button, EventCallback<ClickEvent>> registeredCallbacks = new();
 
     private void Awake()
@@ -14,7 +13,6 @@ public class MainMenu : MonoBehaviour
         UIDocument = GetComponent<UIDocument>();
         var root = UIDocument.rootVisualElement;
 
-        // Auto-discover alle overlay panels
         overlayPanels = new VisualElement[]
         {
             root.Q<VisualElement>("Credits"),
@@ -27,17 +25,23 @@ public class MainMenu : MonoBehaviour
 
     private void SetupButtons()
     {
-        // Game flow buttons
-        RegisterButton("StartButton", _ => SceneManager.LoadScene("GameScene"));
+        // SUPER SIMPEL: Gewoon GameScene laden - net als de eerste keer
+        RegisterButton("StartButton", _ => StartFreshGame());
         RegisterButton("QuitButton", _ => Application.Quit());
 
-        // Panel buttons
         RegisterButton("CreditsButton", _ => ShowPanel("Credits"));
         RegisterButton("ControlsButton", _ => ShowPanel("Controls"));
-
-        // Return buttons - werken automatisch voor alle panels!
         RegisterButton("CreditsReturnButton", _ => HideAllPanels());
         RegisterButton("ControlsReturnButton", _ => HideAllPanels());
+    }
+
+    private void StartFreshGame()
+    {
+        // Reset alleen de basics
+        Time.timeScale = 1f;
+
+        // Laad de GameScene - Unity reset alles automatisch!
+        SceneManager.LoadScene("GameScene");
     }
 
     private void ShowPanel(string panelName)
@@ -50,7 +54,6 @@ public class MainMenu : MonoBehaviour
 
     private void HideAllPanels()
     {
-        // Automatisch alle overlay panels verbergen - super scalable!
         foreach (var panel in overlayPanels)
         {
             if (panel != null)

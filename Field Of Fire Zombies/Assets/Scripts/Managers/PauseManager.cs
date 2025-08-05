@@ -25,7 +25,13 @@ public class PauseManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(instance.gameObject);
+        }
         instance = this;
+
+
         gameActionMap = inputActions.FindActionMap("Player");
         uiActionMap = inputActions.FindActionMap("UI");
         gameActionMap.Enable();
@@ -93,20 +99,21 @@ public class PauseManager : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(endGameSound, Camera.main.transform.position, powerupAudioVolume);
         }
-        // Wacht een korte tijd voordat het endgame scherm verschijnt
         StartCoroutine(DelayedEndGame());
     }
 
     private IEnumerator DelayedEndGame()
     {
-        // Wacht 1 seconden voordat het scherm verschijnt
         yield return new WaitForSecondsRealtime(1f);
-        // Nu pas het endgame scherm tonen
         HandleEndingTheGame();
     }
 
     public void HandleEndingTheGame()
     {
+        Time.timeScale = 0f;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
+
         endgameScreen.style.display = DisplayStyle.Flex;
         pauseScreen.style.display = DisplayStyle.None;
         hud.style.display = DisplayStyle.None;
@@ -116,16 +123,15 @@ public class PauseManager : MonoBehaviour
             int round = Mathf.Max(1, waveManager.Instance.CurrentWave - 1);
             roundReachedLabel.text = $"Round Reached {round}";
         }
+
         StartCoroutine(EndGameCycle());
     }
 
     private IEnumerator EndGameCycle()
     {
         yield return new WaitForSecondsRealtime(19);
+
+        // SUPER SIMPEL: Gewoon MainMenu laden
         SceneManager.LoadScene("MainMenu");
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
-        UnityEngine.Cursor.visible = true;
-        gameActionMap.Disable();
-        uiActionMap.Enable();
     }
 }

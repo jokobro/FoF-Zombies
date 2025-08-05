@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,20 +31,17 @@ public class waveManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Destroy(Instance.gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        Instance = this;
     }
 
     private void Start()
     {
         cachedUIController = GameUIController.instance;
+        FindSpawnPoints();
         StartCoroutine(WaveRoutine());
     }
 
@@ -111,7 +109,7 @@ public class waveManager : MonoBehaviour
             {
                 if (forceKill) yield break;
 
-                Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
+                Transform spawnPoint = GetValidSpawnPoint();
                 GameObject newEnemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
 
                 Enemy enemyScript = newEnemy.GetComponent<Enemy>();
@@ -140,6 +138,66 @@ public class waveManager : MonoBehaviour
 
                 float spawnDelay = Mathf.Max(baseSpawnDelay - (currentWave * 0.05f), minSpawnDelay);
                 yield return new WaitForSeconds(spawnDelay);
+            }
+        }
+    }
+
+    /*private Transform GetValidSpawnPoint()
+    {
+        // Als spawnPoints leeg is, zoek automatisch naar SpawnPoint GameObjects
+        if (spawnPoints == null || spawnPoints.Count == 0 || spawnPoints.All(sp => sp == null))
+        {
+            FindSpawnPoints();
+        }
+
+        // Gebruik je SpawnPoint GameObjects
+        if (spawnPoints != null && spawnPoints.Count > 0)
+        {
+            // Filter geldige spawn points
+            List<Transform> validSpawnPoints = new List<Transform>();
+            foreach (Transform sp in spawnPoints)
+            {
+                if (sp != null && sp.gameObject.activeInHierarchy)
+                {
+                    validSpawnPoints.Add(sp);
+                }
+            }
+
+            if (validSpawnPoints.Count > 0)
+            {
+                return validSpawnPoints[UnityEngine.Random.Range(0, validSpawnPoints.Count)];
+            }
+        }
+        return transform; // Gebruik WaveManager positie als laatste redmiddel
+    }*/
+
+    private Transform GetValidSpawnPoint()
+    {
+        if (spawnPoints == null || spawnPoints.Count == 0)
+        {
+            FindSpawnPoints();
+        }
+
+        if (spawnPoints != null && spawnPoints.Count > 0)
+        {
+            return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
+        }
+
+        return transform; // Simple fallback
+    }
+
+    private void FindSpawnPoints()
+    {
+        spawnPoints = new List<Transform>();
+
+        // Zoek alle GameObjects met "SpawnPoint" in de naam
+        GameObject[] allObjects = FindObjectsOfType<GameObject>(true); // true = include inactive
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.name.Contains("SpawnPoint"))
+            {
+                spawnPoints.Add(obj.transform);
             }
         }
     }

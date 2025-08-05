@@ -23,7 +23,6 @@
         <engine:VisualElement name="PerkSlot1" style="flex-grow: 1; position: absolute; height: 45px; width: 80px; top: 885px; left: 15px; background-image: none;" />
         <engine:VisualElement name="PerkSlot2" style="flex-grow: 1; position: absolute; height: 45px; width: 80px; top: 885px; left: 105px; background-image: none;" />
         <engine:VisualElement name="PerkSlot3" style="flex-grow: 1; position: absolute; height: 45px; width: 80px; top: 885px; left: 195px; right: 855px; background-image: none;" />
-        <engine:VisualElement name="PerkSlot4" style="flex-grow: 1; position: absolute; height: 45px; width: 80px; top: 885px; left: 285px; right: 855px; background-image: none;" />
         <engine:Label text="Press F to buy DoubleTap (Cost:2000)" name="InteractionText" class="text" style="position: absolute; top: 630px; left: 418px; font-size: 38px; width: 1010px; color: rgb(255, 254, 254); right: 487px; bottom: auto; -unity-text-align: upper-center;" />
         <engine:VisualElement name="GrenadeIcon1" style="flex-grow: 1; width: 70px; height: 65px; position: absolute; top: 975px; left: 1640px; background-image: resource(&apos;grenadeicons/grenade&apos;);" />
         <engine:VisualElement name="GrenadeIcon2" style="flex-grow: 1; width: 70px; height: 65px; position: absolute; top: 975px; left: 1720px; background-image: resource(&apos;grenadeicons/grenade&apos;);" />
