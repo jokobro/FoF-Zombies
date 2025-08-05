@@ -22,7 +22,6 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public float nextFire;
     [HideInInspector] public bool isWeaponUpgraded = false;
 
-
     private GameUIController cachedUIController;
     private Camera mainCamera;
     private float aimOffsetY = 20f;
@@ -30,12 +29,19 @@ public class Weapon : MonoBehaviour
     private Vector3 screenCenter;
     private float originalFireRate;
 
+    [Header("DoubleTap Settings")]
+    [Tooltip("Multiplier voor fire rate wanneer DoubleTap gekocht is (0.5 = 2x sneller, 0.8 = 25% sneller)")]
+    [Range(0.1f, 1.0f)]
+    public float doubleTapMultiplier = 0.8f;
+
+
     private void Start()
     {
         cachedUIController = GameUIController.instance;
         mainCamera = Camera.main;
         screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, - aimOffsetY);
         originalFireRate = fireRate;
+        ApplyPurchasedUpgrades();
         UpdateAmmoUI();
     }
 
@@ -43,6 +49,16 @@ public class Weapon : MonoBehaviour
     {
         fireTimer += Time.deltaTime;
     }
+
+    private void ApplyPurchasedUpgrades()
+    {
+        // Controleer of DoubleTap is gekocht en pas toe
+        if (PerkManager.Instance.IsPerkBought(BuyingUpgrades.PerkType.DoubleTap))
+        {
+            fireRate *= doubleTapMultiplier; // Gebruik de per-wapen waarde
+        }
+    }
+
     public void Shoot()
     {
         if (currentMagAmmo > 0 && Time.time > nextFire && !reloading)

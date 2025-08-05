@@ -85,7 +85,7 @@ public class BuyingUpgrades : Interactable
             {
                 if (currentWeapon != null)
                 {
-                    currentWeapon.fireRate *= 0.4f;
+                    currentWeapon.fireRate *= currentWeapon.doubleTapMultiplier;
                 }
             }
 

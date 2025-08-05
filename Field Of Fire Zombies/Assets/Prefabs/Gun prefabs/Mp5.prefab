@@ -60,7 +60,7 @@ MonoBehaviour:
   maxAmmo: 200
   maxDistance: 200
   reloadTime: 2.4
-  fireRate: 0.23
+  fireRate: 0.33
   fireTimer: 0
   nextFire: 0
   isWeaponUpgraded: 0
