@@ -4,7 +4,6 @@ using UnityEngine;
 public class PerkManager : MonoBehaviour
 {
     public static PerkManager Instance;
-
     private HashSet<BuyingUpgrades.PerkType> boughtPerks = new HashSet<BuyingUpgrades.PerkType>();
 
     private void Awake()

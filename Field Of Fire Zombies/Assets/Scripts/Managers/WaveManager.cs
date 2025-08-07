@@ -22,8 +22,7 @@ public class waveManager : MonoBehaviour
     private int activeEnemies = 0;
     private bool waveInProgress = false;
     private bool forceKill = false;
-    private GameUIController cachedUIController;
-
+    
     public int CurrentWave => currentWave + 1; // +1 zodat het vanaf 1 telt
 
     [SerializeField] private AudioClip roundChangeSound;
@@ -40,7 +39,6 @@ public class waveManager : MonoBehaviour
 
     private void Start()
     {
-        cachedUIController = GameUIController.instance;
         FindSpawnPoints();
         StartCoroutine(WaveRoutine());
     }
@@ -81,16 +79,11 @@ public class waveManager : MonoBehaviour
         {
             waveInProgress = true;
             forceKill = false;
-
+         
             currentWave++; // wave 1 begint bij index 1 (voor UI consistentie)
-
+            
             OnWaveChanged?.Invoke(currentWave);
             
-            if(cachedUIController != null)
-            {
-                cachedUIController.UpdateWaveText(currentWave);
-            }
-
             yield return StartCoroutine(SpawnWave(waves[currentWave - 1]));
 
             yield return new WaitUntil(() => activeEnemies <= 0 || forceKill);
@@ -101,8 +94,7 @@ public class waveManager : MonoBehaviour
 
     private IEnumerator SpawnWave(Wave wave)
     {
-
-        AudioSource.PlayClipAtPoint(roundChangeSound, Camera.main.transform.position, powerupAudioVolume);
+        PlayUISound(roundChangeSound, powerupAudioVolume);
         foreach (EnemySpawnData enemyData in wave.enemiesToSpawn)
         {
             for (int i = 0; i < enemyData.amount; i++)
@@ -126,8 +118,8 @@ public class waveManager : MonoBehaviour
                     enemyScript.health *= healthMultiplier;
                     enemyScript.damage *= damageMultiplier;
 
-                    RegisterEnemy();
-                    enemyScript.OnDeath += UnregisterEnemy;
+                    /*RegisterEnemy();
+                    enemyScript.OnDeath += UnregisterEnemy;*/
                 }
 
                 NavMeshAgent agent = newEnemy.GetComponent<NavMeshAgent>();
@@ -142,34 +134,18 @@ public class waveManager : MonoBehaviour
         }
     }
 
-    /*private Transform GetValidSpawnPoint()
+    private void PlayUISound(AudioClip clip,float volume = 5)
     {
-        // Als spawnPoints leeg is, zoek automatisch naar SpawnPoint GameObjects
-        if (spawnPoints == null || spawnPoints.Count == 0 || spawnPoints.All(sp => sp == null))
-        {
-            FindSpawnPoints();
-        }
+        GameObject audioObject = new GameObject("TempAudio");
+        AudioSource audioSource = audioObject.AddComponent<AudioSource>();
 
-        // Gebruik je SpawnPoint GameObjects
-        if (spawnPoints != null && spawnPoints.Count > 0)
-        {
-            // Filter geldige spawn points
-            List<Transform> validSpawnPoints = new List<Transform>();
-            foreach (Transform sp in spawnPoints)
-            {
-                if (sp != null && sp.gameObject.activeInHierarchy)
-                {
-                    validSpawnPoints.Add(sp);
-                }
-            }
+        audioSource.clip = clip;
+        audioSource.volume = volume;
+        audioSource.spatialBlend = 0;
+        audioSource.Play();
 
-            if (validSpawnPoints.Count > 0)
-            {
-                return validSpawnPoints[UnityEngine.Random.Range(0, validSpawnPoints.Count)];
-            }
-        }
-        return transform; // Gebruik WaveManager positie als laatste redmiddel
-    }*/
+        Destroy(audioObject,clip.length + 0.1f);
+    }
 
     private Transform GetValidSpawnPoint()
     {
@@ -191,7 +167,7 @@ public class waveManager : MonoBehaviour
         spawnPoints = new List<Transform>();
 
         // Zoek alle GameObjects met "SpawnPoint" in de naam
-        GameObject[] allObjects = FindObjectsOfType<GameObject>(true); // true = include inactive
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None); // true = include inactive
 
         foreach (GameObject obj in allObjects)
         {

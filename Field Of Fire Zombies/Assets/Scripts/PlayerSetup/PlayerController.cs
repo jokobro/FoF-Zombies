@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Regeneration")]
     private float timeBetweenDamageAndRegen = 6f;
     private float startRegenTime = 0.0f;
-    private float regenRate = 2.2f;
+    private float regenRate = 5f;
     private bool needsRegen = false;
 
     [Header("Powerup Audio")]
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         // Only search for weapon once if really needed
         if (cachedWeapon == null)
         {
-            cachedWeapon = FindObjectOfType<Weapon>();
+            cachedWeapon = FindFirstObjectByType<Weapon>();
         }
     }
 
@@ -134,7 +134,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             isShooting = false;
 
             if (hasValidPauseManager)
-                pauseManager.HandleEndingTheGame();
+            {
+                pauseManager.StartCoroutine(pauseManager.DelayedEndGame());
+            }
         }
     }
 

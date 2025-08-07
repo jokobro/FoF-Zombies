@@ -4,11 +4,10 @@ public class GameUIController : MonoBehaviour
 {
     public static GameUIController instance;
     public UIDocument uiDocument;
-    private Label ammoLabel;
-    private Label scoreLabel;
-    private Label waveLabel;
     private Label interactionLabel;
-
+    private Label scoreLabel;
+    private Label ammoLabel;
+    
     [Header("healthUI")]
     public VisualElement bloodSplatter1;
     public VisualElement bloodSplatter2;
@@ -20,7 +19,7 @@ public class GameUIController : MonoBehaviour
 
         ammoLabel = root.Q<Label>("ammoLabel");
         scoreLabel = root.Q<Label>("scoreLabel");
-        waveLabel = root.Q<Label>("waveLabel");
+        
         interactionLabel = root.Q<Label>("InteractionText");
 
         bloodSplatter1 = root.Q<VisualElement>("BloodSplatter1");
@@ -29,7 +28,6 @@ public class GameUIController : MonoBehaviour
         bloodSplatter2.style.visibility = Visibility.Hidden;
 
         GameManager.OnPointsChanged += UpdateScoreText;
-        waveManager.OnWaveChanged += UpdateWaveText;
 
         if (GameManager.Instance != null)
         {
@@ -45,7 +43,6 @@ public class GameUIController : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.OnPointsChanged -= UpdateScoreText;
-        waveManager.OnWaveChanged -= UpdateWaveText;
     }
 
     public void UpdateAmmoText(int magAmmo, int reserveAmmo)
@@ -61,14 +58,6 @@ public class GameUIController : MonoBehaviour
         if (scoreLabel != null)
         {
             scoreLabel.text = $"{score}";
-        }
-    }
-
-    public void UpdateWaveText(int wave)
-    {
-        if (waveLabel != null)
-        {
-            waveLabel.text = $"{wave}";
         }
     }
 

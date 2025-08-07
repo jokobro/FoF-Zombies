@@ -64,6 +64,7 @@ MonoBehaviour:
   fireTimer: 0
   nextFire: 0
   isWeaponUpgraded: 0
+  doubleTapMultiplier: 0.75
 --- !u!82 &6292018966343008752
 AudioSource:
   m_ObjectHideFlags: 0

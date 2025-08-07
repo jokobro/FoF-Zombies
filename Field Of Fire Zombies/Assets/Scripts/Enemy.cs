@@ -40,9 +40,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Update()
     {
         float sqrDistanceToPlayer = (transform.position - playerPosition.position).sqrMagnitude;
-        float distanceToPlayer = MathF.Sqrt(sqrDistanceToPlayer);
-        animator.SetFloat("DistanceToPlayer", distanceToPlayer);
-        MoveToTarget(distanceToPlayer);
+        animator.SetFloat("DistanceToPlayer", sqrDistanceToPlayer);
+        MoveToTarget(sqrDistanceToPlayer);
         HandleAttacking(sqrDistanceToPlayer);
     }
 

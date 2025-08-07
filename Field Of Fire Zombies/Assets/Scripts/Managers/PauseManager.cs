@@ -93,17 +93,17 @@ public class PauseManager : MonoBehaviour
         isPaused = false;
     }
 
-    private void EndGame(ClickEvent clickEvent)
+    public void EndGame(ClickEvent clickEvent)
+    {
+        StartCoroutine(DelayedEndGame());
+    }
+
+    public IEnumerator DelayedEndGame()
     {
         if (endGameSound != null)
         {
             AudioSource.PlayClipAtPoint(endGameSound, Camera.main.transform.position, powerupAudioVolume);
         }
-        StartCoroutine(DelayedEndGame());
-    }
-
-    private IEnumerator DelayedEndGame()
-    {
         yield return new WaitForSecondsRealtime(1f);
         HandleEndingTheGame();
     }

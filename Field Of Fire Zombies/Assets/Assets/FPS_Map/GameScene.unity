@@ -13768,6 +13768,7 @@ GameObject:
   - component: {fileID: 989658237}
   - component: {fileID: 989658243}
   - component: {fileID: 989658244}
+  - component: {fileID: 989658245}
   m_Layer: 0
   m_Name: UIController
   m_TagString: Untagged
@@ -13883,6 +13884,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3260b2e7be680f46a9ea4ee21f94308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &989658245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989658236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365da433c03e0dd4aa7b6cb6399670c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1010457100
@@ -21919,137 +21932,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000011738848570, guid: c81b1a60bcf0cb64fa403060ac10ed0d, type: 3}
   m_PrefabInstance: {fileID: 1569164557}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1579509244
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.0249578
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.0249578
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.0249578
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -14.45
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.10812719
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 21.814657
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      propertyPath: m_Name
-      value: QuickRevive
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: -7639331209684527813, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1579509247}
-    - targetCorrespondingSourceObject: {fileID: -7639331209684527813, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1579509246}
-  m_SourcePrefab: {fileID: 100100000, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
---- !u!1 &1579509245 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -7639331209684527813, guid: 1a539b1fab157d84fb8c2f77870d6e41, type: 3}
-  m_PrefabInstance: {fileID: 1579509244}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1579509246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579509245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85e0f9985ee85074aab5d1b0911ce779, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: Press F to buy QuickRevive (Cost:1200)
-  onInteraction:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1579509246}
-        m_TargetAssemblyTypeName: BuyingUpgrades, Assembly-CSharp
-        m_MethodName: HandleBuyingQuickRevive
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  weaponUpgradeSound: {fileID: 0}
-  perkType: 3
---- !u!65 &1579509247
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579509245}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 47.279, y: 75.50011, z: 53.5218}
-  m_Center: {x: 0, y: 37.73365, z: 1.4004002}
 --- !u!1001 &1580578181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30915,4 +30797,3 @@ SceneRoots:
   - {fileID: 989658242}
   - {fileID: 1253650375}
   - {fileID: 1728795201}
-  - {fileID: 1579509244}

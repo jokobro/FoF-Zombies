@@ -32,11 +32,11 @@ public class PowerupUIManager : MonoBehaviour
     private void InitializePowerupUI()
     {
         var uiDocument = GetComponent<UIDocument>();
-        if (uiDocument?.rootVisualElement == null)
+        /*if (uiDocument?.rootVisualElement == null)
         {
             Debug.LogError("PowerupUIManager: UIDocument or root element not found!");
             return;
-        }
+        }*/
 
         rootElement = uiDocument.rootVisualElement;
 

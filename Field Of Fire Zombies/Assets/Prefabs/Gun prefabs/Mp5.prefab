@@ -60,10 +60,11 @@ MonoBehaviour:
   maxAmmo: 200
   maxDistance: 200
   reloadTime: 2.4
-  fireRate: 0.33
+  fireRate: 0.19
   fireTimer: 0
   nextFire: 0
   isWeaponUpgraded: 0
+  doubleTapMultiplier: 0.67
 --- !u!82 &3767788341740937749
 AudioSource:
   m_ObjectHideFlags: 0

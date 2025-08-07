@@ -6,7 +6,7 @@ public class BuyGrenadeRefill: Interactable
 
     private void Start()
     {
-        grenadeThrower = FindObjectOfType<GrenadeThrower>();
+        grenadeThrower = FindFirstObjectByType<GrenadeThrower>();
         UpdateMessage();
     }
 
