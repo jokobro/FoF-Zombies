@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -131,7 +133,22 @@ public class PauseManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(19);
 
-        // SUPER SIMPEL: Gewoon MainMenu laden
+        // Reset alle belangrijke game state voor builds
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
+
+        // Input System refresh voordat we scene laden
+        var eventSystem = FindFirstObjectByType<EventSystem>();
+        if (eventSystem != null)
+        {
+            var inputModule = eventSystem.GetComponent<InputSystemUIInputModule>();
+            if (inputModule != null)
+            {
+                inputModule.enabled = false;
+            }
+        }
+
+        // Load scene
         SceneManager.LoadScene("MainMenu");
     }
 }

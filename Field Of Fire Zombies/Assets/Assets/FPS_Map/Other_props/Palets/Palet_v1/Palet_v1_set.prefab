@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 4000013978381734}
   - component: {fileID: 33000010272957428}
   - component: {fileID: 23000013416702298}
-  - component: {fileID: 64000011041005592}
+  - component: {fileID: 6060308599221603285}
   m_Layer: 0
   m_Name: Palet_v1_set
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4000013978381734
 Transform:
@@ -72,7 +72,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 2
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
@@ -87,8 +87,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64000011041005592
-MeshCollider:
+--- !u!65 &6060308599221603285
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,7 +105,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300006, guid: a0fa3deee73af2b49bf7f84e4421e5be, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 2.213054, y: 1.3715833, z: 1.8174975}
+  m_Center: {x: -0.0000076293945, y: 0.14488369, z: 0.022406606}

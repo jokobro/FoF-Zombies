@@ -80,15 +80,15 @@ public class BuyingUpgrades : Interactable
             PerkUIManager.Instance.AddPerkToUI("doubletap");
             PerkManager.Instance.BuyPerk(PerkType.DoubleTap);
 
+            // Herbereken upgrades voor alle wapens
             Weapon[] allWeapons = WeaponSwitching.instance.GetAllWeapons();
-            foreach (Weapon currentWeapon in allWeapons)
+            foreach (Weapon weapon in allWeapons)
             {
-                if (currentWeapon != null)
+                if (weapon != null)
                 {
-                    currentWeapon.fireRate *= currentWeapon.doubleTapMultiplier;
+                    weapon.RefreshUpgrades();
                 }
             }
-
             GameUIController.instance.DisableInteractionText();
             PlayerInteraction.Instance.ClearInteraction();
         }
@@ -104,13 +104,15 @@ public class BuyingUpgrades : Interactable
             GameManager.Instance.Points -= 5000;
             GameUIController.instance.RefreshUI();
 
-            WeaponUpgradeManager.Instance.StartWeaponUpgrade(5f); // 5 seconden
+            WeaponUpgradeManager.Instance.StartWeaponUpgrade(5f);
             weaponUpgradeSound.Play();
 
-            currentWeapon.fireRate = 0.150f;
-            currentWeapon.damage *= 1.8f;
-            currentWeapon.reloadTime *= 0.4f;
+            // Markeer wapen als upgraded
             currentWeapon.isWeaponUpgraded = true;
+            currentWeapon.damage *= 1.8f;
+
+            // Herbereken alle upgrades
+            currentWeapon.RefreshUpgrades();
 
             GameUIController.instance.DisableInteractionText();
             PlayerInteraction.Instance.ClearInteraction();

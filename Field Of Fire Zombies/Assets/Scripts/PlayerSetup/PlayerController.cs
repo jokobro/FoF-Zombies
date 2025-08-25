@@ -76,10 +76,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         characterController = GetComponent<CharacterController>();
         CacheAllReferences();
-
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
-
+        yRotation = 180f; // Pas deze waarde aan naar de gewenste richting
+        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
         UpdateHealthUI();
     }
 
@@ -300,6 +300,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             case 2: // Max Ammo
                 if (hasValidWeaponSwitching)
                 {
+                    AudioSource.PlayClipAtPoint(maxAmmoSound, transform.position, powerupAudioVolume);
                     Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
                     if (allWeapons != null)
                     {
@@ -313,14 +314,18 @@ public class PlayerController : MonoBehaviour, IDamageable
                 Destroy(powerup);
                 break;
             case 3: // Instant Kill
-                if (!isInstantKillActive && cachedWeapon != null)
+                if (!isInstantKillActive && hasValidWeaponSwitching)
                 {
-                    isInstantKillActive = true;
-                    cachedWeapon.damage += 1000;
-                    PowerupUIManager.Instance?.ShowPowerup(3, duration);
-                    StartCoroutine(InstantKillCooldown(duration));
-                    AudioSource.PlayClipAtPoint(instantKillSound, transform.position, powerupAudioVolume);
-                    Destroy(powerup);
+                    Weapon activeWeapon = weaponSwitching.GetActiveWeapon();
+                    if (activeWeapon != null)
+                    {
+                        isInstantKillActive = true;
+                        activeWeapon.damage += 1000;
+                        PowerupUIManager.Instance?.ShowPowerup(3, duration);
+                        StartCoroutine(InstantKillCooldown(duration));
+                        AudioSource.PlayClipAtPoint(instantKillSound, transform.position, powerupAudioVolume);
+                        Destroy(powerup);
+                    }
                 }
                 break;
             case 4: // Nuke
@@ -343,8 +348,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(duration);
         isInstantKillActive = false;
-        if (cachedWeapon != null)
-            cachedWeapon.damage -= 1000;
+
+        if (hasValidWeaponSwitching)
+        {
+            Weapon activeWeapon = weaponSwitching.GetActiveWeapon();
+            if (activeWeapon != null)
+                activeWeapon.damage -= 1000;
+        }
     }
 
     private IEnumerator DoublePointsCooldown(float duration)

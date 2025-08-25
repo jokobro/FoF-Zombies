@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f;
         UIDocument = GetComponent<UIDocument>();
         var root = UIDocument.rootVisualElement;
 

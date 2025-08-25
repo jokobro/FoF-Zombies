@@ -35,13 +35,26 @@ public class Weapon : MonoBehaviour
     public float doubleTapMultiplier = 0.8f;
 
 
+    [Header("Base Values")]
+    private float baseReloadTime;
+    private float baseFireRate;
+
+    [Header("Upgrade Multipliers")]
+    private float speedColaMultiplier = 0.5f; // 50% sneller reload
+    private float weaponUpgradeReloadMultiplier = 0.4f; // 60% sneller reload
+
+
     private void Start()
     {
         cachedUIController = GameUIController.instance;
         mainCamera = Camera.main;
-        screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, - aimOffsetY);
-        originalFireRate = fireRate;
-        ApplyPurchasedUpgrades();
+        screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, -aimOffsetY);
+
+        // Sla originele waarden op
+        baseFireRate = fireRate;
+        baseReloadTime = reloadTime;
+
+        ApplyAllUpgrades();
         UpdateAmmoUI();
     }
 
@@ -50,13 +63,37 @@ public class Weapon : MonoBehaviour
         fireTimer += Time.deltaTime;
     }
 
-    private void ApplyPurchasedUpgrades()
+    private void ApplyAllUpgrades()
     {
-        // Controleer of DoubleTap is gekocht en pas toe
-        if (PerkManager.Instance.IsPerkBought(BuyingUpgrades.PerkType.DoubleTap))
+        // Reset naar base waarden
+        fireRate = baseFireRate;
+        reloadTime = baseReloadTime;
+
+        // Pas DoubleTap toe op alle wapens (alleen fire rate)
+        if (PerkManager.Instance != null && PerkManager.Instance.IsPerkBought(BuyingUpgrades.PerkType.DoubleTap))
         {
-            fireRate *= doubleTapMultiplier; // Gebruik de per-wapen waarde
+            fireRate *= doubleTapMultiplier;
         }
+
+        // Pas SpeedCola toe op alle wapens (alleen reload time)
+        if (PerkManager.Instance != null && PerkManager.Instance.IsPerkBought(BuyingUpgrades.PerkType.SpeedCola))
+        {
+            reloadTime *= speedColaMultiplier;
+        }
+
+        // Pas individuele weapon upgrade toe
+        if (isWeaponUpgraded)
+        {
+            fireRate = 0.150f; // Vaste waarde voor upgraded weapons
+            reloadTime *= weaponUpgradeReloadMultiplier;
+            // damage wordt al aangepast in HandleBuyingWeaponUpgrade
+        }
+    }
+
+
+    public void RefreshUpgrades()
+    {
+        ApplyAllUpgrades();
     }
 
     public void Shoot()
