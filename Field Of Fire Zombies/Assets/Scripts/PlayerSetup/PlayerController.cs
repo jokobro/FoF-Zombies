@@ -119,13 +119,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             RegenerateHealth();
         }
-
-
-
-        var enemy = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        if(enemy )
-        
     }
 
     public void TakeDamage(float damageAmount)
