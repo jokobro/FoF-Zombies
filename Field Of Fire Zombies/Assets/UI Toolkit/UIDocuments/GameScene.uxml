@@ -28,7 +28,7 @@
         <engine:VisualElement name="GrenadeIcon3" style="flex-grow: 1; width: 70px; height: 65px; position: absolute; top: 975px; left: 1800px; background-image: resource(&apos;grenadeicons/grenade&apos;);" />
         <engine:Label text="5000" name="scoreLabel" class="text" style="position: absolute; top: 763px; left: 1746px; color: rgb(255, 255, 255); font-size: 55px; height: 74px; width: 165px; -unity-font-definition: url(&quot;project://database/Assets/Oswald-Light.ttf?fileID=12800000&amp;guid=1fd38d3e26816d246bb99ab5069500f1&amp;type=3#Oswald-Light&quot;);" />
         <engine:VisualElement name="RoundNumber" style="flex-grow: 1; position: absolute; height: 146px; width: 279px; top: 938px; left: 0; background-image: none;" />
-        <engine:VisualElement name="DoublePoints" style="flex-grow: 1; position: absolute; top: 946px; left: 50%; right: 0; bottom: 39px; height: 90px; width: 140px; background-image: none;" />
-        <engine:VisualElement name="Instantkill" style="flex-grow: 1; position: absolute; top: 946px; left: 50%; right: 0; bottom: 39px; height: 90px; width: 140px; background-image: none;" />
+        <engine:VisualElement name="PicukpSlot1" style="flex-grow: 1; position: absolute; top: 946px; left: 50%; right: 0; bottom: 39px; height: 90px; width: 140px; background-image: none;" />
+        <engine:VisualElement name="PicukpSlot2" style="flex-grow: 1; position: absolute; top: 946px; left: 1127px; right: 654px; bottom: 46px; height: 90px; width: 140px; background-image: none;" />
     </engine:VisualElement>
 </engine:UXML>

@@ -7,10 +7,16 @@ public class PowerupUIManager : MonoBehaviour
 {
     public static PowerupUIManager Instance;
 
-    private Dictionary<int, VisualElement> powerupIcons;
+    /*private Dictionary<int, VisualElement> powerupIcons;*/
     private Dictionary<int, Sprite> powerupSprites;
     private Dictionary<int, Coroutine> activeTimers;
     private VisualElement rootElement;
+
+    // Slot management
+    private VisualElement[] powerupSlots = new VisualElement[2]; // PicukpSlot1 en PicukpSlot2
+    private int[] slotPowerupIDs = new int[2] { -1, -1 }; // Track welke powerup in welke slot zit
+
+
 
     // Cached constants for better performance
     private const float BLINK_INTERVAL = 0.25f;
@@ -32,16 +38,9 @@ public class PowerupUIManager : MonoBehaviour
     private void InitializePowerupUI()
     {
         var uiDocument = GetComponent<UIDocument>();
-        /*if (uiDocument?.rootVisualElement == null)
-        {
-            Debug.LogError("PowerupUIManager: UIDocument or root element not found!");
-            return;
-        }*/
-
         rootElement = uiDocument.rootVisualElement;
 
-        // Initialize collections with fixed capacity for better memory management
-        powerupIcons = new Dictionary<int, VisualElement>(4);
+        // Initialize collections
         powerupSprites = new Dictionary<int, Sprite>(4);
         activeTimers = new Dictionary<int, Coroutine>(4);
 
@@ -53,18 +52,12 @@ public class PowerupUIManager : MonoBehaviour
 
     private void SetupPowerupElements()
     {
-        powerupIcons[0] = FindPowerupIcon("DoublePoints");
-        powerupIcons[3] = FindPowerupIcon("Instantkill");
-    }
-
-    private VisualElement FindPowerupIcon(string elementName)
-    {
-        return rootElement.Q<VisualElement>(elementName) ?? rootElement.Q<Image>(elementName);
+        powerupSlots[0] = rootElement.Q<VisualElement>("PicukpSlot1");
+        powerupSlots[1] = rootElement.Q<VisualElement>("PicukpSlot2");
     }
 
     private void LoadPowerupSprites()
-    {
-        // Load sprites with fallback support
+    {   // Load sprites with fallback support
         powerupSprites[0] = LoadSpriteWithFallback("pickupicons/doublepoints", "pickupicons/DoublePoints");
         powerupSprites[3] = LoadSpriteWithFallback("pickupicons/instantKill", "pickupicons/InstantKill", "pickupicons/instakill");
     }
@@ -90,13 +83,19 @@ public class PowerupUIManager : MonoBehaviour
 
     private void HideAllPowerups()
     {
-        foreach (var icon in powerupIcons.Values)
+        foreach (var slot in powerupSlots)
         {
-            if (icon != null)
+            if (slot != null)
             {
-                icon.style.display = DisplayStyle.None;
-                icon.style.visibility = Visibility.Visible;
+                slot.style.display = DisplayStyle.None;
+                slot.style.visibility = Visibility.Visible;
             }
+        }
+
+        //Reset slot tracking
+        for (int i = 0; i < powerupSlots.Length; i++)
+        {
+            slotPowerupIDs[i] = -1;
         }
     }
 
@@ -104,26 +103,40 @@ public class PowerupUIManager : MonoBehaviour
     {
         if (!IsValidPowerupRequest(powerupID, duration)) return;
 
-        var icon = powerupIcons[powerupID];
+        // Zoek eerste beschikbare slot
+        int availableSlot = FindAvailableSlot();
+        if (availableSlot == -1) return; // Geen slots beschikbaar
+
+        var slot = powerupSlots[availableSlot];
         var sprite = powerupSprites[powerupID];
 
         // Stop any existing timer
         StopExistingTimer(powerupID);
 
         // Show the powerup
-        icon.style.display = DisplayStyle.Flex;
-        icon.style.backgroundImage = new StyleBackground(sprite);
-        icon.style.visibility = Visibility.Visible;
+        slot.style.display = DisplayStyle.Flex;
+        slot.style.backgroundImage = new StyleBackground(sprite);
+        slot.style.visibility = Visibility.Visible;
+
+        // Track welke powerup in welke slot zit
+        slotPowerupIDs[availableSlot] = powerupID;
 
         // Start countdown timer
-        activeTimers[powerupID] = StartCoroutine(PowerupTimer(powerupID, duration, icon));
+        activeTimers[powerupID] = StartCoroutine(PowerupTimer(powerupID, duration, slot, availableSlot));
+    }
+
+    private int FindAvailableSlot()
+    {
+        for (int i = 0;i < powerupSlots.Length; i++)
+        {
+            if (slotPowerupIDs[i] == -1) return i;
+        }
+        return -1;
     }
 
     private bool IsValidPowerupRequest(int powerupID, float duration)
     {
-        return duration > 0f &&
-               powerupIcons.TryGetValue(powerupID, out var icon) && icon != null &&
-               powerupSprites.TryGetValue(powerupID, out var sprite) && sprite != null;
+        return duration > 0f && powerupSprites.ContainsKey(powerupID);
     }
 
     private void StopExistingTimer(int powerupID)
@@ -135,7 +148,8 @@ public class PowerupUIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PowerupTimer(int powerupID, float duration, VisualElement icon)
+    // BLINK FUNCTIONALITEIT BLIJFT EXACT HETZELFDE!
+    private IEnumerator PowerupTimer(int powerupID, float duration, VisualElement slot, int slotIndex)
     {
         float elapsed = 0f;
         float blinkStartTime = duration - BLINK_START_OFFSET;
@@ -144,27 +158,44 @@ public class PowerupUIManager : MonoBehaviour
         {
             elapsed += Time.deltaTime;
 
-            // Start blinking when approaching the end
+            // Start blinking when approaching the end (HETZELFDE ALS VOORHEEN!)
             if (elapsed >= blinkStartTime)
             {
                 bool shouldShow = (Time.time % BLINK_INTERVAL) < BLINK_ON_DURATION;
-                icon.style.visibility = shouldShow ? Visibility.Visible : Visibility.Hidden;
+                slot.style.visibility = shouldShow ? Visibility.Visible : Visibility.Hidden;
             }
 
             yield return null;
         }
 
         // Hide powerup when timer expires
-        HidePowerup(powerupID);
+        HidePowerupInSlot(powerupID, slotIndex);
+    }
+
+    private void HidePowerupInSlot(int powerupID, int slotIndex)
+    {
+        if (slotIndex >= 0 && slotIndex < powerupSlots.Length)
+        {
+            var slot = powerupSlots[slotIndex];
+            slot.style.display = DisplayStyle.None;
+            slot.style.visibility = Visibility.Visible;
+            slotPowerupIDs[slotIndex] = -1; // Clear slot
+        }
+
+        StopExistingTimer(powerupID);
     }
 
     public void HidePowerup(int powerupID)
     {
-        if (!powerupIcons.TryGetValue(powerupID, out var icon) || icon == null) return;
-
-        StopExistingTimer(powerupID);
-        icon.style.display = DisplayStyle.None;
-        icon.style.visibility = Visibility.Visible;
+        // Find which slot contains this powerup
+        for (int i = 0; i < slotPowerupIDs.Length; i++)
+        {
+            if (slotPowerupIDs[i] == powerupID)
+            {
+                HidePowerupInSlot(powerupID, i);
+                break;
+            }
+        }
     }
 
     public bool IsPowerupActive(int powerupID)
@@ -174,7 +205,6 @@ public class PowerupUIManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Cleanup all running coroutines
         if (activeTimers != null)
         {
             foreach (var timer in activeTimers.Values)

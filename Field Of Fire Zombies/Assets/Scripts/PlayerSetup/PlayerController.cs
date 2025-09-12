@@ -316,16 +316,24 @@ public class PlayerController : MonoBehaviour, IDamageable
             case 3: // Instant Kill
                 if (!isInstantKillActive && hasValidWeaponSwitching)
                 {
-                    Weapon activeWeapon = weaponSwitching.GetActiveWeapon();
-                    if (activeWeapon != null)
+                    isInstantKillActive = true;
+
+                    Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+                    if (allWeapons != null)
                     {
-                        isInstantKillActive = true;
-                        activeWeapon.damage += 1000;
-                        PowerupUIManager.Instance?.ShowPowerup(3, duration);
-                        StartCoroutine(InstantKillCooldown(duration));
-                        AudioSource.PlayClipAtPoint(instantKillSound, transform.position, powerupAudioVolume);
-                        Destroy(powerup);
+                        for (int i = 0; i < allWeapons.Length; i++)
+                        {
+                            if (allWeapons[i] != null)
+                            {
+                                allWeapons[i].damage += 1000;
+                            }
+                        }
                     }
+
+                    PowerupUIManager.Instance?.ShowPowerup(3, duration);
+                    StartCoroutine(InstantKillCooldown(duration));
+                    AudioSource.PlayClipAtPoint(instantKillSound, transform.position, powerupAudioVolume);
+                    Destroy(powerup);
                 }
                 break;
             case 4: // Nuke
@@ -351,9 +359,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (hasValidWeaponSwitching)
         {
-            Weapon activeWeapon = weaponSwitching.GetActiveWeapon();
-            if (activeWeapon != null)
-                activeWeapon.damage -= 1000;
+            Weapon[] allWeapons = weaponSwitching.GetAllWeapons();
+            if(allWeapons != null)
+            {
+                for (int i = 0; i < allWeapons.Length; i++)
+                {
+                    if (allWeapons[i] != null)
+                    {
+                        allWeapons[i].damage -= 1000;
+                    }
+                }
+            }
         }
     }
 
